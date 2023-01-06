@@ -2,19 +2,5 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>TEST</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+  return <Text>한달 이내 출간한 도서 브랜치 커밋</Text>;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
