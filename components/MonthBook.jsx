@@ -48,7 +48,7 @@ export default function MonthBook() {
       {/* contents */}
       <ScrollView horizontal contentContainerStyle={{ paddingVertical: 20 }}>
         {recentBooks.map((book) => (
-          <View style={{ marginLeft: 15 }}>
+          <View style={{ marginLeft: 15 }} key={book.itemId}>
             {/* card */}
             <BookBox book={book} />
           </View>

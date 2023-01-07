@@ -1,12 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import styled, { css } from "@emotion/native";
 
 // {book}은 api로 받아오고 map 으로 돌린 함수를 props로 받아온 것
 export default function BookBox({ book }) {
   return (
     // 배경
-    <BookBoxTouchableOpacity>
+    <BookBoxTouchableOpacity key={book.itemId}>
       {/* 책 이미지 */}
       <BookBoxImage
         source={{
