@@ -15,12 +15,13 @@ export default function MonthBook() {
   const [recentBooks, setRecentBooks] = useState([]);
   // 로딩 state
   const [isLoading, setIsLoading] = useState(true);
-  // 도서 api
+  // 신간도서 request url
   const BASE_URL = "http://book.interpark.com/api/newBook.api";
+  // api key
   const API_KEY =
     "CAD800FCCF43A0A4B5BAD86C45EFCBC99D6140870C5C960566AE4D254543570F";
-  //신간도서 api
-  const getRecentBooks = async () => {
+  //신간도서 api 가져오기
+  const getApiRecentBooks = async () => {
     const { item } = await fetch(
       `${BASE_URL}?key=${API_KEY}&categoryId=100&output=json`
     ).then((res) => res.json());
@@ -28,7 +29,7 @@ export default function MonthBook() {
     setIsLoading(false);
   };
   useEffect(() => {
-    getRecentBooks();
+    getApiRecentBooks();
   }, []);
 
   //   로딩중 화면
@@ -48,6 +49,7 @@ export default function MonthBook() {
       <ScrollView horizontal contentContainerStyle={{ paddingVertical: 20 }}>
         {recentBooks.map((book) => (
           <View style={{ marginLeft: 15 }}>
+            {/* card */}
             <BookBox book={book} />
           </View>
         ))}
