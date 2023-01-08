@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-
+import BookBox from "../BookBox";
 export default function BestSeller() {
   // API 담을 state
   const [bestSeller, setBestSeller] = useState([]);
@@ -39,22 +39,16 @@ export default function BestSeller() {
   }
 
   return (
-    <ScrollView>
+    <ScrollView
+      horizontal={true}
+      contentContainerStyle={{ paddingVertical: 20 }}
+    >
       <Text>Now 베스트셀러</Text>
-      <View>
-        {bestSeller.map((item) => (
-          <View>
-            <Text>{item.title}</Text>
-            <Text>{item.publisher}</Text>
-            <Text>{item.author}</Text>
-            <CoverImage
-              source={{
-                uri: `${item.coverSmallUrl}`,
-              }}
-            />
-          </View>
-        ))}
-      </View>
+      {bestSeller.map((item) => (
+        <View style={{ marginLeft: 15 }}>
+          <BookBox item={item} />
+        </View>
+      ))}
     </ScrollView>
   );
 }
@@ -63,9 +57,4 @@ const Loader = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
-`;
-
-const CoverImage = styled.Image`
-  width: 100px;
-  height: 136px;
 `;
