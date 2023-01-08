@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { css } from "@emotion/native";
+import { Text } from "react-native";
 
 // {book}은 api로 받아오고 map 으로 돌린 함수를 props로 받아온 것
 export default function BookBox({ book }) {
@@ -7,11 +8,14 @@ export default function BookBox({ book }) {
     // 배경
     <BookBoxTouchableOpacity key={book.itemId}>
       {/* 책 이미지 */}
-      <BookBoxImage
-        source={{
-          uri: `${book.coverSmallUrl}`,
-        }}
-      />
+      <BookBoxImage>
+        <BookBoxNotImageText>이미지가 없습니다.</BookBoxNotImageText>
+        <BookImage
+          source={{
+            uri: `${book.coverSmallUrl}`,
+          }}
+        />
+      </BookBoxImage>
       {/* 책 제목 */}
       <BookBoxTitleText numberOfLines={1} ellipsizeMode="tail">
         {book.title}
@@ -40,10 +44,11 @@ const BookBoxTouchableOpacity = styled.TouchableOpacity`
   border-radius: 7px;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.25);
 `;
-const BookBoxImage = styled.Image`
+const BookBoxImage = styled.ImageBackground`
   margin: 10px auto 0 auto;
   width: 100px;
   height: 136px;
+  background-color: #ededed;
 `;
 const BookBoxTitleText = styled.Text`
   font-size: 14px;
@@ -65,4 +70,18 @@ const BookBoxNameText = styled.Text`
 const BookBoxText = styled.Text`
   font-size: 10px;
   width: 70px;
+`;
+const BookImage = styled.Image`
+  width: 100px;
+  height: 136px;
+`;
+const BookBoxNotImageText = styled.Text`
+  position: absolute;
+  width: 100px;
+  height: 136px;
+  text-align: center;
+  line-height: 136px;
+  font-size: 12px;
+  letter-spacing: -1px;
+  color: #727272;
 `;

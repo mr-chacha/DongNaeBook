@@ -43,12 +43,16 @@ export default function MonthBook() {
   return (
     <MonthBookView>
       {/* title */}
-      <MonthBookTitle style={{ marginLeft: 20 }}>신간도서</MonthBookTitle>
+      <MonthBookTitleText>신간도서</MonthBookTitleText>
 
       {/* contents */}
-      <ScrollView horizontal contentContainerStyle={{ paddingVertical: 20 }}>
+      <ScrollView
+        horizontal
+        contentContainerStyle={{ paddingVertical: 20 }}
+        showsHorizontalScrollIndicator={false}
+      >
         {recentBooks.map((book) => (
-          <View style={{ marginLeft: 15 }} key={book.itemId}>
+          <View style={{ marginLeft: 20 }} key={book.itemId}>
             {/* card */}
             <BookBox book={book} />
           </View>
@@ -59,7 +63,8 @@ export default function MonthBook() {
 }
 
 const MonthBookView = styled.View``;
-const MonthBookTitle = styled.Text`
+const MonthBookTitleText = styled.Text`
+  margin-left: 20px;
   font-size: 20px;
   font-weight: 700;
 `;

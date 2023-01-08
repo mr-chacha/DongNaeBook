@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
-import MonthBook from "./components/MonthBook";
+import MonthBook from "./components/Home/MonthBook";
 export default function App() {
   return (
     <SafeAreaView>
