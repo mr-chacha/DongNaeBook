@@ -1,20 +1,17 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, ScrollView } from "react-native";
+import MyPageWant from "./components/MyPageWant";
+import MyPageRead from "./components/MyPageRead";
+import MyPageReview from "./components/MyPageReview";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>TEST</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView>
+      <ScrollView>
+        <MyPageWant />
+        {/* <MyPageRead /> */}
+        {/* <MyPageReview /> */}
+      </ScrollView>
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
