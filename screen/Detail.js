@@ -1,13 +1,19 @@
-import styled from '@emotion/native';
-import { Rating } from 'react-native-ratings';
-import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../util/Dimension';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { useState } from 'react';
-
+import styled from "@emotion/native";
+import { Rating } from "react-native-ratings";
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from "../util/Dimension";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+import { useState } from "react";
+import DetailContent from "../components/Detail/DetailContent";
+import { ScrollView } from "react-native";
 // npm i react-native-ratings
 
-export default function Detail() {
+export default function Detail({
+  navigation: { navigate },
+  route: {
+    params: { bookId },
+  },
+}) {
   const [isModify, setIsModify] = useState(false);
 
   const handleModalOpen = () => {
@@ -19,102 +25,93 @@ export default function Detail() {
   };
 
   return (
-    <Reviewcontainner>
-      {/* 별점 및 리뷰 */}
-      <ReviewInputBox>
-        <ReviewTitleRateBox>
-          <ReviewTitle>책 리뷰</ReviewTitle>
-          <Rating
-            startingValue={0}
-            ratingCount={5}
-            imageSize={18}
-            type='custom'
-            ratingBackgroundColor='white'
-            jumpValue={0.5}
-          />
-        </ReviewTitleRateBox>
-        <ReviewTextInput
-          maxLength={100}
-          multiline={true}
-          placeholder='의견 남기기'
-          scrollEnabled={false}
-          onSubmitEditing={() => console.log('등록완료')}
-        />
-        <ReviewSubmitBtn>
-          <SubmitText>등록하기</SubmitText>
-        </ReviewSubmitBtn>
-      </ReviewInputBox>
+    <ScrollView>
+      <DetailContent />
 
-      <CommentBox>
-        <ProfileImgBox>
-          <ProfileImg
-            source={{
-              uri: 'https://img.extmovie.com/files/attach/images/135/286/386/076/02197f8e7c1fe5257dd98ecf223475e6.jpg',
-            }}
+      <Reviewcontainner>
+        {/* 별점 및 리뷰 */}
+        <ReviewInputBox>
+          <ReviewTitleRateBox>
+            <ReviewTitle>책 리뷰</ReviewTitle>
+            <Rating
+              startingValue={0}
+              ratingCount={5}
+              imageSize={18}
+              type="custom"
+              ratingBackgroundColor="white"
+              jumpValue={0.5}
+            />
+          </ReviewTitleRateBox>
+          <ReviewTextInput
+            maxLength={100}
+            multiline={true}
+            placeholder="의견 남기기"
+            scrollEnabled={false}
+            onSubmitEditing={() => console.log("등록완료")}
           />
-        </ProfileImgBox>
-        <Commentbody>
-          <Rate>⭐️⭐️⭐️⭐️</Rate>
-          <InfoBox>
-            <UserName>닉네임</UserName>
-            <Seperator>|</Seperator>
-            <CreatedDate>22.01.06</CreatedDate>
-          </InfoBox>
-          <Desc>
-            오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간
-            베스트셀러여서 읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서
-            읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간
-            베스트셀러여서 읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서
-            읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간
-            베스트셀러여서 읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서
-            읽어보고오랜 기간 베스트셀러여서 읽어보고{' '}
-          </Desc>
-        </Commentbody>
-        <IconBox onPress={handleModalOpen}>
-          <MaterialCommunityIcons
-            name='dots-vertical'
-            size={24}
-            color='black'
-          />
-        </IconBox>
-      </CommentBox>
-      <ModifyModal
-        visible={isModify}
-        transparent
-        animationType='slide'>
-        <FakeView></FakeView>
-        <ModifyBox>
-          <MenuBox>
-            <MenuWrapper>
-              <RewriteMenu>
-                <AntDesign
-                  name='edit'
-                  size={24}
-                  color='black'
-                />
-                <MenuName>수정하기</MenuName>
-              </RewriteMenu>
-              <DeleteMenu>
-                <AntDesign
-                  name='delete'
-                  size={24}
-                  color='black'
-                />
-                <MenuName>삭제하기</MenuName>
-              </DeleteMenu>
-            </MenuWrapper>
+          <ReviewSubmitBtn>
+            <SubmitText>등록하기</SubmitText>
+          </ReviewSubmitBtn>
+        </ReviewInputBox>
 
-            <CloseBox onPress={handleModalClose}>
-              <AntDesign
-                name='close'
-                size={24}
-                color='black'
-              />
-            </CloseBox>
-          </MenuBox>
-        </ModifyBox>
-      </ModifyModal>
-    </Reviewcontainner>
+        <CommentBox>
+          <ProfileImgBox>
+            <ProfileImg
+              source={{
+                uri: "https://img.extmovie.com/files/attach/images/135/286/386/076/02197f8e7c1fe5257dd98ecf223475e6.jpg",
+              }}
+            />
+          </ProfileImgBox>
+          <Commentbody>
+            <Rate>⭐️⭐️⭐️⭐️</Rate>
+            <InfoBox>
+              <UserName>닉네임</UserName>
+              <Seperator>|</Seperator>
+              <CreatedDate>22.01.06</CreatedDate>
+            </InfoBox>
+            <Desc>
+              오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서
+              읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서
+              읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서
+              읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서
+              읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서
+              읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서
+              읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서
+              읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서
+              읽어보고{" "}
+            </Desc>
+          </Commentbody>
+          <IconBox onPress={handleModalOpen}>
+            <MaterialCommunityIcons
+              name="dots-vertical"
+              size={24}
+              color="black"
+            />
+          </IconBox>
+        </CommentBox>
+        <ModifyModal visible={isModify} transparent animationType="slide">
+          <FakeView></FakeView>
+          <ModifyBox>
+            <MenuBox>
+              <MenuWrapper>
+                <RewriteMenu>
+                  <AntDesign name="edit" size={24} color="black" />
+                  <MenuName>수정하기</MenuName>
+                </RewriteMenu>
+                <DeleteMenu>
+                  <AntDesign name="delete" size={24} color="black" />
+                  <MenuName>삭제하기</MenuName>
+                </DeleteMenu>
+              </MenuWrapper>
+
+              <CloseBox onPress={handleModalClose}>
+                <AntDesign name="close" size={24} color="black" />
+              </CloseBox>
+            </MenuBox>
+          </ModifyBox>
+        </ModifyModal>
+      </Reviewcontainner>
+    </ScrollView>
   );
 }
 
@@ -177,7 +174,7 @@ const ReviewTitle = styled.Text`
 const ReviewTextInput = styled.TextInput`
   background-color: #f3f3f3;
   border-radius: 7px;
-  height: ${SCREEN_HEIGHT / 9 + 'px'};
+  height: ${SCREEN_HEIGHT / 9 + "px"};
   font-size: 15px;
   padding: 10px;
 `;
@@ -191,8 +188,8 @@ const SubmitText = styled.Text`
 
 // 댓글 관련
 const CommentBox = styled.View`
-  height: ${SCREEN_HEIGHT / 9 + 'px'};
-  width: ${SCREEN_WIDTH + 'px'};
+  height: ${SCREEN_HEIGHT / 9 + "px"};
+  width: ${SCREEN_WIDTH + "px"};
   flex-direction: row;
   margin-top: 30px;
   margin-bottom: 10px;
@@ -234,7 +231,7 @@ const CreatedDate = styled.Text`
 `;
 
 const Desc = styled.Text`
-  width: ${SCREEN_WIDTH / 1.5 + 'px'};
+  width: ${SCREEN_WIDTH / 1.5 + "px"};
 `;
 
 const IconBox = styled.TouchableOpacity``;
