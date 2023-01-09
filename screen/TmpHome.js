@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import BestSeller from "../components/Home/BestSeller";
 import MonthBook from "../components/Home/MonthBook";
-
+import Banner from "../components/Home/Banner";
 import Swiper from "react-native-swiper";
 import styled from "@emotion/native";
 import { SCREEN_HEIGHT } from "../util/test";
@@ -30,7 +30,6 @@ const categoryName = [
 ];
 
 const categoryId = ["전체보기", "119", "101", "117", "118", "123", "105"];
-
 
 export default function TmpHome() {
   const main =
@@ -67,32 +66,12 @@ export default function TmpHome() {
 
   return (
     <SafeAreaView>
-
       <Container>
         <StatusBar style="dark" />
         <LogoImg>
           <Image source={logo} style={styles.logo} />
         </LogoImg>
-        <Swiper height="100%">
-          <SwiperChildView>
-            <BackgroundImg
-              style={StyleSheet.absoluteFill}
-              source={{ uri: main }}
-            />
-          </SwiperChildView>
-          <SwiperChildView>
-            <BackgroundImg
-              style={StyleSheet.absoluteFill}
-              source={{ uri: main }}
-            />
-          </SwiperChildView>
-          <SwiperChildView>
-            <BackgroundImg
-              style={StyleSheet.absoluteFill}
-              source={{ uri: main }}
-            />
-          </SwiperChildView>
-        </Swiper>
+        <Banner />
         <ListTitle>새로 출간된 도서 ✨</ListTitle>
 
         <MonthBook />
@@ -179,7 +158,7 @@ const LogoImg = styled.View`
 `;
 
 const ListTitle = styled.Text`
-  margin-top: 40px;
+  margin-top: 10px;
   margin-bottom: 10px;
   margin-left: 20px;
   font-size: 20px;

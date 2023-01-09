@@ -27,5 +27,6 @@ const BannerImage = styled.Image`
 `;
 
 const BannerView = styled.View`
+  width: 100%;
   height: 250px;
 `;
