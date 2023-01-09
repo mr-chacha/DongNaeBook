@@ -65,7 +65,7 @@ export default function TmpHome() {
 
   return (
     <SafeAreaView>
-      <ScrollView style={styles.container}>
+      <Container>
         <StatusBar style="dark" />
         <LogoImg>
           <Image source={logo} style={styles.logo} />
@@ -94,26 +94,22 @@ export default function TmpHome() {
         <MonthBook />
         <ListTitle>NOW 베스트 셀러 🏝️</ListTitle>
         <BestSeller />
-        <ScrollView
-          style={styles.middleContainer}
+        <MiddleContainer
           horizontal
           indicatorStyle={"white"}
           showsHorizontalScrollIndicator={false}
         >
           <HomePageBestSellerBtnBox>
             {categoryName.map((category) => (
-              <TouchableOpacity
-                style={styles.middleButtonAll}
+              <MiddleButtonAll
                 onPress={() => getCategoryKey(category)}
                 key={uuid.v4()}
               >
-                <Text key={category} style={styles.middleButtonText}>
-                  {category}
-                </Text>
-              </TouchableOpacity>
+                <MiddleButtonText key={category}>{category}</MiddleButtonText>
+              </MiddleButtonAll>
             ))}
           </HomePageBestSellerBtnBox>
-        </ScrollView>
+        </MiddleContainer>
         <HomePageBestSellerScrollBox horizontal>
           <HomePageCategoryBox>
             {currentCategory === "전체보기"
@@ -125,8 +121,7 @@ export default function TmpHome() {
                   .map((data) => <CategoryList books={data} key={uuid.v4()} />)}
           </HomePageCategoryBox>
         </HomePageBestSellerScrollBox>
-        <View style={styles.cardContainer}></View>
-      </ScrollView>
+      </Container>
     </SafeAreaView>
   );
 }
@@ -157,6 +152,7 @@ const HomePageBestSellerBtnBox = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin-top: 30px;
 `;
 
 const SwiperChildView = styled.View`
@@ -179,28 +175,42 @@ const LogoImg = styled.View`
 `;
 
 const ListTitle = styled.Text`
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 40px;
+  margin-bottom: 10px;
   margin-left: 20px;
   font-size: 20px;
   font-weight: 500;
 `;
 
+const Container = styled.ScrollView`
+  background-color: #fff;
+`;
+
+const MiddleContainer = styled.ScrollView`
+  width: 100%;
+  margin-left: 10;
+`;
+
+const MiddleButtonAll = styled.TouchableOpacity`
+  width: 100px;
+  height: 50px;
+  padding: 15px;
+  background-color: #cdff40;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 7px;
+`;
+
+const MiddleButtonText = styled.Text`
+  color: black;
+  font-weight: 700;
+  //텍스트의 현재 위치에서의 정렬
+`;
+
 const styles = StyleSheet.create({
-  container: {
-    //앱의 배경 색
-    backgroundColor: "#fff",
-  },
-  title: {
-    //폰트 사이즈
-    fontSize: 20,
-    //폰트 두께
-    fontWeight: "700",
-    //위 공간으로 부터 이격
-    marginTop: 50,
-    //왼쪽 공간으로 부터 이격
-    marginLeft: 20,
-  },
   logo: {
     height: 40,
     width: 130,
@@ -209,30 +219,5 @@ const styles = StyleSheet.create({
   category: {
     display: "flex",
     flexDirection: "row",
-  },
-  middleContainer: {
-    width: "100%",
-    marginLeft: 10,
-  },
-  middleButtonAll: {
-    width: 100,
-    height: 50,
-    padding: 15,
-    backgroundColor: "#CDFF40",
-    borderRadius: 15,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 7,
-  },
-  middleButtonText: {
-    color: "black",
-    fontWeight: "700",
-    //텍스트의 현재 위치에서의 정렬
-  },
-  cardContainer: {
-    marginTop: 10,
-    marginLeft: 10,
   },
 });
