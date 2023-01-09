@@ -5,6 +5,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import TmpSearch from "../screen/TmpSearch";
 import TmpHome from "../screen/TmpHome";
 import TmpMyPage from "../screen/TmpMyPage";
+import SignUp from "../screen/SignUp";
 
 const Tab = createBottomTabNavigator();
 
@@ -46,6 +47,17 @@ export default function Tabs() {
         }}
         name="MyPage"
         component={TmpMyPage}
+      />
+      <Tab.Screen
+        options={{
+          headerShown: false,
+          headerTitleAlign: "center",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="person-outline" size={size} color={color} />
+          ),
+        }}
+        name="Signup"
+        component={SignUp}
       />
     </Tab.Navigator>
   );

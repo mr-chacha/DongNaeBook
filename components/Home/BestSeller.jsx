@@ -46,9 +46,9 @@ export default function BestSeller() {
           contentContainerStyle={{ paddingVertical: 20 }}
         >
           {bestSeller.map((book) => (
-            <View style={{ marginLeft: 20, marginBottom: 40 }}>
+            <BestSellerBookView key={book.itemId}>
               <BookBox book={book} />
-            </View>
+            </BestSellerBookView>
           ))}
         </ScrollView>
       </BestSellerView>
@@ -63,8 +63,11 @@ const Loader = styled.View`
 `;
 
 const BestSellerTitleText = styled.Text`
-  font-size: 20;
+  font-size: 20px;
   font-weight: 700;
-  margin-left: 20;
+  margin-left: 20px;
 `;
 const BestSellerView = styled.View``;
+const BestSellerBookView = styled.View`
+  margin-left: 20px;
+`;

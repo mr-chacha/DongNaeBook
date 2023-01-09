@@ -50,10 +50,10 @@ export default function MonthBook() {
         showsHorizontalScrollIndicator={false}
       >
         {recentBooks.map((book) => (
-          <View style={{ marginLeft: 20, marginBottom: 40 }} key={book.itemId}>
+          <MonthBookBoxView key={book.itemId}>
             {/* card */}
             <BookBox book={book} />
-          </View>
+          </MonthBookBoxView>
         ))}
       </ScrollView>
     </MonthBookView>
@@ -70,4 +70,7 @@ const MonthBookLoader = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
+`;
+const MonthBookBoxView = styled.View`
+  margin-left: 20px;
 `;
