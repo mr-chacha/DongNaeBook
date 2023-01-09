@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -25,68 +25,44 @@ const categoryName = [
   "자기계발",
   "수험서",
   "역사/문화",
-  "기타",
 ];
 
-const bookDatas = [
-  {
-    id: 1,
-    title: "1번 책",
-    category: "인문/사회",
-  },
-  {
-    id: 2,
-    title: "2번 책",
-    category: "소설/에세이",
-  },
-  {
-    id: 3,
-    title: "3번 책",
-    category: "인문/사회",
-  },
-  {
-    id: 4,
-    title: "4번 책",
-    category: "역사/문화",
-  },
-  {
-    id: 5,
-    title: "5번 책",
-    category: "소설/에세이",
-  },
-  {
-    id: 6,
-    title: "3번 책",
-    category: "인문/사회",
-  },
-  {
-    id: 7,
-    title: "3번 책",
-    category: "인문/사회",
-  },
-  {
-    id: 8,
-    title: "3번 책",
-    category: "인문/사회",
-  },
-  {
-    id: 9,
-    title: "3번 책",
-    category: "인문/사회",
-  },
-  {
-    id: 10,
-    title: "3번 책",
-    category: "인문/사회",
-  },
-];
+const categoryId = ["전체보기", "119", "101", "117", "118", "123", "105"];
 
 export default function TmpHome() {
   const main =
     "https://storage.googleapis.com/sparta-image.appspot.com/lecture/main.png";
 
+  // 도서 state
+  const [catBooks, setCatBooks] = useState([]);
+  // 로딩 state
+
+  // 도서 request url
+  const BASE_URL = "http://book.interpark.com/api/bestSeller.api";
+  // api key
+  const API_KEY =
+    "B23E30B9DF1AAD646A146C3020DC90CE504C270B6A6B8A3B372CF3B02DEE6077";
+  //신간도서 api 가져오기
+  const getApiCatBooks = async () => {
+    const { item } = await fetch(
+      `${BASE_URL}?key=${API_KEY}&categoryId=100&output=json`
+    ).then((res) => res.json());
+    setCatBooks(item);
+  };
+  useEffect(() => {
+    getApiCatBooks();
+  }, []);
+
   // state
   const [currentCategory, setCurrentCategory] = useState("");
+  console.log(currentCategory);
+
+  const getCategoryKey = (category) => {
+    // 인무/사회
+
+    const findIndex = categoryName.indexOf(category); // 1
+    setCurrentCategory(categoryId[findIndex]); // 110
+  };
 
   return (
     <SafeAreaView>
@@ -129,20 +105,22 @@ export default function TmpHome() {
             {categoryName.map((category) => (
               <TouchableOpacity
                 style={styles.middleButtonAll}
-                onPress={() => setCurrentCategory(category)}
+                onPress={() => getCategoryKey(category)}
               >
-                <Text style={styles.middleButtonText}>{category}</Text>
+                <Text key={category} style={styles.middleButtonText}>
+                  {category}
+                </Text>
               </TouchableOpacity>
             ))}
           </HomePageBestSellerBtnBox>
         </ScrollView>
         <HomePageBestSellerScrollBox horizontal>
           <HomePageCategoryBox>
-            {bookDatas
-              .filter((data) => data.category === currentCategory)
-              .map((data) => (
-                <CategoryList books={data} />
-              ))}
+            {currentCategory === "전체보기"
+              ? catBooks.map((data) => <CategoryList books={data} />)
+              : catBooks
+                  .filter((data) => data.categoryId === currentCategory)
+                  .map((data) => <CategoryList books={data} />)}
           </HomePageCategoryBox>
         </HomePageBestSellerScrollBox>
         <View style={styles.cardContainer}></View>

@@ -1,9 +1,19 @@
 import React from "react";
 import styled from "@emotion/native";
+import { useNavigation } from "@react-navigation/native";
+
 export default function BookBox({ book }) {
+  // detail로 이동하는 함수 추가
+  const { navigate } = useNavigation();
+  const HandleMoveToDetail = () => {
+    navigate("stack", {
+      screen: "Detail",
+      params: { bookId: book.itemId },
+    });
+  };
   return (
     // 배경
-    <BookBoxTouchableOpacity key={book.itemId}>
+    <BookBoxTouchableOpacity onPress={HandleMoveToDetail} key={book.itemId}>
       {/* 책 이미지 */}
       <BookBoxImage>
         <BookBoxNotImageText>이미지가 없습니다.</BookBoxNotImageText>

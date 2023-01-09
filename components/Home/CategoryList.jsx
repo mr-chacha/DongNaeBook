@@ -13,36 +13,16 @@ import styled, { css } from "@emotion/native";
 const categoryBooks = ["119", "101", "117", "118", "123", "105", "120"];
 
 export default function CategoryList({ books }) {
-  // 도서 state
-  const [catBooks, setCatBooks] = useState([]);
-  // 로딩 state
-
-  // 도서 request url
-  const BASE_URL = "http://book.interpark.com/api/bestSeller.api";
-  // api key
-  const API_KEY =
-    "B23E30B9DF1AAD646A146C3020DC90CE504C270B6A6B8A3B372CF3B02DEE6077";
-  //신간도서 api 가져오기
-  const getApiCatBooks = async () => {
-    const { item } = await fetch(
-      `${BASE_URL}?key=${API_KEY}&categoryId=100&output=json`
-    ).then((res) => res.json());
-    setCatBooks(item);
-  };
-  useEffect(() => {
-    getApiCatBooks();
-  }, []);
-
   return (
     <BookBoxTouchableOpacity key={books.id}>
       {/* 책 이미지 */}
       <BookBoxImage>
         <BookBoxNotImageText>이미지가 없습니다.</BookBoxNotImageText>
-        {/* <BookImage
+        <BookImage
           source={{
-            uri: `${book.coverSmallUrl}`,
+            uri: `${books.coverSmallUrl}`,
           }}
-        /> */}
+        />
       </BookBoxImage>
       {/* 책 제목 */}
       <BookBoxTitleText numberOfLines={1} ellipsizeMode="tail">
@@ -52,14 +32,14 @@ export default function CategoryList({ books }) {
       <BookBoxTextView>
         <BookBoxNameText>출판</BookBoxNameText>
         <BookBoxText numberOfLines={1} ellipsizeMode="tail">
-          {books.title}
+          {books.publisher}
         </BookBoxText>
       </BookBoxTextView>
       {/* 책 저자 */}
       <BookBoxTextView>
         <BookBoxNameText>저자</BookBoxNameText>
         <BookBoxText numberOfLines={1} ellipsizeMode="tail">
-          {books.title}
+          {books.author}
         </BookBoxText>
       </BookBoxTextView>
     </BookBoxTouchableOpacity>

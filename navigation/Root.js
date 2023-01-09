@@ -1,17 +1,21 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Tabs from "./Tabs";
+import Stack from "./Stack";
 
-const Stack = createNativeStackNavigator();
+// Stack -> Nav로 변경
+
+const Nav = createNativeStackNavigator();
 
 export default function Root() {
   return (
-    <Stack.Navigator
+    <Nav.Navigator
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen name="tabs" component={Tabs} />
-    </Stack.Navigator>
+      <Nav.Screen name="tabs" component={Tabs} />
+      <Nav.Screen name="stack" component={Stack} />
+    </Nav.Navigator>
   );
 }
