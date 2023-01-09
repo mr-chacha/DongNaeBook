@@ -188,7 +188,7 @@ const Container = styled.ScrollView`
 
 const MiddleContainer = styled.ScrollView`
   width: 100%;
-  margin-left: 10;
+  margin-left: 10px;
 `;
 
 const MiddleButtonAll = styled.TouchableOpacity`
