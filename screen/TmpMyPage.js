@@ -17,17 +17,17 @@ import { AntDesign } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
-// const [isModify, setIsModify] = useState(false);
-
-// const handleModalOpen = () => {
-//   setIsModify(true);
-// };
-
-// const handleModalClose = () => {
-//   setIsModify(false);
-// };
-
 export default function TmpMyPage() {
+  const [isModify, setIsModify] = useState(false);
+
+  const handleModalOpen = () => {
+    setIsModify(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModify(false);
+  };
+
   return (
     <View>
       <SafeAreaView>
@@ -35,7 +35,7 @@ export default function TmpMyPage() {
           <MypageContainer>
             {/* <ProfileEditModal /> */}
             <SimpleLineIcons
-              // onPress={handleModalOpen}
+              onPress={handleModalOpen}
               name="options-vertical"
               size={20}
               color="black"
@@ -45,11 +45,8 @@ export default function TmpMyPage() {
             <ProfileImage style={{ width: 158, height: 158 }} />
             <Nickname>집요정</Nickname>
             <MyEmail> dongnaebook@gmail.com</MyEmail>
-            {/* <Modal
-              visible={isModify}
-              style={{ width: 250, height: 300 }}
-              transparent
-            >
+
+            <Modal visible={isModify} style={{ width: 250, height: 300 }}>
               <TouchableOpacity>
                 <AntDesign
                   onPress={handleModalClose}
@@ -63,29 +60,8 @@ export default function TmpMyPage() {
                 <Nickname>집요정</Nickname>
                 <MyEmail> dongnaebook@gmail.com</MyEmail>
               </View>
-            </Modal> */}
+            </Modal>
           </MypageContainer>
-
-          {/* 
-            <FakeView></FakeView>
-            <ModifyBox>
-              <MenuBox>
-                <MenuWrapper>
-                  <TouchableOpacity>
-                    <AntDesign name="edit" size={24} color="black" />
-                    <MenuName>수정하기</MenuName>
-                  </TouchableOpacity>
-                  <DeleteMenu>
-                    <AntDesign name="delete" size={24} color="black" />
-                    <MenuName>삭제하기</MenuName>
-                  </DeleteMenu>
-                </MenuWrapper>
-                <CloseBox onPress={handleModalClose}>
-                  <AntDesign name="close" size={24} color="black" />
-                </CloseBox>
-              </MenuBox>
-            </ModifyBox>
-         */}
         </ScrollView>
       </SafeAreaView>
     </View>
