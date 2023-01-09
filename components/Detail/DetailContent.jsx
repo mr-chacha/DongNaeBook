@@ -37,6 +37,7 @@ export default function DetailContent({ book }) {
         </DetailContentCountText>
 
         {/* 찜 */}
+        {/* 유저 아이디,책 아이디 , response 를 넣어서 파이어베이스로 */}
         <DetailContentIconTouchableOpacity>
           <AntDesign name="hearto" size={16} color="black" />
         </DetailContentIconTouchableOpacity>
