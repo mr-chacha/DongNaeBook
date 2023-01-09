@@ -33,28 +33,21 @@ export default function MyPageReview() {
           </MyPageWantReviewContentsStarText>
 
           <MyPageWantReviewContentsReviewText
-            numberOfLines={reviewMoreButton ? 0 : 3}
-            ellipsizeMode="tail"
+          // numberOfLines={reviewMoreButton ? 0 : 3}
+          // ellipsizeMode="tail"
           >
-            오랜 기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 오랜
-            기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트
-            셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트 셀러여서
-            읽어보고 싶었는데 너무 재밌었습니다. 기간
+            안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요
+            안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요
+            안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세
           </MyPageWantReviewContentsReviewText>
           <MyPageWantReviewContentsReviewTouchableOpacity
             onPress={() => {
               setReviewMoreButton((t) => !t);
             }}
           >
-            <MyPageWantReviewContentsReviewMoreText>
+            {/* <MyPageWantReviewContentsReviewMoreText>
               {reviewMoreButton ? "접기" : `더보기`}
-            </MyPageWantReviewContentsReviewMoreText>
+            </MyPageWantReviewContentsReviewMoreText> */}
           </MyPageWantReviewContentsReviewTouchableOpacity>
         </MyPageWantReviewContentsTextView>
       </MyPageWantReviewContentsView>
