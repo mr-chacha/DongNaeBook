@@ -1,8 +1,11 @@
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import styled, { css } from "@emotion/native";
+import { useState } from "react";
 
 export default function MyPageReview() {
+  const [reviewMoreButton, setReviewMoreButton] = useState(false);
+
   return (
     <>
       <MyPageWantReviewView>
@@ -28,9 +31,13 @@ export default function MyPageReview() {
             ⭐️⭐️⭐️⭐️⭐️
           </MyPageWantReviewContentsStarText>
 
-          <MyPageWantReviewContentsReviewText>
+          <MyPageWantReviewContentsReviewText
+            numberOfLines={reviewMoreButton ? 0 : 3}
+            ellipsizeMode="tail"
+          >
             오랜 기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 오랜
             기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
             베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
             베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
             베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
@@ -38,10 +45,16 @@ export default function MyPageReview() {
             베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트
             셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트 셀러여서
             읽어보고 싶었는데 너무 재밌었습니다. 기간
-            <MyPageWantReviewContentsReviewTouchableOpacity>
-              <Text>더보기</Text>
-            </MyPageWantReviewContentsReviewTouchableOpacity>
           </MyPageWantReviewContentsReviewText>
+          <MyPageWantReviewContentsReviewTouchableOpacity
+            onPress={() => {
+              setReviewMoreButton((t) => !t);
+            }}
+          >
+            <MyPageWantReviewContentsReviewMoreText>
+              {reviewMoreButton ? "접기" : `더보기`}
+            </MyPageWantReviewContentsReviewMoreText>
+          </MyPageWantReviewContentsReviewTouchableOpacity>
         </MyPageWantReviewContentsTextView>
       </MyPageWantReviewContentsView>
       {/* 여기까지 감싸고 */}
@@ -65,10 +78,30 @@ export default function MyPageReview() {
             ⭐️⭐️⭐️⭐️⭐️
           </MyPageWantReviewContentsStarText>
 
-          <MyPageWantReviewContentsReviewText>
+          <MyPageWantReviewContentsReviewText
+            numberOfLines={reviewMoreButton ? 0 : 3}
+            ellipsizeMode="tail"
+          >
             오랜 기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 오랜
-            기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간
+            기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트
+            셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트 셀러여서
+            읽어보고 싶었는데 너무 재밌었습니다. 기간
           </MyPageWantReviewContentsReviewText>
+          <MyPageWantReviewContentsReviewTouchableOpacity
+            onPress={() => {
+              setReviewMoreButton((t) => !t);
+            }}
+          >
+            <MyPageWantReviewContentsReviewMoreText>
+              {reviewMoreButton ? "접기" : `더보기`}
+            </MyPageWantReviewContentsReviewMoreText>
+          </MyPageWantReviewContentsReviewTouchableOpacity>
         </MyPageWantReviewContentsTextView>
       </MyPageWantReviewContentsView>
 
@@ -90,10 +123,30 @@ export default function MyPageReview() {
             ⭐️⭐️⭐️⭐️⭐️
           </MyPageWantReviewContentsStarText>
 
-          <MyPageWantReviewContentsReviewText>
+          <MyPageWantReviewContentsReviewText
+            numberOfLines={reviewMoreButton ? 0 : 3}
+            ellipsizeMode="tail"
+          >
             오랜 기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 오랜
-            기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간
+            기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트
+            셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트 셀러여서
+            읽어보고 싶었는데 너무 재밌었습니다. 기간
           </MyPageWantReviewContentsReviewText>
+          <MyPageWantReviewContentsReviewTouchableOpacity
+            onPress={() => {
+              setReviewMoreButton((t) => !t);
+            }}
+          >
+            <MyPageWantReviewContentsReviewMoreText>
+              {reviewMoreButton ? "접기" : `더보기`}
+            </MyPageWantReviewContentsReviewMoreText>
+          </MyPageWantReviewContentsReviewTouchableOpacity>
         </MyPageWantReviewContentsTextView>
       </MyPageWantReviewContentsView>
 
@@ -115,10 +168,30 @@ export default function MyPageReview() {
             ⭐️⭐️⭐️⭐️⭐️
           </MyPageWantReviewContentsStarText>
 
-          <MyPageWantReviewContentsReviewText>
+          <MyPageWantReviewContentsReviewText
+            numberOfLines={reviewMoreButton ? 0 : 3}
+            ellipsizeMode="tail"
+          >
             오랜 기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 오랜
-            기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간
+            기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트
+            셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트 셀러여서
+            읽어보고 싶었는데 너무 재밌었습니다. 기간
           </MyPageWantReviewContentsReviewText>
+          <MyPageWantReviewContentsReviewTouchableOpacity
+            onPress={() => {
+              setReviewMoreButton((t) => !t);
+            }}
+          >
+            <MyPageWantReviewContentsReviewMoreText>
+              {reviewMoreButton ? "접기" : `더보기`}
+            </MyPageWantReviewContentsReviewMoreText>
+          </MyPageWantReviewContentsReviewTouchableOpacity>
         </MyPageWantReviewContentsTextView>
       </MyPageWantReviewContentsView>
 
@@ -140,10 +213,30 @@ export default function MyPageReview() {
             ⭐️⭐️⭐️⭐️⭐️
           </MyPageWantReviewContentsStarText>
 
-          <MyPageWantReviewContentsReviewText>
+          <MyPageWantReviewContentsReviewText
+            numberOfLines={reviewMoreButton ? 0 : 3}
+            ellipsizeMode="tail"
+          >
             오랜 기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 오랜
-            기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간
+            기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트
+            셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트 셀러여서
+            읽어보고 싶었는데 너무 재밌었습니다. 기간
           </MyPageWantReviewContentsReviewText>
+          <MyPageWantReviewContentsReviewTouchableOpacity
+            onPress={() => {
+              setReviewMoreButton((t) => !t);
+            }}
+          >
+            <MyPageWantReviewContentsReviewMoreText>
+              {reviewMoreButton ? "접기" : `더보기`}
+            </MyPageWantReviewContentsReviewMoreText>
+          </MyPageWantReviewContentsReviewTouchableOpacity>
         </MyPageWantReviewContentsTextView>
       </MyPageWantReviewContentsView>
 
@@ -165,10 +258,30 @@ export default function MyPageReview() {
             ⭐️⭐️⭐️⭐️⭐️
           </MyPageWantReviewContentsStarText>
 
-          <MyPageWantReviewContentsReviewText>
+          <MyPageWantReviewContentsReviewText
+            numberOfLines={reviewMoreButton ? 0 : 3}
+            ellipsizeMode="tail"
+          >
             오랜 기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 오랜
-            기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간
+            기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
+            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트
+            셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트 셀러여서
+            읽어보고 싶었는데 너무 재밌었습니다. 기간
           </MyPageWantReviewContentsReviewText>
+          <MyPageWantReviewContentsReviewTouchableOpacity
+            onPress={() => {
+              setReviewMoreButton((t) => !t);
+            }}
+          >
+            <MyPageWantReviewContentsReviewMoreText>
+              {reviewMoreButton ? "접기" : `더보기`}
+            </MyPageWantReviewContentsReviewMoreText>
+          </MyPageWantReviewContentsReviewTouchableOpacity>
         </MyPageWantReviewContentsTextView>
       </MyPageWantReviewContentsView>
     </>
@@ -232,4 +345,12 @@ const MyPageWantReviewContentsReviewText = styled.Text`
   font-size: 13px;
   width: 70%;
 `;
-const MyPageWantReviewContentsReviewTouchableOpacity = styled.TouchableOpacity``;
+const MyPageWantReviewContentsReviewTouchableOpacity = styled.TouchableOpacity`
+  width: 40px;
+  margin-top: 5px;
+`;
+const MyPageWantReviewContentsReviewMoreText = styled.Text`
+  color: #0055ff;
+  font-size: 12px;
+  font-weight: 700;
+`;
