@@ -47,8 +47,8 @@ export default function BestSeller() {
           contentContainerStyle={{ paddingVertical: 20 }}
         >
           {bestSeller.map((book) => (
-            <View style={{ marginLeft: 20 }}>
-              <BookBox book={book} />
+            <View style={{ marginLeft: 20}}>
+              <BookBox book={book}/>
             </View>
           ))}
         </ScrollView>
