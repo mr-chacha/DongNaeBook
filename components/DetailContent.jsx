@@ -21,11 +21,16 @@ export default function DetailContent() {
     <>
       {/* 책이미지 */}
       <DetailContentImg source={require("../assets/book.jpg")} />
+      {/* 책 이름*/}
+      <DetailContentTitleText>불편한 편의점</DetailContentTitleText>
 
       {/* 상세 타이틀*/}
       <DetailContentTitleView>
-        {/* 책 이름 길이 수정 필요 */}
-        <DetailContentTitleText>불편한 편의점</DetailContentTitleText>
+        {/* 카운터 firebase연결 필요*/}
+        <DetailContentCountText>
+          👀300명이 이 책을 봤어요!
+        </DetailContentCountText>
+
         {/* 찜 */}
         <DetailContentIconTouchableOpacity>
           <AntDesign name="hearto" size={16} color="black" />
@@ -34,10 +39,6 @@ export default function DetailContent() {
         <DetailContentIconTouchableOpacity>
           <Ionicons name="bookmark-outline" size={18} color="black" />
         </DetailContentIconTouchableOpacity>
-        {/* 카운터 firebase연결 필요*/}
-        <DetailContentCountText>
-          👀300명이 이 책을 봤어요!
-        </DetailContentCountText>
       </DetailContentTitleView>
 
       {/* 상세 정보 글자가 길어지면 줄바꿈 활성*/}
@@ -131,20 +132,21 @@ const DetailContentImg = styled.Image`
   margin: 30px auto 0 auto;
 `;
 const DetailContentTitleView = styled.View`
-  margin: 30px auto 0 auto;
+  margin: 20px auto 0 auto;
   display: flex;
   flex-direction: row;
   align-items: center;
   width: 85%;
 `;
 const DetailContentTitleText = styled.Text`
-  width: 110px;
+  max-width: 85%;
   font-size: 20px;
+  margin: 20px auto 0 auto;
 `;
 const DetailContentCountText = styled.Text`
   color: #727272;
   font-size: 12px;
-  margin-left: auto;
+  margin-right: auto;
 `;
 const DetailContentIconTouchableOpacity = styled.TouchableOpacity`
   margin-left: 7px;
