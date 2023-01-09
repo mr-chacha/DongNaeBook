@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 import {
   StyleSheet,
@@ -10,11 +11,17 @@ import {
 import styled, { css } from "@emotion/native";
 // import styled from "@emotion/native";
 
-const categoryBooks = ["119", "101", "117", "118", "123", "105", "120"];
-
 export default function CategoryList({ books }) {
+  // detail로 이동하는 함수 추가
+  const { navigate } = useNavigation();
+  const HandleMoveToDetail = () => {
+    navigate("stack", {
+      screen: "Detail",
+      params: { bookId: books.itemId },
+    });
+  };
   return (
-    <BookBoxTouchableOpacity key={books.id}>
+    <BookBoxTouchableOpacity onPress={HandleMoveToDetail} key={books.id}>
       {/* 책 이미지 */}
       <BookBoxImage>
         <BookBoxNotImageText>이미지가 없습니다.</BookBoxNotImageText>
