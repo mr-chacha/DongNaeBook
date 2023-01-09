@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import styled, { css } from "@emotion/native";
 
 export default function MyPageReview() {
@@ -38,6 +38,9 @@ export default function MyPageReview() {
             베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트
             셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트 셀러여서
             읽어보고 싶었는데 너무 재밌었습니다. 기간
+            <MyPageWantReviewContentsReviewTouchableOpacity>
+              <Text>더보기</Text>
+            </MyPageWantReviewContentsReviewTouchableOpacity>
           </MyPageWantReviewContentsReviewText>
         </MyPageWantReviewContentsTextView>
       </MyPageWantReviewContentsView>
@@ -229,3 +232,4 @@ const MyPageWantReviewContentsReviewText = styled.Text`
   font-size: 13px;
   width: 70%;
 `;
+const MyPageWantReviewContentsReviewTouchableOpacity = styled.TouchableOpacity``;
