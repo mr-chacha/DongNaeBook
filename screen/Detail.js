@@ -105,7 +105,7 @@ export default function Detail({
               ratingBackgroundColor='#d6d5d2'
               jumpValue={0.5}
               fractions={1}
-              tintColor='#ededed'
+              tintColor='#F2F2F2'
             />
           </ReviewTitleRateBox>
           <ReviewTextInput
