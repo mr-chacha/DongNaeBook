@@ -116,6 +116,7 @@ export default function Detail() {
   );
 }
 
+//
 const FakeView = styled.View`
   flex-direction: column-reverse;
   flex: 0.88;
@@ -190,10 +191,14 @@ const SubmitText = styled.Text`
 // 댓글 관련
 const CommentBox = styled.View`
   height: ${SCREEN_HEIGHT / 6 + 'px'};
-  width: ${SCREEN_WIDTH + 'px'};
+  /* width: ${SCREEN_WIDTH + 'px'}; */
+  width: 100%;
   flex-direction: row;
+  justify-content: center;
+  border-radius: 10px;
   margin-top: 30px;
   margin-bottom: 10px;
+  background-color: white;
 `;
 
 const ProfileImgBox = styled.View`
@@ -206,7 +211,8 @@ const ProfileImg = styled.Image`
   border-radius: 50%;
 `;
 
-const Commentbody = styled.View``;
+const Commentbody = styled.View`
+`;
 
 const Rate = styled.Text`
   margin-bottom: 8px;
