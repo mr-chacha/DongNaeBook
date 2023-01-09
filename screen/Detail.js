@@ -29,8 +29,10 @@ export default function Detail() {
             ratingCount={5}
             imageSize={18}
             type='custom'
-            ratingBackgroundColor='white'
+            ratingBackgroundColor='#d6d5d2'
             jumpValue={0.5}
+            tintColor='#f3f3f3'
+            fractions={1}
           />
         </ReviewTitleRateBox>
         <ReviewTextInput
@@ -63,11 +65,7 @@ export default function Detail() {
           <Desc>
             오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간
             베스트셀러여서 읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서
-            읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간
-            베스트셀러여서 읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서
-            읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간
-            베스트셀러여서 읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서
-            읽어보고오랜 기간 베스트셀러여서 읽어보고{' '}
+            읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서 읽어
           </Desc>
         </Commentbody>
         <IconBox onPress={handleModalOpen}>
@@ -175,8 +173,8 @@ const ReviewTitle = styled.Text`
 `;
 
 const ReviewTextInput = styled.TextInput`
-  background-color: #f3f3f3;
-  border-radius: 7px;
+  background-color: white;
+  border-radius: 10px;
   height: ${SCREEN_HEIGHT / 9 + 'px'};
   font-size: 15px;
   padding: 10px;
@@ -191,7 +189,7 @@ const SubmitText = styled.Text`
 
 // 댓글 관련
 const CommentBox = styled.View`
-  height: ${SCREEN_HEIGHT / 9 + 'px'};
+  height: ${SCREEN_HEIGHT / 6 + 'px'};
   width: ${SCREEN_WIDTH + 'px'};
   flex-direction: row;
   margin-top: 30px;
