@@ -1,11 +1,22 @@
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { QueryClient, QueryClientProvider } from "react-query";
+import Root from "./navigation/Root";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
-import MonthBook from "./components/Home/MonthBook";
-export default function App() {
+
+const queryClient = new QueryClient();
+
+function App() {
   return (
-    <SafeAreaView>
-      {/* 한달이내출간된도서 */}
-      <MonthBook />
-    </SafeAreaView>
+    <>
+      <StatusBar style="dark" />
+      <QueryClientProvider client={queryClient}>
+        <NavigationContainer>
+          <Root />
+        </NavigationContainer>
+      </QueryClientProvider>
+    </>
   );
 }
+
+export default App;

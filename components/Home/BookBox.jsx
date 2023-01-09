@@ -1,8 +1,5 @@
 import React from "react";
-import styled, { css } from "@emotion/native";
-import { Text } from "react-native";
-
-// {book}은 api로 받아오고 map 으로 돌린 함수를 props로 받아온 것
+import styled from "@emotion/native";
 export default function BookBox({ book }) {
   return (
     // 배경
@@ -55,7 +52,6 @@ const BookBoxTitleText = styled.Text`
   margin: 10px 0 5px 10px;
   width: 90px;
 `;
-
 const BookBoxTextView = styled.View`
   display: flex;
   flex-direction: row;
