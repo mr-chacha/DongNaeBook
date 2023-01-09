@@ -2,13 +2,12 @@ import styled from "@emotion/native";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
-  Text,
   View,
-  Image,
-  TouchableOpacity,
   ScrollView,
+  SafeAreaView,
 } from "react-native";
-import BookBox from "../BookBox";
+
+import BookBox from "./BookBox";
 export default function BestSeller() {
   // API 담을 state
   const [bestSeller, setBestSeller] = useState([]);
@@ -39,17 +38,22 @@ export default function BestSeller() {
   }
 
   return (
-    <ScrollView
-      horizontal={true}
-      contentContainerStyle={{ paddingVertical: 20 }}
-    >
-      <Text>Now 베스트셀러</Text>
-      {bestSeller.map((item) => (
-        <View style={{ marginLeft: 15 }}>
-          <BookBox item={item} />
-        </View>
-      ))}
-    </ScrollView>
+    <SafeAreaView>
+      <BestSellerView>
+        <BestSellerTitleText>Now 베스트셀러</BestSellerTitleText>
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          horizontal={true}
+          contentContainerStyle={{ paddingVertical: 20 }}
+        >
+          {bestSeller.map((book) => (
+            <View style={{ marginLeft: 20 }}>
+              <BookBox book={book} />
+            </View>
+          ))}
+        </ScrollView>
+      </BestSellerView>
+    </SafeAreaView>
   );
 }
 
@@ -58,3 +62,10 @@ const Loader = styled.View`
   justify-content: center;
   align-items: center;
 `;
+
+const BestSellerTitleText = styled.Text`
+  font-size: 20;
+  font-weight: 700;
+  margin-left: 20;
+`;
+const BestSellerView = styled.View``;
