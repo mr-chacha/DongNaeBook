@@ -5,7 +5,8 @@ import { useState } from "react";
 
 export default function MyPageReview() {
   const [reviewMoreButton, setReviewMoreButton] = useState(false);
-
+  // id를 비교해서 맞으면 열리게
+  // 수정 댓글처럼
   return (
     <>
       <MyPageWantReviewView>
@@ -13,7 +14,7 @@ export default function MyPageReview() {
       </MyPageWantReviewView>
 
       {/*나중에 렌더링 할 것을 props로 보내줘야함 */}
-      <MyPageWantReviewContentsView>
+      <MyPageWantReviewContentsView id={1}>
         <MyPageWantReviewContentsImage source={require("../assets/book.jpg")} />
 
         <MyPageWantReviewContentsTextView>
