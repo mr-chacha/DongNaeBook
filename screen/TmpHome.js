@@ -6,8 +6,10 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import BestSeller from "../components/Home/BestSeller";
+import MonthBook from "../components/Home/MonthBook";
 import Swiper from "react-native-swiper";
 import styled from "@emotion/native";
 import { SCREEN_HEIGHT } from "../util/test";
@@ -79,10 +81,11 @@ const bookDatas = [
   },
 ];
 
-export default function HomePage() {
+export default function TmpHome() {
   const main =
     "https://storage.googleapis.com/sparta-image.appspot.com/lecture/main.png";
 
+  // state
   const [currentCategory, setCurrentCategory] = useState("");
 
   return (
@@ -113,7 +116,9 @@ export default function HomePage() {
           </SwiperChildView>
         </Swiper>
         <ListTitle>새로 출간된 도서 ✨</ListTitle>
+        <MonthBook />
         <ListTitle>NOW 베스트 셀러 🏝️</ListTitle>
+        <BestSeller />
         <ScrollView
           style={styles.middleContainer}
           horizontal
@@ -155,14 +160,17 @@ const HomePageCategoryBox = styled.View`
   align-items: center;
   justify-content: center;
 `;
+
 const HomePageBestSellerBox = styled.View`
   width: 100%;
   display: flex;
   flex-direction: column;
 `;
+
 const HomePageBestSellerScrollBox = styled.ScrollView`
   width: 100%;
 `;
+
 const HomePageBestSellerBtnBox = styled.View`
   width: 100%;
   display: flex;
