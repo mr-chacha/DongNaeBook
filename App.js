@@ -1,10 +1,22 @@
-import { Text, View, SafeArray } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import BestSeller from "./components/Home/BestSeller";
-export default function App() {
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { QueryClient, QueryClientProvider } from "react-query";
+import Root from "./navigation/Root";
+import { StatusBar } from "expo-status-bar";
+
+const queryClient = new QueryClient();
+
+function App() {
   return (
-    <SafeAreaView>
-      <BestSeller />
-    </SafeAreaView>
+    <>
+      <StatusBar style="dark" />
+      <QueryClientProvider client={queryClient}>
+        <NavigationContainer>
+          <Root />
+        </NavigationContainer>
+      </QueryClientProvider>
+    </>
   );
 }
+
+export default App;
