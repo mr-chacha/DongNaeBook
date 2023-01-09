@@ -16,6 +16,7 @@ import { SCREEN_HEIGHT } from "../util/test";
 import { StatusBar } from "expo-status-bar";
 import logo from "../assets/logo.png";
 import CategoryList from "../components/Home/CategoryList";
+import uuid from "react-native-uuid";
 
 const categoryName = [
   "전체보기",
@@ -54,12 +55,10 @@ export default function TmpHome() {
   }, []);
 
   // state
-  const [currentCategory, setCurrentCategory] = useState("");
-  console.log(currentCategory);
+  const [currentCategory, setCurrentCategory] = useState("전체보기");
 
   const getCategoryKey = (category) => {
-    // 인무/사회
-
+    // 인문/사회
     const findIndex = categoryName.indexOf(category); // 1
     setCurrentCategory(categoryId[findIndex]); // 110
   };
@@ -106,6 +105,7 @@ export default function TmpHome() {
               <TouchableOpacity
                 style={styles.middleButtonAll}
                 onPress={() => getCategoryKey(category)}
+                key={uuid.v4()}
               >
                 <Text key={category} style={styles.middleButtonText}>
                   {category}
@@ -117,10 +117,12 @@ export default function TmpHome() {
         <HomePageBestSellerScrollBox horizontal>
           <HomePageCategoryBox>
             {currentCategory === "전체보기"
-              ? catBooks.map((data) => <CategoryList books={data} />)
+              ? catBooks.map((data) => (
+                  <CategoryList books={data} key={uuid.v4()} />
+                ))
               : catBooks
                   .filter((data) => data.categoryId === currentCategory)
-                  .map((data) => <CategoryList books={data} />)}
+                  .map((data) => <CategoryList books={data} key={uuid.v4()} />)}
           </HomePageCategoryBox>
         </HomePageBestSellerScrollBox>
         <View style={styles.cardContainer}></View>
