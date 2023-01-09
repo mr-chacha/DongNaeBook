@@ -120,39 +120,65 @@ export default function Detail({
           </ReviewSubmitBtn>
         </ReviewInputBox>
 
-        <CommentBox>
-          <ProfileImgBox>
-            <ProfileImg
-              source={{
-                uri: 'https://img.extmovie.com/files/attach/images/135/286/386/076/02197f8e7c1fe5257dd98ecf223475e6.jpg',
-              }}
-            />
-          </ProfileImgBox>
-          <Commentbody>
-            <Rate>⭐️⭐️⭐️⭐️</Rate>
-            <InfoBox>
-              <UserName>닉네임</UserName>
-              <Seperator>|</Seperator>
-              <CreatedDate>22.01.06</CreatedDate>
-            </InfoBox>
-            <Desc>
-              오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간
-              베스트셀러여서 읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서
-              읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간
-              베스트셀러여서 읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서
-              읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간
-              베스트셀러여서 읽어보고오랜 기간 베스트셀러여서 읽어보고오랜 기간 베스트셀러여서
-              읽어보고오랜 기간 베스트셀러여서 읽어보고{' '}
-            </Desc>
-          </Commentbody>
-          <IconBox onPress={handleModalOpen}>
-            <MaterialCommunityIcons
-              name='dots-vertical'
-              size={24}
-              color='black'
-            />
-          </IconBox>
-        </CommentBox>
+        <ComnnetContainner>
+          <CommentBox>
+            <ProfileImgBox>
+              <ProfileImg
+                source={{
+                  uri: 'https://img.extmovie.com/files/attach/images/135/286/386/076/02197f8e7c1fe5257dd98ecf223475e6.jpg',
+                }}
+              />
+            </ProfileImgBox>
+            <Commentbody>
+              <Rate>⭐️⭐️⭐️⭐️</Rate>
+              <InfoBox>
+                <UserName>닉네임</UserName>
+                <Seperator>|</Seperator>
+                <CreatedDate>22.01.06</CreatedDate>
+              </InfoBox>
+              <Desc>
+                오늘도 내일도 모레도 오늘도 내일 모레도 오늘도 내일도 모레도 오늘도 내일도 모레도
+                오늘 내일도 모래반지빵야 내일도 빵야 아냐
+              </Desc>
+            </Commentbody>
+            <IconBox onPress={handleModalOpen}>
+              <MaterialCommunityIcons
+                name='dots-vertical'
+                size={24}
+                color='black'
+              />
+            </IconBox>
+          </CommentBox>
+          <CommentBox>
+            <ProfileImgBox>
+              <ProfileImg
+                source={{
+                  uri: 'https://img.extmovie.com/files/attach/images/135/286/386/076/02197f8e7c1fe5257dd98ecf223475e6.jpg',
+                }}
+              />
+            </ProfileImgBox>
+            <Commentbody>
+              <Rate>⭐️⭐️⭐️⭐️</Rate>
+              <InfoBox>
+                <UserName>닉네임</UserName>
+                <Seperator>|</Seperator>
+                <CreatedDate>22.01.06</CreatedDate>
+              </InfoBox>
+              <Desc>
+                오늘도 내일도 모레도 오늘도 내일 모레도 오늘도 내일도 모레도 오늘도 내일도 모레도
+                오늘 내일도 모래반지빵야 내일도 빵야 아냐
+              </Desc>
+            </Commentbody>
+            <IconBox onPress={handleModalOpen}>
+              <MaterialCommunityIcons
+                name='dots-vertical'
+                size={24}
+                color='black'
+              />
+            </IconBox>
+          </CommentBox>
+        </ComnnetContainner>
+
         <ModifyModal
           visible={isModify}
           transparent
@@ -267,16 +293,21 @@ const SubmitText = styled.Text`
 `;
 
 // 댓글 관련
+
+const ComnnetContainner = styled.ScrollView`
+  border-radius: 10px;
+  margin-top: 30px;
+`;
+
 const CommentBox = styled.View`
   height: ${SCREEN_HEIGHT / 6 + 'px'};
-  /* width: ${SCREEN_WIDTH + 'px'}; */
   width: 100%;
   flex-direction: row;
   justify-content: center;
-  border-radius: 10px;
-  margin-top: 30px;
   margin-bottom: 10px;
   background-color: white;
+  padding: 30px;
+  border-radius: 10px;
 `;
 
 const ProfileImgBox = styled.View`
@@ -284,8 +315,8 @@ const ProfileImgBox = styled.View`
 `;
 
 const ProfileImg = styled.Image`
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
 `;
 
