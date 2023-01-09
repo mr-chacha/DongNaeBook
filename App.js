@@ -1,13 +1,22 @@
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import Root from './navigation/Root';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-//
-import Detail from './screen/Detail';
 
-export default function App() {
+const queryClient = new QueryClient();
+
+function App() {
   return (
-    <SafeAreaView>
-      <Detail />
-    </SafeAreaView>
+    <>
+      <StatusBar style='dark' />
+      <QueryClientProvider client={queryClient}>
+        <NavigationContainer>
+          <Root />
+        </NavigationContainer>
+      </QueryClientProvider>
+    </>
   );
 }
+
+export default App;
