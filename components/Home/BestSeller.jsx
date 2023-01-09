@@ -8,6 +8,7 @@ import {
 } from "react-native";
 
 import BookBox from "./BookBox";
+import Swiper from "react-native-swiper";
 export default function BestSeller() {
   // API 담을 state
   const [bestSeller, setBestSeller] = useState([]);
