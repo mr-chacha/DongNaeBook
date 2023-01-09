@@ -21,12 +21,12 @@ import uuid from "react-native-uuid";
 
 const categoryName = [
   "전체보기",
-  "인문/사회",
-  "소설/에세이",
-  "경영/경제",
+  "인문 / 사회",
+  "소설 / 에세이",
+  "경영 / 경제",
   "자기계발",
   "수험서",
-  "역사/문화",
+  "역사 / 문화",
 ];
 
 const categoryId = ["전체보기", "119", "101", "117", "118", "123", "105"];
@@ -65,7 +65,7 @@ export default function TmpHome() {
   };
 
   return (
-    <SafeAreaView>
+    <Safe>
       <Container>
         <StatusBar style="dark" />
         <LogoImg>
@@ -105,9 +105,14 @@ export default function TmpHome() {
           </HomePageCategoryBox>
         </HomePageBestSellerScrollBox>
       </Container>
-    </SafeAreaView>
+    </Safe>
   );
 }
+
+const Safe = styled.SafeAreaView`
+  background-color: #fff;
+  margin: auto;
+`;
 
 const HomePageCategoryBox = styled.View`
   width: 100%;
@@ -171,13 +176,12 @@ const Container = styled.ScrollView`
 
 const MiddleContainer = styled.ScrollView`
   width: 100%;
-  margin-left: 10;
 `;
 
 const MiddleButtonAll = styled.TouchableOpacity`
-  width: 100px;
-  height: 50px;
-  padding: 15px;
+  width: 93px;
+  height: 40px;
+  padding: 10px;
   background-color: #cdff40;
   border-radius: 15px;
   display: flex;

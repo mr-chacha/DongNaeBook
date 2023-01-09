@@ -55,11 +55,12 @@ export default function CategoryList({ books }) {
 
 const BookBoxTouchableOpacity = styled.TouchableOpacity`
   background: #fff;
-  width: 115px;
+  width: 120px;
   height: 215px;
   border-radius: 7px;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.25);
-  margin-left: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
 `;
 const BookBoxImage = styled.ImageBackground`
   margin: 10px auto 0 auto;
