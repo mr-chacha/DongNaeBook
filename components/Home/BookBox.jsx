@@ -1,9 +1,22 @@
 import React from "react";
 import styled from "@emotion/native";
+import { useNavigation } from "@react-navigation/native";
+
 export default function BookBox({ book }) {
+  const { navigate } = useNavigation();
+
   return (
     // 배경
-    <BookBoxTouchableOpacity key={book.itemId}>
+    <BookBoxTouchableOpacity
+      key={book.itemId}
+      // 수정 네비게이터 (book이미지추가, Roots screen추가, screen 상세페이지추가)
+      onPress={() =>
+        navigate("DetailContent", {
+          screen: "DetailContent",
+          params: { bookId: book.itemId },
+        })
+      }
+    >
       {/* 책 이미지 */}
       <BookBoxImage>
         <BookBoxNotImageText>이미지가 없습니다.</BookBoxNotImageText>
