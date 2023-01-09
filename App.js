@@ -8,9 +8,9 @@ export default function App() {
   return (
     <SafeAreaView>
       <ScrollView>
-        <MyPageWant />
+        {/* <MyPageWant /> */}
         {/* <MyPageRead /> */}
-        {/* <MyPageReview /> */}
+        <MyPageReview />
       </ScrollView>
     </SafeAreaView>
   );
