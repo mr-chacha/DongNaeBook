@@ -40,7 +40,6 @@ export default function BestSeller() {
   return (
     <SafeAreaView>
       <BestSellerView>
-        <BestSellerTitleText>Now 베스트셀러</BestSellerTitleText>
         <ScrollView
           showsHorizontalScrollIndicator={false}
           horizontal={true}
