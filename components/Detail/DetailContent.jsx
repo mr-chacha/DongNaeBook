@@ -12,17 +12,22 @@ import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useEffect } from "react";
 
-export default function DetailContent() {
+export default function DetailContent({ book }) {
   //더보기 버튼
   const [introduceButton, setIntroduceButton] = useState(false);
 
   return (
     <>
       {/* 책이미지 */}
-      <DetailContentImg source={require("../../assets/book.jpg")} />
+      <DetailContentImg
+        source={{
+          uri: `${book.coverLargeUrl}`,
+        }}
+      />
       {/* 책 이름*/}
-      <DetailContentTitleText>불편한 편의점</DetailContentTitleText>
+      <DetailContentTitleText>{book.title}</DetailContentTitleText>
 
       {/* 상세 타이틀*/}
       <DetailContentTitleView>
@@ -52,7 +57,7 @@ export default function DetailContent() {
           <DetailContentInformationLineView />
 
           <DetailContentInformationText>
-            나무옆의자
+            {book.publisher}
           </DetailContentInformationText>
         </DetailContentInformationBoxView>
 
@@ -64,7 +69,9 @@ export default function DetailContent() {
           {/* 중앙라인 */}
           <DetailContentInformationLineView />
 
-          <DetailContentInformationText>김호연</DetailContentInformationText>
+          <DetailContentInformationText>
+            {book.author}
+          </DetailContentInformationText>
         </DetailContentInformationBoxView>
 
         {/* 발행 */}
@@ -76,7 +83,7 @@ export default function DetailContent() {
           <DetailContentInformationLineView />
 
           <DetailContentInformationText>
-            2021.04.20
+            {book.pubDate}
           </DetailContentInformationText>
         </DetailContentInformationBoxView>
       </DetailContentInformationView>
@@ -93,14 +100,7 @@ export default function DetailContent() {
             numberOfLines={introduceButton ? 0 : 3}
             ellipsizeMode="tail"
           >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam quis
-            nibh vitae mi ultricies ultrices quis in eros. Suspendisse cursus
-            congue pharetra. Sed nulla eros, congue sit amet urna dignissim,
-            bibendum auctor erat. Maecenas vitae placerat nisi, id feugiat
-            ipsum. Aenean vitae massa quis enim convallis blandit eget at nunc.
-            Proin volutpat eget odio vitae rutrum. Phasellus interdum turpis
-            eget rhoncus facilisis. Maecenas consequat venenatis euismod. Donec
-            et dolor vel elit posuere auctor.
+            {book.description}
           </DetailContentIntroduceText>
           {/* 더보기 버튼 */}
           <DetailContentIntroduceMoreTouchableOpacity
