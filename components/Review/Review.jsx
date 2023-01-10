@@ -4,15 +4,47 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { useState } from 'react';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../util/Dimension';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { useAuth } from '../../firebase.js';
+import { getAuth } from 'firebase/auth';
 
 export default function Review() {
   const [isModify, setIsModify] = useState(false);
+  const [ratings, setRatings] = useState(0);
+  const [newComment, setNewComment] = useState('');
+
+  // 모달 오픈 함수
   const handleModalOpen = () => {
     setIsModify(true);
   };
   const handleModalClose = () => {
     setIsModify(false);
   };
+
+  //별점 등록 함수
+  const handleRatings = (rating) => {
+    setRatings(rating);
+    console.log('별점', ratings);
+  };
+
+  // 코멘트 등록 함수
+  const handleNewComment = (comment) => {
+    setNewComment(comment);
+    console.log(newComment);
+  };
+
+  const currentUser = getAuth().currentUser;
+  console.log("hi", currentUser.nickName);
+
+  // 신규 코멘트 등록 함수
+  const addComment = async () => {
+    await addDoc(collection(db, 'reviews'), {
+      comment: newComment,
+      rating: ratings,
+    });
+  };
+
   return (
     <Reviewcontainner>
       <ReviewInputBox>
@@ -27,6 +59,7 @@ export default function Review() {
             jumpValue={0.5}
             fractions={1}
             tintColor='#F2F2F2'
+            onFinishRating={handleRatings}
           />
         </ReviewTitleRateBox>
         <ReviewTextInput
@@ -34,9 +67,10 @@ export default function Review() {
           multiline={true}
           placeholder='의견 남기기'
           scrollEnabled={false}
-          onSubmitEditing={() => console.log('등록완료')}
+          value={newComment}
+          onChangeText={handleNewComment}
         />
-        <ReviewSubmitBtn>
+        <ReviewSubmitBtn onPress={addComment}>
           <SubmitText>등록하기</SubmitText>
         </ReviewSubmitBtn>
       </ReviewInputBox>
