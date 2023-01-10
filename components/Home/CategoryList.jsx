@@ -109,22 +109,22 @@ const MonthBookLoader = styled.View`
   align-items: center;
 `;
 
-const styles = StyleSheet.create({
-  middleButtonAll: {
-    width: 100,
-    height: 50,
-    padding: 15,
-    backgroundColor: "#CDFF40",
-    borderRadius: 15,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 7,
-  },
-  middleButtonText: {
-    color: "black",
-    fontWeight: "700",
-    //텍스트의 현재 위치에서의 정렬
-  },
-});
+// const styles = StyleSheet.create({
+//   middleButtonAll: {
+//     width: 100,
+//     height: 50,
+//     padding: 15,
+//     backgroundColor: "#CDFF40",
+//     borderRadius: 15,
+//     display: "flex",
+//     flexDirection: "row",
+//     justifyContent: "center",
+//     alignItems: "center",
+//     margin: 7,
+//   },
+//   middleButtonText: {
+//     color: "black",
+//     fontWeight: "700",
+//     //텍스트의 현재 위치에서의 정렬
+//   },
+// });
