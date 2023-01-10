@@ -17,6 +17,8 @@ export default function Detail({
     params: { bookId },
   },
 }) {
+  const [isLoading, setIsLoading] = useState(true);
+
   // 신간도서 state
   const [recentBooks, setRecentBooks] = useState([]);
 
@@ -45,18 +47,13 @@ export default function Detail({
   const getBestSeller = async () => {
     const { item } = await fetch(`${BEST_BASE_URL}/bestSeller.api?key=${API_KEY}&categoryId=100&output=json`).then((res) => res.json());
     setBestSeller(item);
-    // setIsLoading(false);
+    setIsLoading(false);
   };
 
   useEffect(() => {
     getApiRecentBooks();
     getBestSeller();
   }, []);
-
-  // 로딩중 화면
-  // if (isLoading) {
-  //   return <ActivityIndicator />;
-  // }
 
   const [isModify, setIsModify] = useState(false);
 
@@ -68,6 +65,10 @@ export default function Detail({
     setIsModify(false);
   };
 
+  // 로딩중 화면
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
   return (
     <ScrollView>
       {/* 상세페이지 설명 */}
