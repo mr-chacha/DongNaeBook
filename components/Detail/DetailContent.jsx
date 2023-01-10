@@ -41,7 +41,6 @@ export default function DetailContent({ book }) {
   ]);
   //로그인정보
   const currentUser = getAuth().currentUser;
-  console.log(currentUser.uid);
 
   //더보기 버튼
   const [readBook, setReadbook] = useState([]);
