@@ -43,8 +43,6 @@ export default function MonthBook() {
   return (
     <MonthBookView>
       {/* title */}
-      <MonthBookTitleText>신간도서</MonthBookTitleText>
-
       {/* contents */}
       <ScrollView
         horizontal
@@ -63,16 +61,17 @@ export default function MonthBook() {
 }
 
 const MonthBookView = styled.View``;
-const MonthBookTitleText = styled.Text`
-  margin-left: 20px;
-  font-size: 20px;
-  font-weight: 700;
-`;
+// const MonthBookTitleText = styled.Text`
+//   margin-left: 20px;
+//   font-size: 20px;
+//   font-weight: 700;
+// `;
 const MonthBookLoader = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
 `;
 const MonthBookBoxView = styled.View`
-  margin-left: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
 `;

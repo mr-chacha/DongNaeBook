@@ -32,12 +32,16 @@ import { db } from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
 //async경고 무시
 import { LogBox } from "react-native";
+import { getAuth } from "firebase/auth/react-native";
 
 export default function DetailContent({ book }) {
   //async경고 무시
   LogBox.ignoreLogs([
     "Warning: AsyncStorage has been extracted from react-native core",
   ]);
+  //로그인정보
+  const currentUser = getAuth().currentUser;
+  console.log(currentUser.uid);
 
   //더보기 버튼
   const [readBook, setReadbook] = useState([]);
@@ -63,7 +67,7 @@ export default function DetailContent({ book }) {
 
   // 들어온 사람의 id와 문서의 id를 비교
   let deleteReadBook = async () => {
-    if (readBookTrueButton.userId === 1) {
+    if (readBookTrueButton.userId === currentUser.uid) {
       const docRef = doc(db, "readbook", readBookTrueButton.bookUUID);
       await deleteDoc(docRef);
     }
@@ -80,7 +84,7 @@ export default function DetailContent({ book }) {
 
   //북마크
   let deleteBookMark = async () => {
-    if (bookMarkTrueButton.userId === 1) {
+    if (bookMarkTrueButton.userId === currentUser.uid) {
       const docRef = doc(db, "bookmark", bookMarkTrueButton.bookUUID);
       await deleteDoc(docRef);
     }
@@ -104,7 +108,7 @@ export default function DetailContent({ book }) {
   // 파이어베이스 bookid랑 현재페이지의 itemid같은 것만 map
   const readBookFilter = readBook
     .filter(
-      (i) => i.bookId === book.itemId && i.userId === 1 // && i.readBook === true //&& i.userId === 1 //여기에 유저아이디와 책아이디비교
+      (i) => i.bookId === book.itemId && i.userId === currentUser.uid // && i.readBook === true //&& i.userId === 1 //여기에 유저아이디와 책아이디비교
     )
     .map((i) => i); //여기에 유저아이디와 책아이디비교
   // console.log(readBookFilter);
@@ -132,14 +136,14 @@ export default function DetailContent({ book }) {
   //북마크
   const bookMarkFilter = bookMarkButton
     .filter(
-      (i) => i.bookId === book.itemId && i.userId === 1 // && i.readBook === true //&& i.userId === 1 //여기에 유저아이디와 책아이디비교
+      (i) => i.bookId === book.itemId && i.userId === currentUser.uid // && i.readBook === true //&& i.userId === 1 //여기에 유저아이디와 책아이디비교
     )
     .map((i) => i);
   const [bookMarkTrueButton] = bookMarkFilter;
   console.log(bookMarkTrueButton);
 
   const newReadBook = {
-    userId: 1,
+    userId: currentUser.uid,
     bookId: book.itemId,
     readBook: true,
     bookUUID: bookUUID,
