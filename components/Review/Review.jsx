@@ -10,13 +10,13 @@ import { getAuth } from 'firebase/auth';
 import { uuidv4 } from '@firebase/util';
 import { now } from '../../util/date';
 import { useEffect } from 'react';
+import Toast from 'react-native-root-toast';
 
-export default function Review({bookId}) {
-
-
+export default function Review({ bookId }) {
   const currentUser = getAuth().currentUser;
 
   const [isModify, setIsModify] = useState(false);
+  const [isToastOpen, setIsToastOpen] = useState(false);
   const [ratings, setRatings] = useState(0);
   const [newComment, setNewComment] = useState('');
   const [nickName, setNickName] = useState('');
@@ -76,13 +76,17 @@ export default function Review({bookId}) {
       commentId: uuidv4(),
       createdDate: now(),
       creatorId: currentUser.uid,
-      profileImage : currentUser.photoURL,
+      profileImage: currentUser.photoURL,
       nickName: nickName,
-      bookId: bookId
+      bookId: bookId,
     });
     // 등록 시 별점은 어떻게 초기화시키지? (Rating 컴포넌트만 리렌더링 해줘야 하나?)
     setRatings(0);
     setNewComment('');
+    setIsToastOpen(true);
+    setTimeout(() => {
+      setIsToastOpen(false);
+    }, 2000);
   };
 
   return (
@@ -210,9 +214,34 @@ export default function Review({bookId}) {
           </MenuBox>
         </ModifyBox>
       </ModifyModal>
+      <Toast
+        backgroundColor='#2DFF00'
+        opacity={1}
+        position={70}
+        visible={isToastOpen}>
+        <ToastView>
+          <ToastText>✍️ 리뷰가 등록됐어요!</ToastText>
+        </ToastView>
+      </Toast>
     </Reviewcontainner>
   );
 }
+
+//
+const ToastView = styled.View`
+  width: ${SCREEN_WIDTH / 1.4 + 'px'};
+  height: 30px;
+  padding-top: 7px;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+`;
+
+const ToastText = styled.Text`
+  color: #000000;
+  font-size: 20px;
+  font-weight: 700;
+`;
 
 //
 const FakeView = styled.View`

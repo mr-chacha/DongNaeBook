@@ -12,6 +12,12 @@ import SignUp from './screen/SignUp';
 import { View, ActivityIndicator } from 'react-native';
 import { onAuthStateChanged } from 'firebase/auth';
 import { authService } from './firebase';
+import { RootSiblingParent } from 'react-native-root-siblings';
+
+
+//
+
+
 const queryClient = new QueryClient();
 
 const Stack = createNativeStackNavigator();
@@ -108,14 +114,16 @@ function RootNavigator() {
 
 function App() {
   return (
-    <>
+    <RootSiblingParent>
+      {/* <RootSiblingParent> */}
       <StatusBar style='dark' />
       <QueryClientProvider client={queryClient}>
         <AuthenticatedUserProvider>
           <RootNavigator />
         </AuthenticatedUserProvider>
       </QueryClientProvider>
-    </>
+      {/* </RootSiblingParent> */}
+    </RootSiblingParent>
   );
 }
 

@@ -3,6 +3,7 @@ import { ScrollView, ActivityIndicator } from 'react-native';
 import DetailContent from '../components/Detail/DetailContent';
 import Review from '../components/Review/Review';
 
+
 // params 찍어보기 비교하기
 // 최종적인 것 이전 단도 log 찍어보기
 export default function Detail({

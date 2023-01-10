@@ -26,6 +26,7 @@
     "react-native": "0.70.5",
     "react-native-blurhash": "^1.1.10",
     "react-native-ratings": "^8.1.0",
+    "react-native-root-toast": "^3.3.1",
     "react-native-safe-area-context": "4.4.1",
     "react-native-screens": "~3.18.0",
     "react-native-simple-modal": "^9.0.1",
