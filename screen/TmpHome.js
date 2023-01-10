@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   logo: {
     height: 40,
     width: 130,
-    display: "block",
+    // display: "block",
   },
   category: {
     display: "flex",
