@@ -12,7 +12,6 @@ import SignUp from './screen/SignUp';
 import { View, ActivityIndicator } from 'react-native';
 import { onAuthStateChanged } from 'firebase/auth';
 import { authService } from './firebase';
-
 const queryClient = new QueryClient();
 
 const Stack = createNativeStackNavigator();
@@ -21,12 +20,14 @@ const AuthenticatedUserContext = createContext({});
 // authentication 저장
 const AuthenticatedUserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  console.log('user');
+  console.log(user);
   return <AuthenticatedUserContext.Provider value={{ user, setUser }}>{children}</AuthenticatedUserContext.Provider>;
 };
 
 function TabStack() {
   return (
-    <Stack.Navigator defaultScreenOptions={Tabs}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name='Tabs' component={Tabs} />
     </Stack.Navigator>
   );
