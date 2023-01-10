@@ -36,9 +36,13 @@ export default function TmpSearch() {
   }, []);
 
   return (
-    <>
+    <View style={{ backgroundColor: "white" }}>
       <SafeAreaView
-        style={{ height: "100%", marginTop: 50, alignItems: "center" }}
+        style={{
+          height: "100%",
+          marginTop: 50,
+          alignItems: "center",
+        }}
       >
         <SearchBox>
           <MaterialIcons
@@ -53,9 +57,12 @@ export default function TmpSearch() {
           ></TextInput>
         </SearchBox>
 
+        {/* 검색결과 */}
         <Text style={{ marginTop: 20, marginBottom: 10 }}>
           {}n건의 검색 결과를 찾았어요
         </Text>
+
+        {/* 검색도서내역 */}
         <ScrollView>
           <SearchBookBoxView
             contentContainerStyle={{ paddingVertical: 20 }}
@@ -69,14 +76,14 @@ export default function TmpSearch() {
           </SearchBookBoxView>
         </ScrollView>
       </SafeAreaView>
-    </>
+    </View>
   );
 }
 
 const SearchBox = styled.View`
   flex-direction: row;
   align-items: center;
-  background-color: grey;
+  background-color: lightgrey;
   padding: 10px;
   width: 260px;
   height: 40px;
