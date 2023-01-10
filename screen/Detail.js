@@ -5,7 +5,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import DetailContent from "../components/Detail/DetailContent";
 import { ScrollView, ActivityIndicator } from "react-native";
-import { useEffect } from "react";
 // npm i react-native-ratings
 import { useState, useEffect } from "react";
 import { View, Text } from "react-native";
