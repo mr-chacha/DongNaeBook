@@ -13,13 +13,12 @@ import { View, Text } from 'react-native';
 export default function Detail({
   navigation: { navigate },
   route: {
-    params,
+    params: { bookId },
   },
 }) {
   // 신간도서 state
   const [recentBooks, setRecentBooks] = useState([]);
 
-  console.log('params', params);
 
   //베스트셀러 state
   const [bestSeller, setBestSeller] = useState([]);
@@ -31,7 +30,7 @@ export default function Detail({
   //  베스트 셀러 url
   const BEST_BASE_URL = 'https://book.interpark.com/api';
 
-  console.log('bookId', bookId);
+  // console.log('bookId', bookId);
 
   // api key
   const API_KEY = 'CAD800FCCF43A0A4B5BAD86C45EFCBC99D6140870C5C960566AE4D254543570F';
