@@ -20,8 +20,8 @@ const AuthenticatedUserContext = createContext({});
 // authentication 저장
 const AuthenticatedUserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  console.log('user');
-  console.log(user);
+  // console.log('user');
+  // console.log(user);
   return <AuthenticatedUserContext.Provider value={{ user, setUser }}>{children}</AuthenticatedUserContext.Provider>;
 };
 
@@ -50,7 +50,6 @@ function RootNavigator() {
       authenticatedUser ? setUser(authenticatedUser) : setUser(null);
       setLoading(false);
     });
-    console.log('unsubscribe', unsubscribe);
     return () => unsubscribe();
   }, [user]);
   if (loading) {
@@ -61,7 +60,7 @@ function RootNavigator() {
     );
   }
   if (user) {
-    console.log('if user', user);
+    // console.log('if user', user);
 
     return (
       <NavigationContainer>
@@ -69,7 +68,7 @@ function RootNavigator() {
       </NavigationContainer>
     );
   } else {
-    console.log('else user', user);
+    // console.log('else user', user);
 
     return (
       <NavigationContainer>

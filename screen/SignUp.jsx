@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { authService } from '../firebase';
+import { authService, db } from '../firebase';
 import styled from '@emotion/native';
+import { v4 as uuidv4 } from 'uuid';
+import { collection, setDoc, doc } from 'firebase/firestore';
 
 import { TouchableOpacity, Text, TextInput, Button, Alert } from 'react-native';
 import { useFonts } from 'expo-font';
@@ -26,16 +28,50 @@ export default function SignUp({ navigation }) {
     return null;
   }
 
+  //* 회원가입 완료
+  // const onSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const generateId = uuidv4();
+  //   const usersRef = collection(db, 'users');
+
+  //   try {
+  //     await createUserWithEmailAndPassword(authService, email, password);
+  //     alert('SaveDuck 회원이 되신걸 환영합니다.');
+  //     await setDoc(doc(usersRef, generateId), {
+  //       id: generateId,
+  //       uid: auth.currentUser.uid,
+  //       email: email,
+  //       username: name,
+  //       modify: false,
+  //     });
+  //     window.location.href = '/home';
+  //   } catch (error) {
+  //     setError(error.message);
+  //     alert('이미 존재하는 계정 입니다.');
+  //     console.log(error);
+  //   }
+  // };
+
   // 회원가입 또는 로그인 버튼
   const handleAuthentication = () => {
+    const generateId = uuidv4();
+    const usersRef = collection(db, 'users');
+
     // 회원가입 요청
     createUserWithEmailAndPassword(authService, email, password)
       .then(() => {
+        alert('동네북 회원이 되신걸 환영합니다!');
+        setDoc(doc(usersRef, generateId), {
+          id: generateId,
+          uid: authService.currentUser.uid,
+          email: email,
+        });
         console.log('성공!');
       })
       .catch((err) => {
         console.log(err.message);
         alert(err.message);
+        // alert('이미 존재하는 계정 입니다.');
       });
   };
   // console.log(authService);
@@ -63,7 +99,8 @@ export default function SignUp({ navigation }) {
       <AuthenticationContainer>
         <ApplicationTitle>동네북</ApplicationTitle>
         <UserInfoInput placeholder='donnaebook@gmail.com' placeholderTextColor='#d4d4d4' autoCapitalize='none' value={email} onChangeText={setEmail} />
-        <UserInfoInput placeholder='비밀번호 입력' placeholderTextColor='#d4d4d4' value={password} onChangeText={setPassword} />
+        <UserInfoInput placeholder='비밀번호 입력' autoCapitalize='none' placeholderTextColor='#d4d4d4' value={password} onChangeText={setPassword} secureTextEntry={true} />
+        <UserInfoInput placeholder='비밀번호 확인' autoCapitalize='none' placeholderTextColor='#d4d4d4' value={confirmPassword} onChangeText={setConfirmPassword} secureTextEntry={true} />
         <AuthenticationFormSubmitButton onPress={handleAuthentication}>
           <Text>회원가입</Text>
         </AuthenticationFormSubmitButton>

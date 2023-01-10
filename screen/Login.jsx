@@ -13,7 +13,6 @@ import { AuthInput } from '../components/Auth/AuthInput.js';
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [disabled, setDisabled] = useState('');
 
@@ -63,20 +62,12 @@ export default function Login({ navigation }) {
         <UserInfoInput
           placeholder='비밀번호 입력'
           placeholderTextColor='#d4d4d4'
+          autoCapitalize='none'
           autoCorrect={false}
           secureTextEntry={true}
           textContentType='password'
           value={password}
           onChangeText={(text) => setPassword(text)}
-        />
-        <UserInfoInput
-          placeholder='비밀번호 확인'
-          placeholderTextColor='#d4d4d4'
-          autoCorrect={false}
-          secureTextEntry={true}
-          textContentType='password'
-          value={confirmPassword}
-          onChange={(text) => setConfirmPassword(text)}
         />
         <AuthenticationFormSubmitButton onPress={handleAuthentication}>로그인</AuthenticationFormSubmitButton>
         <AskingContainer>
