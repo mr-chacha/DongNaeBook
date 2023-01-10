@@ -1,6 +1,11 @@
+import styled from '@emotion/native';
+import { Rating } from 'react-native-ratings';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { useState } from 'react';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../util/Dimension';
 
-
-export default Review() {
+export default function Review() {
   const [isModify, setIsModify] = useState(false);
   const handleModalOpen = () => {
     setIsModify(true);
@@ -10,131 +15,132 @@ export default Review() {
   };
   return (
     <Reviewcontainner>
-        <ReviewInputBox>
-          <ReviewTitleRateBox>
-            <ReviewTitle>책 리뷰</ReviewTitle>
-            <Rating
-              startingValue={0}
-              ratingCount={5}
-              imageSize={18}
-              type='custom'
-              ratingBackgroundColor='#d6d5d2'
-              jumpValue={0.5}
-              fractions={1}
-              tintColor='#F2F2F2'
-            />
-          </ReviewTitleRateBox>
-          <ReviewTextInput
-            maxLength={100}
-            multiline={true}
-            placeholder='의견 남기기'
-            scrollEnabled={false}
-            onSubmitEditing={() => console.log('등록완료')}
+      <ReviewInputBox>
+        <ReviewTitleRateBox>
+          <ReviewTitle>책 리뷰</ReviewTitle>
+          <Rating
+            startingValue={0}
+            ratingCount={5}
+            imageSize={18}
+            type='custom'
+            ratingBackgroundColor='#d6d5d2'
+            jumpValue={0.5}
+            fractions={1}
+            tintColor='#F2F2F2'
           />
-          <ReviewSubmitBtn>
-            <SubmitText>등록하기</SubmitText>
-          </ReviewSubmitBtn>
-        </ReviewInputBox>
+        </ReviewTitleRateBox>
+        <ReviewTextInput
+          maxLength={100}
+          multiline={true}
+          placeholder='의견 남기기'
+          scrollEnabled={false}
+          onSubmitEditing={() => console.log('등록완료')}
+        />
+        <ReviewSubmitBtn>
+          <SubmitText>등록하기</SubmitText>
+        </ReviewSubmitBtn>
+      </ReviewInputBox>
 
-        <ComnnetContainner>
-          <CommentBox>
-            <ProfileImgBox>
-              <ProfileImg
-                source={{
-                  uri: 'https://img.extmovie.com/files/attach/images/135/286/386/076/02197f8e7c1fe5257dd98ecf223475e6.jpg',
-                }}
-              />
-            </ProfileImgBox>
-            <Commentbody>
-              <Rate>⭐️⭐️⭐️⭐️</Rate>
-              <InfoBox>
-                <UserName>닉네임</UserName>
-                <Seperator>|</Seperator>
-                <CreatedDate>22.01.06</CreatedDate>
-              </InfoBox>
-              <Desc>
-                오늘도 내일도 모레도 오늘도 내일 모레도 오늘도 내일도 모레도 오늘도 내일도 모레도
-                오늘 내일도 모래반지빵야 내일도 빵야 아냐
-              </Desc>
-            </Commentbody>
-            <IconBox onPress={handleModalOpen}>
-              <MaterialCommunityIcons
-                name='dots-vertical'
-                size={24}
-                color='black'
-              />
-            </IconBox>
-          </CommentBox>
-          <CommentBox>
-            <ProfileImgBox>
-              <ProfileImg
-                source={{
-                  uri: 'https://img.extmovie.com/files/attach/images/135/286/386/076/02197f8e7c1fe5257dd98ecf223475e6.jpg',
-                }}
-              />
-            </ProfileImgBox>
-            <Commentbody>
-              <Rate>⭐️⭐️⭐️⭐️</Rate>
-              <InfoBox>
-                <UserName>닉네임</UserName>
-                <Seperator>|</Seperator>
-                <CreatedDate>22.01.06</CreatedDate>
-              </InfoBox>
-              <Desc>
-                오늘도 내일도 모레도 오늘도 내일 모레도 오늘도 내일도 모레도 오늘도 내일도 모레도
-                오늘 내일도 모래반지빵야 내일도 빵야 아냐
-              </Desc>
-            </Commentbody>
-            <IconBox onPress={handleModalOpen}>
-              <MaterialCommunityIcons
-                name='dots-vertical'
-                size={24}
-                color='black'
-              />
-            </IconBox>
-          </CommentBox>
-        </ComnnetContainner>
+      <ComnnetContainner>
+        <CommentBox>
+          <ProfileImgBox>
+            <ProfileImg
+              source={{
+                uri: 'https://img.extmovie.com/files/attach/images/135/286/386/076/02197f8e7c1fe5257dd98ecf223475e6.jpg',
+              }}
+            />
+          </ProfileImgBox>
+          <Commentbody>
+            <Rate>⭐️⭐️⭐️⭐️</Rate>
+            <InfoBox>
+              <UserName>닉네임</UserName>
+              <Seperator>|</Seperator>
+              <CreatedDate>22.01.06</CreatedDate>
+            </InfoBox>
+            <Desc>
+              오늘도 내일도 모레도 오늘도 내일 모레도 오늘도 내일도 모레도 오늘도 내일도 모레도 오늘
+              내일도 모래반지빵야 내일도 빵야 아냐
+            </Desc>
+          </Commentbody>
+          <IconBox onPress={handleModalOpen}>
+            <MaterialCommunityIcons
+              name='dots-vertical'
+              size={24}
+              color='black'
+            />
+          </IconBox>
+        </CommentBox>
+        <CommentBox>
+          <ProfileImgBox>
+            <ProfileImg
+              source={{
+                uri: 'https://img.extmovie.com/files/attach/images/135/286/386/076/02197f8e7c1fe5257dd98ecf223475e6.jpg',
+              }}
+            />
+          </ProfileImgBox>
+          <Commentbody>
+            <Rate>⭐️⭐️⭐️⭐️</Rate>
+            <InfoBox>
+              <UserName>닉네임</UserName>
+              <Seperator>|</Seperator>
+              <CreatedDate>22.01.06</CreatedDate>
+            </InfoBox>
+            <Desc>
+              오늘도 내일도 모레도 오늘도 내일 모레도 오늘도 내일도 모레도 오늘도 내일도 모레도 오늘
+              내일도 모래반지빵야 내일도 빵야 아냐
+            </Desc>
+          </Commentbody>
+          <IconBox onPress={handleModalOpen}>
+            <MaterialCommunityIcons
+              name='dots-vertical'
+              size={24}
+              color='black'
+            />
+          </IconBox>
+        </CommentBox>
+      </ComnnetContainner>
 
-        <ModifyModal
-          visible={isModify}
-          transparent
-          animationType='slide'>
-          <FakeView></FakeView>
-          <ModifyBox>
-            <MenuBox>
-              <MenuWrapper>
-                <RewriteMenu>
-                  <AntDesign
-                    name='edit'
-                    size={24}
-                    color='black'
-                  />
-                  <MenuName>수정하기</MenuName>
-                </RewriteMenu>
-                <DeleteMenu>
-                  <AntDesign
-                    name='delete'
-                    size={24}
-                    color='black'
-                  />
-                  <MenuName>삭제하기</MenuName>
-                </DeleteMenu>
-              </MenuWrapper>
-
-              <CloseBox onPress={handleModalClose}>
+      <ModifyModal
+        visible={isModify}
+        transparent
+        animationType='slide'>
+        <FakeView></FakeView>
+        <ModifyBox>
+          <MenuBox>
+            <MenuWrapper>
+              <RewriteMenu>
                 <AntDesign
-                  name='close'
+                  name='edit'
                   size={24}
                   color='black'
                 />
-              </CloseBox>
-            </MenuBox>
-          </ModifyBox>
-        </ModifyModal>
-      </Reviewcontainner>
+                <MenuName>수정하기</MenuName>
+              </RewriteMenu>
+              <DeleteMenu>
+                <AntDesign
+                  name='delete'
+                  size={24}
+                  color='black'
+                />
+                <MenuName>삭제하기</MenuName>
+              </DeleteMenu>
+            </MenuWrapper>
+
+            <CloseBox onPress={handleModalClose}>
+              <AntDesign
+                name='close'
+                size={24}
+                color='black'
+              />
+            </CloseBox>
+          </MenuBox>
+        </ModifyBox>
+      </ModifyModal>
+    </Reviewcontainner>
   );
 }
 
+//
 const FakeView = styled.View`
   flex-direction: column-reverse;
   flex: 0.88;
@@ -231,7 +237,7 @@ const ProfileImgBox = styled.View`
 const ProfileImg = styled.Image`
   width: 35px;
   height: 35px;
-  border-radius: 50%;
+  border-radius: 50px; // border-radius % + display : block은 안드로이드에서 안먹힘!!!!!
 `;
 
 const Commentbody = styled.View``;
