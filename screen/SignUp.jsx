@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { createUserWithEmailAndPassword } from 'firebase/auth/react-native';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { authService } from '../firebase';
 import styled from '@emotion/native';
 
@@ -8,7 +8,6 @@ import { TouchableOpacity, Text, TextInput, Button, Alert } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 import { AuthInput } from '../components/Auth/AuthInput.js';
-import { validateEmail, removeWhitespace } from '../components/Auth/Validation';
 
 export default function SignUp({ navigation }) {
   const [email, setEmail] = useState('');
