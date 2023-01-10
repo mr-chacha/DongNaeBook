@@ -13,11 +13,71 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useEffect } from "react";
+import {
+  onSnapshot,
+  query,
+  collection,
+  doc,
+  orderBy,
+  addDoc,
+  getDoc,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
+import { db } from "../../firebase";
+import { async } from "@firebase/util";
 
 export default function DetailContent({ book }) {
   //더보기 버튼
+  const [readBook, setReadbook] = useState([]);
   const [introduceButton, setIntroduceButton] = useState(false);
+  const [bookMarkButton, setBookMarkButton] = useState(false);
 
+  const setRead = async () => {
+    // setReadBookButton((prev) => [...prev, newReadBook]);
+    await addDoc(collection(db, "readbook"), newReadBook);
+    // alert("읽고 싶은 책으로 등록했습니다");
+  };
+  // console.log(readBookButton);
+  const deleteReadBook = async (id) => {
+    await deleteDoc(doc(db, "readbook", id));
+  };
+
+  //readbook 데이터 모두 불러오기
+  useEffect(() => {
+    const q = query(collection(db, "readbook"));
+    onSnapshot(q, (snapshot) => {
+      //isloading 불러오기전에
+      const newReadBooks = snapshot.docs.map((doc) => {
+        const newReadBook = {
+          id: doc.id, // 문서 이름
+          ...doc.data(), // doc.data() : { text, createdAt, ...  }
+        };
+        return newReadBook;
+      });
+      setReadbook(newReadBooks);
+      //loadingfalse
+    });
+  }, []);
+  // 파이어베이스 bookid랑 현재페이지의 itemid같은 것만 map
+  const readBookFilter = readBook
+    .filter(
+      (i) => i.bookId === book.itemId // && i.readBook === true //&& i.userId === 1 //여기에 유저아이디와 책아이디비교
+    )
+    .map((i) => i); //여기에 유저아이디와 책아이디비교
+  // console.log(readBookFilter);
+  //readBookFilter분해
+  const [readBookTrueButton] = readBookFilter;
+  console.log(readBookTrueButton); //나중에 유저아이디도 대조
+
+  const newReadBook = {
+    userId: 1,
+    bookId: book.itemId,
+    readBook: true,
+  };
+
+  //
   return (
     <>
       {/* 책이미지 */}
@@ -35,15 +95,30 @@ export default function DetailContent({ book }) {
         <DetailContentCountText>
           👀300명이 이 책을 봤어요!
         </DetailContentCountText>
-
         {/* 찜 */}
         {/* 유저 아이디,책 아이디 , response 를 넣어서 파이어베이스로 */}
-        <DetailContentIconTouchableOpacity>
-          <AntDesign name="hearto" size={16} color="black" />
-        </DetailContentIconTouchableOpacity>
+        {/* 옵셔널체이닝 */}
+        {readBookTrueButton?.readBook ? (
+          <DetailContentIconTouchableOpacity onPress={deleteReadBook}>
+            <AntDesign name="heart" size={16} color="red" />
+          </DetailContentIconTouchableOpacity>
+        ) : (
+          <DetailContentIconTouchableOpacity onPress={setRead}>
+            <AntDesign name="hearto" size={16} color="black" />
+          </DetailContentIconTouchableOpacity>
+        )}
+
         {/* 읽은 책 firebase연결 필요*/}
-        <DetailContentIconTouchableOpacity>
-          <Ionicons name="bookmark-outline" size={18} color="black" />
+        <DetailContentIconTouchableOpacity
+          onPress={() => {
+            setBookMarkButton((i) => !i);
+          }}
+        >
+          {bookMarkButton ? (
+            <Ionicons name="bookmark" size={18} color="red" />
+          ) : (
+            <Ionicons name="bookmark-outline" size={18} color="black" />
+          )}
         </DetailContentIconTouchableOpacity>
       </DetailContentTitleView>
 
