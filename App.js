@@ -29,6 +29,18 @@ const AuthenticatedUserProvider = ({ children }) => {
   );
 };
 
+const deleteUser = async (id) => {
+  const bookDoc = doc(db, 'readbook', id);
+  try {
+    const res = await deleteDoc(bookDoc);
+    console.log(res); // res는 undefined
+  } catch (error) {
+    console.log(error);
+  } finally {
+    console.log('end');
+  }
+};
+
 function TabStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -79,16 +91,12 @@ function RootNavigator() {
     );
   }
   if (user) {
-    // console.log('if user', user);
-
     return (
       <NavigationContainer>
         <TabStack />
       </NavigationContainer>
     );
   } else {
-    // console.log('else user', user);
-
     return (
       <NavigationContainer>
         <AuthStack />

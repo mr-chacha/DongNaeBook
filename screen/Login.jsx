@@ -125,7 +125,6 @@ const AuthenticationFormSubmitButton = styled.Text`
   text-align: center;
   margin-bottom: 10px;
   margin-top: 30px;
-  /* font-weight: 600; */
 `;
 
 const AskingContainer = styled.TouchableOpacity`
