@@ -9,7 +9,6 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useState, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { AuthInput } from '../components/Auth/AuthInput.js';
-import { validateEmail, removeWhitespace } from '../components/Auth/Validation';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');

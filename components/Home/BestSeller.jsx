@@ -8,6 +8,7 @@ import {
 } from "react-native";
 
 import BookBox from "./BookBox";
+import Swiper from "react-native-swiper";
 export default function BestSeller() {
   // API 담을 state
   const [bestSeller, setBestSeller] = useState([]);
@@ -40,7 +41,6 @@ export default function BestSeller() {
   return (
     <SafeAreaView>
       <BestSellerView>
-        <BestSellerTitleText>Now 베스트셀러</BestSellerTitleText>
         <ScrollView
           showsHorizontalScrollIndicator={false}
           horizontal={true}
@@ -70,5 +70,6 @@ const BestSellerTitleText = styled.Text`
 `;
 const BestSellerView = styled.View``;
 const BestSellerBookView = styled.View`
-  margin-left: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
 `;

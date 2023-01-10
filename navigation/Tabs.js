@@ -61,6 +61,7 @@ export default function Tabs() {
           tabBarIcon: ({ color, size }) => <MaterialIcons name='person-outline' size={size} color={color} />,
         }}
         name='SignUp'
+        name="Signup"
         component={SignUp}
       />
       <Tab.Screen
