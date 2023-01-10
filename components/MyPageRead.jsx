@@ -20,13 +20,15 @@ export default function MyPageRead() {
 
       <MyPageReadContentsView>
         {/*나중에 렌더링 할 것을 props로 보내줘야함 */}
+        {/* 파이어스토어 컬렉션과 api를 가져와서 컬렉션에있는 id는 유저id와 대조후 맞는 것만 출력
+        그거중에 책 아이디를 가져와서 api 책 id와 filter후 map */}
         <MyPageReadContentsBookView>
           <BookBox book={book} />
         </MyPageReadContentsBookView>
         {/* 여기까지 감싸고 */}
 
         {/* 더미데이터 */}
-        <MyPageReadContentsBookView>
+        {/* <MyPageReadContentsBookView>
           <BookBox book={book} />
         </MyPageReadContentsBookView>
 
@@ -56,7 +58,7 @@ export default function MyPageRead() {
 
         <MyPageReadContentsBookView>
           <BookBox book={book} />
-        </MyPageReadContentsBookView>
+        </MyPageReadContentsBookView> */}
       </MyPageReadContentsView>
     </>
   );
