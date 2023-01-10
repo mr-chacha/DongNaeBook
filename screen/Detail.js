@@ -3,12 +3,13 @@ import { Rating } from 'react-native-ratings';
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../util/Dimension';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import { useState } from 'react';
-import DetailContent from '../components/Detail/DetailContent';
+import { useState, useEffect } from 'react';
 import { ScrollView, ActivityIndicator } from 'react-native';
-import { useEffect } from 'react';
-// npm i react-native-ratings
+import DetailContent from '../components/Detail/DetailContent';
+import { View, Text } from 'react-native';
 
+  // params 찍어보기 비교하기
+  // 최종적인 것 이전 단도 log 찍어보기
 export default function Detail({
   navigation: { navigate },
   route: {
@@ -17,6 +18,7 @@ export default function Detail({
 }) {
   // 신간도서 state
   const [recentBooks, setRecentBooks] = useState([]);
+
 
   //베스트셀러 state
   const [bestSeller, setBestSeller] = useState([]);
@@ -27,6 +29,8 @@ export default function Detail({
   const BASE_URL = 'http://book.interpark.com/api/newBook.api';
   //  베스트 셀러 url
   const BEST_BASE_URL = 'https://book.interpark.com/api';
+
+  // console.log('bookId', bookId);
 
   // api key
   const API_KEY = 'CAD800FCCF43A0A4B5BAD86C45EFCBC99D6140870C5C960566AE4D254543570F';
