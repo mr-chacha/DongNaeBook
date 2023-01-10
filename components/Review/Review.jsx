@@ -4,15 +4,51 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { useState } from 'react';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../util/Dimension';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../firebase';
-import { useAuth } from '../../firebase.js';
 import { getAuth } from 'firebase/auth';
+import { uuidv4 } from '@firebase/util';
+import { now } from '../../util/date';
+import { useEffect } from 'react';
 
-export default function Review() {
+export default function Review({bookId}) {
+
+
+  const currentUser = getAuth().currentUser;
+
   const [isModify, setIsModify] = useState(false);
   const [ratings, setRatings] = useState(0);
   const [newComment, setNewComment] = useState('');
+  const [nickName, setNickName] = useState('');
+
+  useEffect(() => {
+    if (!currentUser) return;
+    getUserInfo();
+  }, [currentUser]);
+
+  const getUserInfo = async () => {
+    const q = await query(collection(db, 'users'), where('uid', '==', currentUser.uid));
+    getDocs(q).then((querySnapshot) => {
+      const user = [];
+      querySnapshot.forEach((doc) => {
+        user.push({ nickName: doc.data().nickName });
+      });
+      setNickName(user[0].nickName);
+    });
+  };
+
+  // const querySnapshot = await getDocs(q);
+  // const user = [];
+  // querySnapshot.forEach((doc)=>{
+  //   const userInfo = {
+  //     id: doc.id,
+  //     ...doc.data(),
+  //   };
+  //   user.push(userInfo)
+  // })
+
+  // const userNickName = user[0].nickName;
+  // console.log(userNickName);
 
   // 모달 오픈 함수
   const handleModalOpen = () => {
@@ -25,24 +61,28 @@ export default function Review() {
   //별점 등록 함수
   const handleRatings = (rating) => {
     setRatings(rating);
-    console.log('별점', ratings);
   };
 
   // 코멘트 등록 함수
   const handleNewComment = (comment) => {
     setNewComment(comment);
-    console.log(newComment);
   };
-
-  const currentUser = getAuth().currentUser;
-  console.log("hi", currentUser.nickName);
 
   // 신규 코멘트 등록 함수
   const addComment = async () => {
     await addDoc(collection(db, 'reviews'), {
       comment: newComment,
       rating: ratings,
+      commentId: uuidv4(),
+      createdDate: now(),
+      creatorId: currentUser.uid,
+      profileImage : currentUser.photoURL,
+      nickName: nickName,
+      bookId: bookId
     });
+    // 등록 시 별점은 어떻게 초기화시키지? (Rating 컴포넌트만 리렌더링 해줘야 하나?)
+    setRatings(0);
+    setNewComment('');
   };
 
   return (
