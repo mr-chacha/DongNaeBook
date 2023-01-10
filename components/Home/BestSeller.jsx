@@ -70,5 +70,6 @@ const BestSellerTitleText = styled.Text`
 `;
 const BestSellerView = styled.View``;
 const BestSellerBookView = styled.View`
-  margin-left: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
 `;

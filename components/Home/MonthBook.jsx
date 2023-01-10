@@ -72,5 +72,6 @@ const MonthBookLoader = styled.View`
   align-items: center;
 `;
 const MonthBookBoxView = styled.View`
-  margin-left: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
 `;
