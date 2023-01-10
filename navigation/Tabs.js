@@ -1,11 +1,11 @@
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialIcons } from '@expo/vector-icons';
+import React from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { MaterialIcons } from "@expo/vector-icons";
 
-import TmpSearch from '../screen/TmpSearch';
-import TmpHome from '../screen/TmpHome';
-import TmpMyPage from '../screen/TmpMyPage';
-import SignUp from '../screen/SignUp';
+import TmpSearch from "../screen/TmpSearch";
+import TmpHome from "../screen/TmpHome";
+import TmpMyPage from "../screen/TmpMyPage";
+import SignUp from "../screen/SignUp";
 
 const Tab = createBottomTabNavigator();
 
@@ -13,42 +13,50 @@ export default function Tabs() {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: '#BDFF00',
+        tabBarActiveTintColor: "#BDFF00",
       }}
     >
       <Tab.Screen
         options={{
           headerShown: false,
-          tabBarIcon: ({ color, size }) => <MaterialIcons name='search' size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="search" size={size} color={color} />
+          ),
         }}
-        name='Search'
+        name="Search"
         component={TmpSearch}
       />
       <Tab.Screen
         options={{
           headerShown: false,
-          headerTitleAlign: 'center',
-          tabBarIcon: ({ color, size }) => <MaterialIcons name='home' size={size} color={color} />,
+          headerTitleAlign: "center",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="home" size={size} color={color} />
+          ),
         }}
-        name='Home'
+        name="Home"
         component={TmpHome}
       />
       <Tab.Screen
         options={{
           headerShown: false,
-          headerTitleAlign: 'center',
-          tabBarIcon: ({ color, size }) => <MaterialIcons name='person-outline' size={size} color={color} />,
+          headerTitleAlign: "center",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="person-outline" size={size} color={color} />
+          ),
         }}
-        name='MyPage'
+        name="MyPage"
         component={TmpMyPage}
       />
       <Tab.Screen
         options={{
           headerShown: false,
-          headerTitleAlign: 'center',
-          tabBarIcon: ({ color, size }) => <MaterialIcons name='person-outline' size={size} color={color} />,
+          headerTitleAlign: "center",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="person-outline" size={size} color={color} />
+          ),
         }}
-        name='Signup'
+        name="Signup"
         component={SignUp}
       />
     </Tab.Navigator>
