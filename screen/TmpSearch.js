@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, TextInput, SafeAreaView, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  TextInput,
+  SafeAreaView,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import styled, { css } from "@emotion/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import BookBox from "../components/Home/BookBox";
@@ -19,7 +26,7 @@ export default function TmpSearch() {
 
   const getSearchBooks = async () => {
     const { item } = await fetch(
-      `${BASE_URL}?key=${API_KEY}&categoryId=100&output=json`
+      `${BASE_URL}?key=${API_KEY}&query=%EC%82%BC%EA%B5%AD%EC%A7%80&output=json` // ${BASE_URL}?key=${API_KEY}&query=${searchKeyword}&output=json 로 교체
     ).then((res) => res.json());
     setSearchBooks(item);
   };
@@ -33,52 +40,61 @@ export default function TmpSearch() {
       <SafeAreaView
         style={{ height: "100%", marginTop: 50, alignItems: "center" }}
       >
-        <TextInput
-          style={{
-            backgroundColor: "lightgrey",
-            padding: 7,
-            paddingRight: 10,
-            paddingLeft: 10,
-            width: 300,
-            borderRadius: 20,
-          }}
-          placeholder={"검색어를 입력하세요"}
-        >
-          <MaterialIcons name="search" size={24} color="black" />
-        </TextInput>
+        <SearchBox>
+          <MaterialIcons
+            name="search"
+            size={24}
+            color="black"
+            style={{ marginRight: 8 }}
+          />
+          <TextInput
+            style={{ width: 200 }}
+            placeholder="검색어를 입력하세요"
+          ></TextInput>
+        </SearchBox>
+
+        <Text style={{ marginTop: 20, marginBottom: 10 }}>
+          {}n건의 검색 결과를 찾았어요
+        </Text>
         <ScrollView>
-          <Text style={{ marginTop: 20 }}>{}n건의 검색 결과를 찾았어요</Text>
-          {/* <View
-            showsHorizontalScrollIndicator={false}
-            horizontal={true}
+          <SearchBookBoxView
             contentContainerStyle={{ paddingVertical: 20 }}
+            style={{ marginBottom: 70 }}
           >
             {searchBooks.map((book) => (
-              <BestSellerBookView key={book.itemId}>
+              <SearchBookView key={book.itemId}>
                 <BookBox book={book} />
-              </BestSellerBookView>
+              </SearchBookView>
             ))}
-          </View> */}
+          </SearchBookBoxView>
         </ScrollView>
       </SafeAreaView>
     </>
   );
 }
 
-const SearchBookView = styled.View``;
-
-const MonthBookView = styled.View``;
-// const MonthBookTitleText = styled.Text`
-//   margin-left: 20px;
-//   font-size: 20px;
-//   font-weight: 700;
-// `;
-const MonthBookLoader = styled.View`
-  flex: 1;
-  justify-content: center;
+const SearchBox = styled.View`
+  flex-direction: row;
   align-items: center;
+  background-color: grey;
+  padding: 10px;
+  width: 260px;
+  height: 40px;
+  border-radius: 20px;
 `;
-const MonthBookBoxView = styled.View`
-  margin-left: 10px;
-  margin-right: 10px;
+
+// 검색결과 나오는 책 배열
+const SearchBookBoxView = styled.View`
+  /* background-color: grey; */
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+`;
+
+// bookbox 하나
+const SearchBookView = styled.View`
+  margin: 7px;
+
+  /* margin-left: 10px; */
+  /* margin-right: 10px; */
 `;
