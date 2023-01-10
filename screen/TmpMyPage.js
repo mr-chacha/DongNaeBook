@@ -18,8 +18,7 @@ import { AntDesign } from "@expo/vector-icons";
 //<npm i react-native-blurhash> or <npm i react-native-blurhash --force>
 
 const Tab = createBottomTabNavigator();
-git;
-
+// 블라블라
 export default function TmpMyPage() {
   const [modalVisible, setModalVisible] = useState(false);
 
