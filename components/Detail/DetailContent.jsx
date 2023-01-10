@@ -24,26 +24,67 @@ import {
   getDocs,
   updateDoc,
   deleteDoc,
+  setDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import { async } from "@firebase/util";
+// import { async } from "@firebase/util";
+import { v4 as uuidv4 } from "uuid";
+//async경고 무시
+import { LogBox } from "react-native";
 
 export default function DetailContent({ book }) {
+  //async경고 무시
+  LogBox.ignoreLogs([
+    "Warning: AsyncStorage has been extracted from react-native core",
+  ]);
+
   //더보기 버튼
   const [readBook, setReadbook] = useState([]);
   const [introduceButton, setIntroduceButton] = useState(false);
-  const [bookMarkButton, setBookMarkButton] = useState(false);
+  const [bookMarkButton, setBookMarkButton] = useState([]);
+
+  const bookUUID = uuidv4();
+  // console.log(bookUUID);
 
   const setRead = async () => {
     // setReadBookButton((prev) => [...prev, newReadBook]);
-    await addDoc(collection(db, "readbook"), newReadBook);
+
+    //setDoc
+    await setDoc(doc(db, "readbook", bookUUID), newReadBook);
     // alert("읽고 싶은 책으로 등록했습니다");
   };
-  // console.log(readBookButton);
-  const deleteReadBook = async (id) => {
-    await deleteDoc(doc(db, "readbook", id));
+  const setBookMark = async () => {
+    // setReadBookButton((prev) => [...prev, newReadBook]);
+    //setDoc
+    await setDoc(doc(db, "bookmark", bookUUID), newReadBook);
+    // alert("읽고 싶은 책으로 등록했습니다");
   };
 
+  // 들어온 사람의 id와 문서의 id를 비교
+  let deleteReadBook = async () => {
+    if (readBookTrueButton.userId === 1) {
+      const docRef = doc(db, "readbook", readBookTrueButton.bookUUID);
+      await deleteDoc(docRef);
+    }
+    // const q = query(
+    //   collection(db, "readbook"),
+    //   where("userId", "==", 1),
+    //   where("bookId", "==", readBookTrueButton.bookUUID)
+    // );
+
+    // const docRef = doc(q);
+    // // const docRef = doc(db, "readbook", readBookTrueButton.bookUUID);
+    // await deleteDoc(docRef);
+  };
+
+  //북마크
+  let deleteBookMark = async () => {
+    if (bookMarkTrueButton.userId === 1) {
+      const docRef = doc(db, "bookmark", bookMarkTrueButton.bookUUID);
+      await deleteDoc(docRef);
+    }
+  };
   //readbook 데이터 모두 불러오기
   useEffect(() => {
     const q = query(collection(db, "readbook"));
@@ -63,18 +104,45 @@ export default function DetailContent({ book }) {
   // 파이어베이스 bookid랑 현재페이지의 itemid같은 것만 map
   const readBookFilter = readBook
     .filter(
-      (i) => i.bookId === book.itemId // && i.readBook === true //&& i.userId === 1 //여기에 유저아이디와 책아이디비교
+      (i) => i.bookId === book.itemId && i.userId === 1 // && i.readBook === true //&& i.userId === 1 //여기에 유저아이디와 책아이디비교
     )
     .map((i) => i); //여기에 유저아이디와 책아이디비교
   // console.log(readBookFilter);
   //readBookFilter분해
   const [readBookTrueButton] = readBookFilter;
-  console.log(readBookTrueButton); //나중에 유저아이디도 대조
+  // console.log(readBookTrueButton); //나중에 유저아이디도 대조
+
+  //북마크
+  useEffect(() => {
+    const b = query(collection(db, "bookmark"));
+    onSnapshot(b, (snapshot) => {
+      //isloading 불러오기전에
+      const newBookMarks = snapshot.docs.map((doc) => {
+        const newReadBook = {
+          id: doc.id, // 문서 이름
+          ...doc.data(), // doc.data() : { text, createdAt, ...  }
+        };
+        return newReadBook;
+      });
+      setBookMarkButton(newBookMarks);
+      //loadingfalse
+    });
+  }, []);
+
+  //북마크
+  const bookMarkFilter = bookMarkButton
+    .filter(
+      (i) => i.bookId === book.itemId && i.userId === 1 // && i.readBook === true //&& i.userId === 1 //여기에 유저아이디와 책아이디비교
+    )
+    .map((i) => i);
+  const [bookMarkTrueButton] = bookMarkFilter;
+  console.log(bookMarkTrueButton);
 
   const newReadBook = {
     userId: 1,
     bookId: book.itemId,
     readBook: true,
+    bookUUID: bookUUID,
   };
 
   //
@@ -114,10 +182,14 @@ export default function DetailContent({ book }) {
             setBookMarkButton((i) => !i);
           }}
         >
-          {bookMarkButton ? (
-            <Ionicons name="bookmark" size={18} color="red" />
+          {bookMarkTrueButton?.readBook ? (
+            <DetailContentIconTouchableOpacity onPress={deleteBookMark}>
+              <Ionicons name="bookmark" size={18} color="red" />
+            </DetailContentIconTouchableOpacity>
           ) : (
-            <Ionicons name="bookmark-outline" size={18} color="black" />
+            <DetailContentIconTouchableOpacity onPress={setBookMark}>
+              <Ionicons name="bookmark-outline" size={18} color="black" />
+            </DetailContentIconTouchableOpacity>
           )}
         </DetailContentIconTouchableOpacity>
       </DetailContentTitleView>
