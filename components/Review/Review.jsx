@@ -17,6 +17,9 @@ export default function Review({ bookId }) {
 
   const [isModify, setIsModify] = useState(false);
   const [isToastOpen, setIsToastOpen] = useState(false);
+  const [isValid, setIsValid] = useState(false);
+  const [isRated, setIsRated] = useState(false);
+  const [isCommented, setIsCommented] = useState(false);
   const [ratings, setRatings] = useState(0);
   const [newComment, setNewComment] = useState('');
   const [nickName, setNickName] = useState('');
@@ -36,19 +39,6 @@ export default function Review({ bookId }) {
       setNickName(user[0].nickName);
     });
   };
-
-  // const querySnapshot = await getDocs(q);
-  // const user = [];
-  // querySnapshot.forEach((doc)=>{
-  //   const userInfo = {
-  //     id: doc.id,
-  //     ...doc.data(),
-  //   };
-  //   user.push(userInfo)
-  // })
-
-  // const userNickName = user[0].nickName;
-  // console.log(userNickName);
 
   // 모달 오픈 함수
   const handleModalOpen = () => {
@@ -70,23 +60,42 @@ export default function Review({ bookId }) {
 
   // 신규 코멘트 등록 함수
   const addComment = async () => {
-    await addDoc(collection(db, 'reviews'), {
-      comment: newComment,
-      rating: ratings,
-      commentId: uuidv4(),
-      createdDate: now(),
-      creatorId: currentUser.uid,
-      profileImage: currentUser.photoURL,
-      nickName: nickName,
-      bookId: bookId,
-    });
-    // 등록 시 별점은 어떻게 초기화시키지? (Rating 컴포넌트만 리렌더링 해줘야 하나?)
-    setRatings(0);
-    setNewComment('');
-    setIsToastOpen(true);
-    setTimeout(() => {
-      setIsToastOpen(false);
-    }, 2000);
+    // 유효성 검사
+    if (!ratings && !newComment) {
+      setIsValid(true);
+      setTimeout(() => {
+        setIsValid(false);
+      }, 2000);
+      // 이게 어떻게 조건을 판단하는 거지...?
+    } else if (!ratings && newComment) {
+      setIsRated(true);
+      setTimeout(() => {
+        setIsRated(false);
+      }, 2000);
+    } else if (ratings && !newComment) {
+      setIsCommented(true);
+      setTimeout(() => {
+        setIsCommented(false);
+      }, 2000);
+    } else {
+      await addDoc(collection(db, 'reviews'), {
+        comment: newComment,
+        rating: ratings,
+        commentId: uuidv4(),
+        createdDate: now(),
+        creatorId: currentUser.uid,
+        profileImage: currentUser.photoURL,
+        nickName: nickName,
+        bookId: bookId,
+      });
+      // 등록 시 별점은 어떻게 초기화시키지? (Rating 컴포넌트만 리렌더링 해줘야 하나?)
+      setRatings(0);
+      setNewComment('');
+      setIsToastOpen(true);
+      setTimeout(() => {
+        setIsToastOpen(false);
+      }, 2000);
+    }
   };
 
   return (
@@ -109,7 +118,7 @@ export default function Review({ bookId }) {
         <ReviewTextInput
           maxLength={100}
           multiline={true}
-          placeholder='의견 남기기'
+          placeholder='100자 이내로 코멘트를 남겨주세요'
           scrollEnabled={false}
           value={newComment}
           onChangeText={handleNewComment}
@@ -120,34 +129,6 @@ export default function Review({ bookId }) {
       </ReviewInputBox>
 
       <ComnnetContainner>
-        <CommentBox>
-          <ProfileImgBox>
-            <ProfileImg
-              source={{
-                uri: 'https://img.extmovie.com/files/attach/images/135/286/386/076/02197f8e7c1fe5257dd98ecf223475e6.jpg',
-              }}
-            />
-          </ProfileImgBox>
-          <Commentbody>
-            <Rate>⭐️⭐️⭐️⭐️</Rate>
-            <InfoBox>
-              <UserName>닉네임</UserName>
-              <Seperator>|</Seperator>
-              <CreatedDate>22.01.06</CreatedDate>
-            </InfoBox>
-            <Desc>
-              오늘도 내일도 모레도 오늘도 내일 모레도 오늘도 내일도 모레도 오늘도 내일도 모레도 오늘
-              내일도 모래반지빵야 내일도 빵야 아냐
-            </Desc>
-          </Commentbody>
-          <IconBox onPress={handleModalOpen}>
-            <MaterialCommunityIcons
-              name='dots-vertical'
-              size={24}
-              color='black'
-            />
-          </IconBox>
-        </CommentBox>
         <CommentBox>
           <ProfileImgBox>
             <ProfileImg
@@ -215,12 +196,42 @@ export default function Review({ bookId }) {
         </ModifyBox>
       </ModifyModal>
       <Toast
-        backgroundColor='#2DFF00'
+        backgroundColor='#21d210'
         opacity={1}
-        position={70}
-        visible={isToastOpen}>
+        position={0}
+        visible={isToastOpen}
+        >
         <ToastView>
-          <ToastText>✍️ 리뷰가 등록됐어요!</ToastText>
+          <ToastText>💌 리뷰가 등록됐어요 !</ToastText>
+        </ToastView>
+      </Toast>
+      <Toast
+        backgroundColor='#ffe600'
+        opacity={1}
+        position={0}
+        visible={isValid}>
+        <ToastView>
+          <ToastText1>😅 리뷰를 작성하지 않았어요</ToastText1>
+        </ToastView>
+      </Toast>
+      <Toast
+        backgroundColor='#ff0400'
+        opacity={1}
+        position={0}
+        visible={isRated}
+        delay={3}
+        >
+        <ToastView>
+          <ToastText2>😅 별점을 입력하지 않았어요</ToastText2>
+        </ToastView>
+      </Toast>
+      <Toast
+        backgroundColor='#ff0400'
+        opacity={1}
+        position={0}
+        visible={isCommented}>
+        <ToastView>
+          <ToastText3>😅 코멘트를 입력하지 않았어요</ToastText3>
         </ToastView>
       </Toast>
     </Reviewcontainner>
@@ -239,7 +250,25 @@ const ToastView = styled.View`
 
 const ToastText = styled.Text`
   color: #000000;
-  font-size: 20px;
+  font-size: 18px;
+  font-weight: 700;
+`;
+
+const ToastText1 = styled.Text`
+  color: #000000;
+  font-size: 18px;
+  font-weight: 700;
+`;
+
+const ToastText2 = styled.Text`
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+`;
+
+const ToastText3 = styled.Text`
+  color: #ffffff;
+  font-size: 18px;
   font-weight: 700;
 `;
 
@@ -256,7 +285,7 @@ const ModifyBox = styled.View`
 const MenuBox = styled.View`
   flex: 1;
   border-radius: 15px;
-  background-color: #cdff40;
+  background-color: #2dff00;
   padding: 0 30px;
   flex-direction: row;
   justify-content: space-between;
