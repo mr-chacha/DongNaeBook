@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import Root from './navigation/Root';
 import { StatusBar } from 'expo-status-bar';
+import Detail from './screen/Detail';
 
 import { createContext, useEffect, useState, useContext } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -22,22 +22,41 @@ const AuthenticatedUserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   // console.log('user');
   // console.log(user);
-  return <AuthenticatedUserContext.Provider value={{ user, setUser }}>{children}</AuthenticatedUserContext.Provider>;
+  return (
+    <AuthenticatedUserContext.Provider value={{ user, setUser }}>
+      {children}
+    </AuthenticatedUserContext.Provider>
+  );
 };
 
 function TabStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name='Tabs' component={Tabs} />
+      <Stack.Screen
+        name='Tabs'
+        component={Tabs}
+      />
+      <Stack.Screen
+        name='Detail'
+        component={Detail}
+      />
     </Stack.Navigator>
   );
 }
 
 function AuthStack() {
   return (
-    <Stack.Navigator defaultScreenOptions={Login} screenOptions={{ headerShown: false }}>
-      <Stack.Screen name='Login' component={Login} />
-      <Stack.Screen name='SignUp' component={SignUp} />
+    <Stack.Navigator
+      defaultScreenOptions={Login}
+      screenOptions={{ headerShown: false }}>
+      <Stack.Screen
+        name='Login'
+        component={Login}
+      />
+      <Stack.Screen
+        name='SignUp'
+        component={SignUp}
+      />
     </Stack.Navigator>
   );
 }

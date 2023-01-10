@@ -1,23 +1,15 @@
-import React from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  TouchableOpacity,
-} from "react-native";
-import styled, { css } from "@emotion/native";
-import { AntDesign } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
-import { MaterialIcons } from "@expo/vector-icons";
-import { useEffect } from "react";
+import React from 'react';
+import { ScrollView, StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
+import styled, { css } from '@emotion/native';
+import { AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import { useState } from 'react';
+import { MaterialIcons } from '@expo/vector-icons';
+import { useEffect } from 'react';
 
 export default function DetailContent({ book }) {
   //더보기 버튼
   const [introduceButton, setIntroduceButton] = useState(false);
-
   return (
     <>
       {/* 책이미지 */}
@@ -32,17 +24,23 @@ export default function DetailContent({ book }) {
       {/* 상세 타이틀*/}
       <DetailContentTitleView>
         {/* 카운터 firebase연결 필요*/}
-        <DetailContentCountText>
-          👀300명이 이 책을 봤어요!
-        </DetailContentCountText>
+        <DetailContentCountText>👀300명이 이 책을 봤어요!</DetailContentCountText>
 
         {/* 찜 */}
         <DetailContentIconTouchableOpacity>
-          <AntDesign name="hearto" size={16} color="black" />
+          <AntDesign
+            name='hearto'
+            size={16}
+            color='black'
+          />
         </DetailContentIconTouchableOpacity>
         {/* 읽은 책 firebase연결 필요*/}
         <DetailContentIconTouchableOpacity>
-          <Ionicons name="bookmark-outline" size={18} color="black" />
+          <Ionicons
+            name='bookmark-outline'
+            size={18}
+            color='black'
+          />
         </DetailContentIconTouchableOpacity>
       </DetailContentTitleView>
 
@@ -50,56 +48,41 @@ export default function DetailContent({ book }) {
       <DetailContentInformationView>
         {/* 출판 */}
         <DetailContentInformationBoxView>
-          <DetailContentInformationTitleText>
-            출판
-          </DetailContentInformationTitleText>
+          <DetailContentInformationTitleText>출판</DetailContentInformationTitleText>
           {/* 중앙라인 */}
           <DetailContentInformationLineView />
 
-          <DetailContentInformationText>
-            {book.publisher}
-          </DetailContentInformationText>
+          <DetailContentInformationText>{book.publisher}</DetailContentInformationText>
         </DetailContentInformationBoxView>
 
         {/* 저자 */}
         <DetailContentInformationBoxView>
-          <DetailContentInformationTitleText>
-            저자
-          </DetailContentInformationTitleText>
+          <DetailContentInformationTitleText>저자</DetailContentInformationTitleText>
           {/* 중앙라인 */}
           <DetailContentInformationLineView />
 
-          <DetailContentInformationText>
-            {book.author}
-          </DetailContentInformationText>
+          <DetailContentInformationText>{book.author}</DetailContentInformationText>
         </DetailContentInformationBoxView>
 
         {/* 발행 */}
         <DetailContentInformationBoxView>
-          <DetailContentInformationTitleText>
-            발행
-          </DetailContentInformationTitleText>
+          <DetailContentInformationTitleText>발행</DetailContentInformationTitleText>
           {/* 중앙라인 */}
           <DetailContentInformationLineView />
 
-          <DetailContentInformationText>
-            {book.pubDate}
-          </DetailContentInformationText>
+          <DetailContentInformationText>{book.pubDate}</DetailContentInformationText>
         </DetailContentInformationBoxView>
       </DetailContentInformationView>
 
       {/* 책 소개 */}
       <DetailContentIntroduceView>
-        <DetailContentIntroduceTitleText>
-          책 소개
-        </DetailContentIntroduceTitleText>
+        <DetailContentIntroduceTitleText>책 소개</DetailContentIntroduceTitleText>
 
         <DetailContentIntroduceBoxView>
           {/* 책 소개 내용 */}
           <DetailContentIntroduceText
             numberOfLines={introduceButton ? 0 : 3}
-            ellipsizeMode="tail"
-          >
+            ellipsizeMode='tail'>
             {book.description}
           </DetailContentIntroduceText>
           {/* 더보기 버튼 */}
@@ -107,16 +90,23 @@ export default function DetailContent({ book }) {
             //  더보기 클릭 이벤트
             onPress={() => {
               setIntroduceButton((t) => !t);
-            }}
-          >
+            }}>
             <DetailContentIntroduceMoreText>
-              {introduceButton ? "접기" : `더보기`}
+              {introduceButton ? '접기' : `더보기`}
             </DetailContentIntroduceMoreText>
             <DetailContentIntroduceMoreText>
               {introduceButton ? (
-                <MaterialIcons name="expand-less" size={22} color="black" />
+                <MaterialIcons
+                  name='expand-less'
+                  size={22}
+                  color='black'
+                />
               ) : (
-                <MaterialIcons name="expand-more" size={22} color="black" />
+                <MaterialIcons
+                  name='expand-more'
+                  size={22}
+                  color='black'
+                />
               )}
             </DetailContentIntroduceMoreText>
           </DetailContentIntroduceMoreTouchableOpacity>

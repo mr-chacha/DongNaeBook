@@ -15,10 +15,9 @@ export default function CategoryList({ books }) {
   // detail로 이동하는 함수 추가
   const { navigate } = useNavigation();
   const HandleMoveToDetail = () => {
-    navigate("stack", {
-      screen: "Detail",
-      params: { bookId: books.itemId },
-    });
+    navigate('Detail', {
+      bookId: books.itemId },
+    );
   };
   return (
     <BookBoxTouchableOpacity onPress={HandleMoveToDetail} key={books.id}>
