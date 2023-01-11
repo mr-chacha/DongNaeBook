@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -6,36 +6,47 @@ import {
   SafeAreaView,
   ScrollView,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import styled, { css } from "@emotion/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import BookBox from "../components/Home/BookBox";
+import { useNavigation } from "@react-navigation/core";
 
-//확인쳌
+//디테일 페이지로 이동하면 자꾸 리뷰만 떠요ㅠㅠ
 
 export default function TmpSearch() {
+  const { navigate } = useNavigation();
+  const HandleMoveToDetail = () => {
+    navigate("Detail", {
+      params: { bookId: books.itemId },
+    });
+  };
+
   // 검색 state
   const [searchBooks, setSearchBooks] = useState([]);
 
   // search request url
-  const BASE_URL = "http://book.interpark.com/api/search.api";
+  const BASE_SEARCH_URL = "http://book.interpark.com/api/search.api";
 
   // api key
   const API_KEY =
     "87B80D6175094F2DB547B7571483B3A72C2492B12CA1B1754121E5255BECA991";
 
-  //api 가져오기
-
+  //검색 api 가져오기
   const getSearchBooks = async () => {
+    // console.log("in");
     const { item } = await fetch(
-      `${BASE_URL}?key=${API_KEY}&query=%EC%82%BC%EA%B5%AD%EC%A7%80&output=json` // ${BASE_URL}?key=${API_KEY}&query=${searchKeyword}&output=json 로 교체
+      `${BASE_SEARCH_URL}?key=${API_KEY}&query=${inputText}&sort=salesPoint&start=1&maxResults=20&output=json`
     ).then((res) => res.json());
     setSearchBooks(item);
   };
+  //http://book.interpark.com/api/search.api?key=87B80D6175094F2DB547B7571483B3A72C2492B12CA1B1754121E5255BECA991&query=삼국지&sort=salesPoint&start=1&maxResults=20&output=json
 
-  useEffect(() => {
-    getSearchBooks();
-  }, []);
+  // 다음버튼으로 다음페이지 될때마다 start = n + 1, +1될때마다 새로 호출 - 검색결과가 너무 많으면????
+  // 반복문으로 끝이 나올때까지 계속 호출 / now = page 수???
+
+  const [inputText, setInputText] = useState("");
 
   return (
     <View style={{ backgroundColor: "white" }}>
@@ -47,21 +58,57 @@ export default function TmpSearch() {
         }}
       >
         <SearchBox>
-          <MaterialIcons
-            name="search"
-            size={24}
-            color="black"
-            style={{ marginRight: 8 }}
-          />
+          <MaterialIcons name="search" size={24} color="black" />
           <TextInput
-            style={{ width: 200 }}
+            style={{
+              width: 200,
+              height: 50,
+              paddingLeft: 10,
+              backgroundColor: "lightgrey",
+            }}
             placeholder="검색어를 입력하세요"
-          ></TextInput>
+            onChangeText={(newText) => setInputText(newText)}
+            onSubmitEditing={getSearchBooks}
+          />
         </SearchBox>
+        {/* View태그 안에 TextInput이 있으면 안먹히나요?????? 어제는 계속 됐는데 왜 안되는거지ㅠㅠ */}
+        {/* 머때문인지 모르겠는데 TextInput이 터치를 인식하는게 너무 느려요.. */}
+        {/* <TextInput
+          style={{
+            width: 200,
+            height: 40,
+            backgroundColor: "#cdff40",
+            paddingLeft: 10,
+            paddingRight: 10,
+            borderRadius: 20,
+          }}
+          placeholder="검색어를 입력하세요"
+          onChangeText={(newText) => setInputText(newText)}
+          onSubmitEditing={getSearchBooks}
+        ></TextInput>
+        <MaterialIcons
+          name="search"
+          size={24}
+          color="black"
+          style={{ marginRight: 8 }}
+          onPress={() => getSearchBooks()}
+        /> */}
+
+        {/* <TouchableOpacity
+          style={{
+            backgroundColor: "grey",
+            width: 50,
+            height: 20,
+            alignItems: "center",
+          }}
+          onPress={() => getSearchBooks()}
+        >
+          <Text>확인</Text>
+        </TouchableOpacity> */}
 
         {/* 검색결과 */}
         <Text style={{ marginTop: 20, marginBottom: 10 }}>
-          {}n건의 검색 결과를 찾았어요
+          {searchBooks.length}건의 검색 결과를 찾았어요
         </Text>
 
         {/* 검색도서내역 */}
@@ -72,7 +119,7 @@ export default function TmpSearch() {
           >
             {searchBooks.map((book) => (
               <SearchBookView key={book.itemId}>
-                <BookBox book={book} />
+                <BookBox onPress={HandleMoveToDetail} book={book} />
               </SearchBookView>
             ))}
           </SearchBookBoxView>
@@ -85,7 +132,7 @@ export default function TmpSearch() {
 const SearchBox = styled.View`
   flex-direction: row;
   align-items: center;
-  background-color: lightgrey;
+  background-color: #cdff40;
   padding: 10px;
   width: 260px;
   height: 40px;
