@@ -1,44 +1,22 @@
-import React from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  TouchableOpacity,
-} from "react-native";
-import styled, { css } from "@emotion/native";
-import { AntDesign } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
-import { MaterialIcons } from "@expo/vector-icons";
-import { useEffect } from "react";
-import {
-  onSnapshot,
-  query,
-  collection,
-  doc,
-  orderBy,
-  addDoc,
-  getDoc,
-  getDocs,
-  updateDoc,
-  deleteDoc,
-  setDoc,
-  where,
-} from "firebase/firestore";
-import { db } from "../../firebase";
+import React from 'react';
+import { ScrollView, StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
+import styled, { css } from '@emotion/native';
+import { AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import { useState } from 'react';
+import { MaterialIcons } from '@expo/vector-icons';
+import { useEffect } from 'react';
+import { onSnapshot, query, collection, doc, orderBy, addDoc, getDoc, getDocs, updateDoc, deleteDoc, setDoc, where } from 'firebase/firestore';
+import { db } from '../../firebase';
 // import { async } from "@firebase/util";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 //async경고 무시
-import { LogBox } from "react-native";
-import { getAuth } from "firebase/auth/react-native";
+import { LogBox } from 'react-native';
+import { getAuth } from 'firebase/auth/react-native';
 
 export default function DetailContent({ book }) {
   //async경고 무시
-  LogBox.ignoreLogs([
-    "Warning: AsyncStorage has been extracted from react-native core",
-  ]);
+  LogBox.ignoreLogs(['Warning: AsyncStorage has been extracted from react-native core']);
   //로그인정보
   const currentUser = getAuth().currentUser;
 
@@ -54,20 +32,20 @@ export default function DetailContent({ book }) {
     // setReadBookButton((prev) => [...prev, newReadBook]);
 
     //setDoc
-    await setDoc(doc(db, "readbook", bookUUID), newReadBook);
+    await setDoc(doc(db, 'readbook', bookUUID), newReadBook);
     // alert("읽고 싶은 책으로 등록했습니다");
   };
   const setBookMark = async () => {
     // setReadBookButton((prev) => [...prev, newReadBook]);
     //setDoc
-    await setDoc(doc(db, "bookmark", bookUUID), newReadBook);
+    await setDoc(doc(db, 'bookmark', bookUUID), newReadBook);
     // alert("읽고 싶은 책으로 등록했습니다");
   };
 
   // 들어온 사람의 id와 문서의 id를 비교
   let deleteReadBook = async () => {
     if (readBookTrueButton.userId === currentUser.uid) {
-      const docRef = doc(db, "readbook", readBookTrueButton.bookUUID);
+      const docRef = doc(db, 'readbook', readBookTrueButton.bookUUID);
       await deleteDoc(docRef);
     }
     // const q = query(
@@ -84,13 +62,13 @@ export default function DetailContent({ book }) {
   //북마크
   let deleteBookMark = async () => {
     if (bookMarkTrueButton.userId === currentUser.uid) {
-      const docRef = doc(db, "bookmark", bookMarkTrueButton.bookUUID);
+      const docRef = doc(db, 'bookmark', bookMarkTrueButton.bookUUID);
       await deleteDoc(docRef);
     }
   };
   //readbook 데이터 모두 불러오기
   useEffect(() => {
-    const q = query(collection(db, "readbook"));
+    const q = query(collection(db, 'readbook'));
     onSnapshot(q, (snapshot) => {
       //isloading 불러오기전에
       const newReadBooks = snapshot.docs.map((doc) => {
@@ -117,7 +95,7 @@ export default function DetailContent({ book }) {
 
   //북마크
   useEffect(() => {
-    const b = query(collection(db, "bookmark"));
+    const b = query(collection(db, 'bookmark'));
     onSnapshot(b, (snapshot) => {
       //isloading 불러오기전에
       const newBookMarks = snapshot.docs.map((doc) => {
@@ -163,19 +141,17 @@ export default function DetailContent({ book }) {
       {/* 상세 타이틀*/}
       <DetailContentTitleView>
         {/* 카운터 firebase연결 필요*/}
-        <DetailContentCountText>
-          👀300명이 이 책을 봤어요!
-        </DetailContentCountText>
+        <DetailContentCountText>👀300명이 이 책을 봤어요!</DetailContentCountText>
         {/* 찜 */}
         {/* 유저 아이디,책 아이디 , response 를 넣어서 파이어베이스로 */}
         {/* 옵셔널체이닝 */}
         {readBookTrueButton?.readBook ? (
           <DetailContentIconTouchableOpacity onPress={deleteReadBook}>
-            <AntDesign name="heart" size={16} color="red" />
+            <AntDesign name='heart' size={16} color='red' />
           </DetailContentIconTouchableOpacity>
         ) : (
           <DetailContentIconTouchableOpacity onPress={setRead}>
-            <AntDesign name="hearto" size={16} color="black" />
+            <AntDesign name='hearto' size={16} color='black' />
           </DetailContentIconTouchableOpacity>
         )}
 
@@ -187,11 +163,11 @@ export default function DetailContent({ book }) {
         >
           {bookMarkTrueButton?.readBook ? (
             <DetailContentIconTouchableOpacity onPress={deleteBookMark}>
-              <Ionicons name="bookmark" size={18} color="red" />
+              <Ionicons name='bookmark' size={18} color='red' />
             </DetailContentIconTouchableOpacity>
           ) : (
             <DetailContentIconTouchableOpacity onPress={setBookMark}>
-              <Ionicons name="bookmark-outline" size={18} color="black" />
+              <Ionicons name='bookmark-outline' size={18} color='black' />
             </DetailContentIconTouchableOpacity>
           )}
         </DetailContentIconTouchableOpacity>
@@ -201,56 +177,39 @@ export default function DetailContent({ book }) {
       <DetailContentInformationView>
         {/* 출판 */}
         <DetailContentInformationBoxView>
-          <DetailContentInformationTitleText>
-            출판
-          </DetailContentInformationTitleText>
+          <DetailContentInformationTitleText>출판</DetailContentInformationTitleText>
           {/* 중앙라인 */}
           <DetailContentInformationLineView />
 
-          <DetailContentInformationText>
-            {book.publisher}
-          </DetailContentInformationText>
+          <DetailContentInformationText>{book.publisher}</DetailContentInformationText>
         </DetailContentInformationBoxView>
 
         {/* 저자 */}
         <DetailContentInformationBoxView>
-          <DetailContentInformationTitleText>
-            저자
-          </DetailContentInformationTitleText>
+          <DetailContentInformationTitleText>저자</DetailContentInformationTitleText>
           {/* 중앙라인 */}
           <DetailContentInformationLineView />
 
-          <DetailContentInformationText>
-            {book.author}
-          </DetailContentInformationText>
+          <DetailContentInformationText>{book.author}</DetailContentInformationText>
         </DetailContentInformationBoxView>
 
         {/* 발행 */}
         <DetailContentInformationBoxView>
-          <DetailContentInformationTitleText>
-            발행
-          </DetailContentInformationTitleText>
+          <DetailContentInformationTitleText>발행</DetailContentInformationTitleText>
           {/* 중앙라인 */}
           <DetailContentInformationLineView />
 
-          <DetailContentInformationText>
-            {book.pubDate}
-          </DetailContentInformationText>
+          <DetailContentInformationText>{book.pubDate}</DetailContentInformationText>
         </DetailContentInformationBoxView>
       </DetailContentInformationView>
 
       {/* 책 소개 */}
       <DetailContentIntroduceView>
-        <DetailContentIntroduceTitleText>
-          책 소개
-        </DetailContentIntroduceTitleText>
+        <DetailContentIntroduceTitleText>책 소개</DetailContentIntroduceTitleText>
 
         <DetailContentIntroduceBoxView>
           {/* 책 소개 내용 */}
-          <DetailContentIntroduceText
-            numberOfLines={introduceButton ? 0 : 3}
-            ellipsizeMode="tail"
-          >
+          <DetailContentIntroduceText numberOfLines={introduceButton ? 0 : 3} ellipsizeMode='tail'>
             {book.description}
           </DetailContentIntroduceText>
           {/* 더보기 버튼 */}
@@ -260,15 +219,9 @@ export default function DetailContent({ book }) {
               setIntroduceButton((t) => !t);
             }}
           >
+            <DetailContentIntroduceMoreText>{introduceButton ? '접기' : `더보기`}</DetailContentIntroduceMoreText>
             <DetailContentIntroduceMoreText>
-              {introduceButton ? "접기" : `더보기`}
-            </DetailContentIntroduceMoreText>
-            <DetailContentIntroduceMoreText>
-              {introduceButton ? (
-                <MaterialIcons name="expand-less" size={22} color="black" />
-              ) : (
-                <MaterialIcons name="expand-more" size={22} color="black" />
-              )}
+              {introduceButton ? <MaterialIcons name='expand-less' size={22} color='black' /> : <MaterialIcons name='expand-more' size={22} color='black' />}
             </DetailContentIntroduceMoreText>
           </DetailContentIntroduceMoreTouchableOpacity>
         </DetailContentIntroduceBoxView>
