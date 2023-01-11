@@ -4,17 +4,16 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function BookBox({ book }) {
   // detail로 이동하는 함수 추가
-  const { navigate } = useNavigation();
+  const navigation = useNavigation();
   const HandleMoveToDetail = () => {
-    navigate('Detail', {
-      bookId: book.itemId },
-    );
+    navigation.navigate('Detail', {
+      params: { bookId: book.itemId },
+    });
   };
+  // console.log('bookId', );
   return (
     // 배경
-    <BookBoxTouchableOpacity
-      onPress={HandleMoveToDetail}
-      key={book.itemId}>
+    <BookBoxTouchableOpacity onPress={HandleMoveToDetail} key={book.itemId}>
       {/* 책 이미지 */}
       <BookBoxImage>
         <BookBoxNotImageText>이미지가 없습니다.</BookBoxNotImageText>
@@ -25,26 +24,20 @@ export default function BookBox({ book }) {
         />
       </BookBoxImage>
       {/* 책 제목 */}
-      <BookBoxTitleText
-        numberOfLines={1}
-        ellipsizeMode='tail'>
+      <BookBoxTitleText numberOfLines={1} ellipsizeMode='tail'>
         {book.title}
       </BookBoxTitleText>
       {/* 책 출판 */}
       <BookBoxTextView>
         <BookBoxNameText>출판</BookBoxNameText>
-        <BookBoxText
-          numberOfLines={1}
-          ellipsizeMode='tail'>
+        <BookBoxText numberOfLines={1} ellipsizeMode='tail'>
           {book.publisher}
         </BookBoxText>
       </BookBoxTextView>
       {/* 책 저자 */}
       <BookBoxTextView>
         <BookBoxNameText>저자</BookBoxNameText>
-        <BookBoxText
-          numberOfLines={1}
-          ellipsizeMode='tail'>
+        <BookBoxText numberOfLines={1} ellipsizeMode='tail'>
           {book.author}
         </BookBoxText>
       </BookBoxTextView>
