@@ -12,7 +12,7 @@ import SignUp from './screen/SignUp';
 import { View, ActivityIndicator } from 'react-native';
 import { onAuthStateChanged } from 'firebase/auth';
 import { authService } from './firebase';
-import Root from './navigation/Root';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 const queryClient = new QueryClient();
 
@@ -85,10 +85,13 @@ function RootNavigator() {
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <RootSiblingParent>
+      <StatusBar style='dark' />
+      <QueryClientProvider client={queryClient}>
       <NavigationContainer>
         <Root />
       </NavigationContainer>
     </QueryClientProvider>
+    </RootSiblingParent>
   );
 }
