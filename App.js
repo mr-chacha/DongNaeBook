@@ -13,6 +13,7 @@ import { View, ActivityIndicator } from 'react-native';
 import { onAuthStateChanged } from 'firebase/auth';
 import { authService } from './firebase';
 import { RootSiblingParent } from 'react-native-root-siblings';
+import Root from './navigation/Root';
 
 const queryClient = new QueryClient();
 
@@ -88,10 +89,10 @@ export default function App() {
     <RootSiblingParent>
       <StatusBar style='dark' />
       <QueryClientProvider client={queryClient}>
-      <NavigationContainer>
-        <Root />
-      </NavigationContainer>
-    </QueryClientProvider>
+        <NavigationContainer>
+          <Root />
+        </NavigationContainer>
+      </QueryClientProvider>
     </RootSiblingParent>
   );
 }
