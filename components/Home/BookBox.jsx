@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "@emotion/native";
-import { useNavigation } from "@react-navigation/native";
+import React from 'react';
+import styled from '@emotion/native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function BookBox({ book }) {
   // detail로 이동하는 함수 추가
@@ -14,7 +14,7 @@ export default function BookBox({ book }) {
       },
     });
   };
-  // console.log('bookId', );
+  // console.log('bookId', );dddd
   return (
     // 배경
     <BookBoxTouchableOpacity
