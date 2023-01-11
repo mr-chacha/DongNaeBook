@@ -110,7 +110,7 @@ export default function DetailContent({ book }) {
       (i) => i.bookId === book.itemId && i.userId === currentUser.uid // && i.readBook === true //&& i.userId === 1 //여기에 유저아이디와 책아이디비교
     )
     .map((i) => i); //여기에 유저아이디와 책아이디비교
-  // console.log(readBookFilter);
+  console.log(readBookFilter);
   //readBookFilter분해
   const [readBookTrueButton] = readBookFilter;
   // console.log(readBookTrueButton); //나중에 유저아이디도 대조

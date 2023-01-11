@@ -14,6 +14,8 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "@expo/vector-icons";
+import MyPageContents from "../components/MyPage/MyPageContents";
+
 // import { Blurhash } from "react-native-blurhash";
 //<npm i react-native-blurhash> or <npm i react-native-blurhash --force>
 
@@ -29,6 +31,8 @@ export default function TmpMyPage() {
   const handleModalClose = () => {
     setModalVisible(false);
   };
+
+  //
 
   //모달 오픈되면 배경 블러
 
@@ -89,6 +93,9 @@ export default function TmpMyPage() {
               </ModalBox>
             </Modal>
           </MypageContainer>
+
+          {/* 마이페이지컨텐츠 */}
+          <MyPageContents />
         </ScrollView>
       </SafeAreaView>
     </View>
