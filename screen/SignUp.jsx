@@ -44,7 +44,7 @@ export default function SignUp({ navigation }) {
           uid: authService.currentUser.uid,
           email: email,
         });
-        console.log('성공!');
+        navigation.navigate('Home');
       })
       .catch((err) => {
         console.log(err.message);

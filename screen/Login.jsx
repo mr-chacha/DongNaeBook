@@ -31,7 +31,7 @@ export default function Login({ navigation }) {
   const handleAuthentication = () => {
     if (email !== '' && password !== '') {
       signInWithEmailAndPassword(authService, email, password)
-        .then(() => console.log('Login success'))
+        .then(() => navigation.navigate('Home'))
         .catch((err) => Alert.alert('Login error', err.message));
     }
   };
@@ -44,8 +44,7 @@ export default function Login({ navigation }) {
   if (!isFontLoaded) {
     return null;
   }
-  // <AuthInput value={email} onChangeText={handleEmailChange} onSubmitEditing={() => {}} placeholder='donnaebook@gmail.com' returnKeyType='next' />;
-  // <AuthInput value={password} onChangeText={handlePasswordChange} onSubmitEditing={() => {}} placeholder='비밀번호 입력' returnKeyType='done' isPassword />;
+
   return (
     <SafeAreaView>
       <AuthenticationContainer>

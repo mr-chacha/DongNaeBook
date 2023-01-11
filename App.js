@@ -14,24 +14,11 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { authService } from './firebase';
 import { RootSiblingParent } from 'react-native-root-siblings';
 
-//
-
 const queryClient = new QueryClient();
 
 const Stack = createNativeStackNavigator();
 // 사용자가 로그인했는지 또는 화면의 위치를 파악해준다.
 const AuthenticatedUserContext = createContext({});
-// authentication 저장
-const AuthenticatedUserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  // console.log('user');
-  // console.log(user);
-  return (
-    <AuthenticatedUserContext.Provider value={{ user, setUser }}>
-      {children}
-    </AuthenticatedUserContext.Provider>
-  );
-};
 
 const deleteUser = async (id) => {
   const bookDoc = doc(db, 'readbook', id);
@@ -48,31 +35,17 @@ const deleteUser = async (id) => {
 function TabStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen
-        name='Tabs'
-        component={Tabs}
-      />
-      <Stack.Screen
-        name='Detail'
-        component={Detail}
-      />
+      <Stack.Screen name='Tabs' component={Tabs} />
+      <Stack.Screen name='Detail' component={Detail} />
     </Stack.Navigator>
   );
 }
 
 function AuthStack() {
   return (
-    <Stack.Navigator
-      defaultScreenOptions={Login}
-      screenOptions={{ headerShown: false }}>
-      <Stack.Screen
-        name='Login'
-        component={Login}
-      />
-      <Stack.Screen
-        name='SignUp'
-        component={SignUp}
-      />
+    <Stack.Navigator defaultScreenOptions={Login} screenOptions={{ headerShown: false }}>
+      <Stack.Screen name='Login' component={Login} />
+      <Stack.Screen name='SignUp' component={SignUp} />
     </Stack.Navigator>
   );
 }
@@ -110,19 +83,15 @@ function RootNavigator() {
   // return <NavigationContainer> {user ? <TabStack /> : <AuthStack />}</NavigationContainer>;
 }
 
-function App() {
+export default function App() {
   return (
     <RootSiblingParent>
-      {/* <RootSiblingParent> */}
       <StatusBar style='dark' />
       <QueryClientProvider client={queryClient}>
-        <AuthenticatedUserProvider>
-          <RootNavigator />
-        </AuthenticatedUserProvider>
-      </QueryClientProvider>
-      {/* </RootSiblingParent> */}
+      <NavigationContainer>
+        <Root />
+      </NavigationContainer>
+    </QueryClientProvider>
     </RootSiblingParent>
   );
 }
-
-export default App;
