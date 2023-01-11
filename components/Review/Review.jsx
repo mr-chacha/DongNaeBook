@@ -4,15 +4,26 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { useState } from 'react';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../util/Dimension';
-import { addDoc, collection, getDocs, onSnapshot, orderBy, query, where } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from 'firebase/firestore';
 import { db } from '../../firebase';
 import { getAuth } from 'firebase/auth';
 import { uuidv4 } from '@firebase/util';
 import { now } from '../../util/date';
 import { useEffect } from 'react';
 import Toast from 'react-native-root-toast';
+import { Alert } from 'react-native';
 
-export default function Review({ bookId }) {
+export default function Review({ bookId, bookTitle, bookImage }) {
   const currentUser = getAuth().currentUser;
 
   const [isModify, setIsModify] = useState(false);
@@ -24,6 +35,7 @@ export default function Review({ bookId }) {
   const [newComment, setNewComment] = useState('');
   const [nickName, setNickName] = useState('');
   const [reviewList, setReviewList] = useState([]);
+  const [reviewId, setReviewId] = useState('');
 
   useEffect(() => {
     if (!currentUser) return;
@@ -83,7 +95,7 @@ export default function Review({ bookId }) {
   };
 
   // 신규 코멘트 등록 함수
-  const addComment = async () => {
+  const addReview = async () => {
     // 유효성 검사
     if (!ratings && !newComment) {
       setIsValid(true);
@@ -111,6 +123,8 @@ export default function Review({ bookId }) {
         profileImage: currentUser.photoURL,
         nickName: nickName,
         bookId: bookId,
+        bookTitle: bookTitle,
+        bookImage: bookImage,
       });
       // 등록 시 별점은 어떻게 초기화시키지? (Rating 컴포넌트만 리렌더링 해줘야 하나?)
       setRatings(0);
@@ -120,6 +134,23 @@ export default function Review({ bookId }) {
         setIsToastOpen(false);
       }, 2000);
     }
+  };
+
+  // 코멘트 삭제 함수
+  // 이걸 적은 사람만 삭제할 수 있어야 함
+  const deleteReview = (reviewId) => {
+    Alert.alert('리뷰를 삭제합니다', '정말 삭제하시겠어요?', [
+      {
+        text: '아니요',
+      },
+      {
+        text: '삭제',
+        onPress: async () => {
+          await deleteDoc(doc(db, 'reviews', reviewId));
+          console.log('id', reviewId);
+        },
+      },
+    ]);
   };
 
   return (
@@ -147,7 +178,7 @@ export default function Review({ bookId }) {
           value={newComment}
           onChangeText={handleNewComment}
         />
-        <ReviewSubmitBtn onPress={addComment}>
+        <ReviewSubmitBtn onPress={addReview}>
           <SubmitText>등록하기</SubmitText>
         </ReviewSubmitBtn>
       </ReviewInputBox>
@@ -171,7 +202,11 @@ export default function Review({ bookId }) {
               </InfoBox>
               <Desc>{review.comment}</Desc>
             </Commentbody>
-            <IconBox onPress={handleModalOpen}>
+            <IconBox
+              onPress={() => {
+                handleModalOpen();
+                setReviewId(review.id);
+              }}>
               <MaterialCommunityIcons
                 name='dots-vertical'
                 size={24}
@@ -198,7 +233,10 @@ export default function Review({ bookId }) {
                 />
                 <MenuName>수정하기</MenuName>
               </RewriteMenu>
-              <DeleteMenu>
+              <DeleteMenu
+                onPress={() => {
+                  deleteReview(reviewId);
+                }}>
                 <AntDesign
                   name='delete'
                   size={24}
@@ -218,6 +256,7 @@ export default function Review({ bookId }) {
           </MenuBox>
         </ModifyBox>
       </ModifyModal>
+
       <Toast
         backgroundColor='#21d210'
         opacity={1}

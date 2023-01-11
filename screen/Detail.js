@@ -51,6 +51,8 @@ export default function Detail({ navigation: { navigate }, route: { params } }) 
     getBestSeller();
   }, []);
 
+  console.log('params', params);
+
   // 로딩중 화면
   // if (isLoading) {
   //   return <ActivityIndicator />;
@@ -80,7 +82,11 @@ export default function Detail({ navigation: { navigate }, route: { params } }) 
         })}
 
       {/* 별점 및 리뷰 */}
-      <Review bookId={params.params.bookId} />
+      <Review
+        bookId={params.params.bookId}
+        bookTitle={params.params.bookTitle}
+        bookImage={params.params.bookImage}
+      />
     </ScrollView>
   );
 }
