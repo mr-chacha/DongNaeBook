@@ -1,14 +1,9 @@
 import styled from "@emotion/native";
 import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  View,
-  ScrollView,
-  SafeAreaView,
-} from "react-native";
+import { ActivityIndicator, ScrollView } from "react-native";
 
 import BookBox from "./BookBox";
-import Swiper from "react-native-swiper";
+
 export default function BestSeller() {
   // API 담을 state
   const [bestSeller, setBestSeller] = useState([]);
@@ -39,21 +34,19 @@ export default function BestSeller() {
   }
 
   return (
-    <SafeAreaView>
-      <BestSellerView>
-        <ScrollView
-          showsHorizontalScrollIndicator={false}
-          horizontal={true}
-          contentContainerStyle={{ paddingVertical: 20 }}
-        >
-          {bestSeller.map((book) => (
-            <BestSellerBookView key={book.itemId}>
-              <BookBox book={book} />
-            </BestSellerBookView>
-          ))}
-        </ScrollView>
-      </BestSellerView>
-    </SafeAreaView>
+    <BestSellerView>
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        contentContainerStyle={{ paddingVertical: 20 }}
+      >
+        {bestSeller.map((book) => (
+          <BestSellerBookView key={book.itemId}>
+            <BookBox book={book} />
+          </BestSellerBookView>
+        ))}
+      </ScrollView>
+    </BestSellerView>
   );
 }
 
@@ -63,11 +56,6 @@ const Loader = styled.View`
   align-items: center;
 `;
 
-const BestSellerTitleText = styled.Text`
-  font-size: 20px;
-  font-weight: 700;
-  margin-left: 20px;
-`;
 const BestSellerView = styled.View``;
 const BestSellerBookView = styled.View`
   margin-left: 10px;
