@@ -1,24 +1,29 @@
 import React from "react";
-import { StyleSheet, Image } from "react-native";
 import BestSeller from "../components/Home/BestSeller";
 import MonthBook from "../components/Home/MonthBook";
 import Banner from "../components/Home/Banner";
+import { useFonts } from "expo-font";
 
 import styled from "@emotion/native";
 
 import { StatusBar } from "expo-status-bar";
-import logo from "../assets/logo.png";
 
 import CategoryList2 from "../components/Home/CategoryList2";
 
 export default function TmpHome() {
+  // 폰트
+  const [isFontLoaded] = useFonts({
+    PyeongChangPeace: require("../assets/fonts/PyeongChangPeace-Bold.otf"),
+  });
+
+  if (!isFontLoaded) {
+    return null;
+  }
   return (
     <Safe>
       <Container>
         <StatusBar style="dark" />
-
         <ApplicationTitle>동네북</ApplicationTitle>
-
         <Banner />
         {/* 신간 */}
         <MonthBook />
@@ -38,30 +43,12 @@ const ApplicationTitle = styled.Text`
   font-family: "PyeongChangPeace";
 `;
 
-const Safe = styled.SafeAreaView`
+const Safe = styled.View`
   background-color: #fff;
   margin: auto;
-`;
-
-const LogoImg = styled.View`
-  height: 50px;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
+  padding-top: 50px;
 `;
 
 const Container = styled.ScrollView`
   background-color: #fff;
 `;
-
-const styles = StyleSheet.create({
-  logo: {
-    height: 40,
-    width: 130,
-    // display: "block",
-  },
-  category: {
-    display: "flex",
-    flexDirection: "row",
-  },
-});
