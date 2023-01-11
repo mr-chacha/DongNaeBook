@@ -18,6 +18,7 @@ import { StatusBar } from "expo-status-bar";
 import logo from "../assets/logo.png";
 import CategoryList from "../components/Home/CategoryList";
 import uuid from "react-native-uuid";
+import { useFonts } from "expo-font";
 
 const categoryName = [
   "전체보기",
@@ -32,9 +33,6 @@ const categoryName = [
 const categoryId = ["전체보기", "119", "101", "117", "118", "123", "105"];
 
 export default function TmpHome() {
-  const main =
-    "https://storage.googleapis.com/sparta-image.appspot.com/lecture/main.png";
-
   // 도서 state
   const [catBooks, setCatBooks] = useState([]);
   // 로딩 state
@@ -64,13 +62,21 @@ export default function TmpHome() {
     setCurrentCategory(categoryId[findIndex]); // 110
   };
 
+  const [isFontLoaded] = useFonts({
+    PyeongChangPeace: require("../assets/fonts/PyeongChangPeace-Bold.otf"),
+  });
+
+  if (!isFontLoaded) {
+    return null;
+  }
+
   return (
     <Safe>
       <Container>
         <StatusBar style="dark" />
-        <LogoImg>
-          <Image source={logo} style={styles.logo} />
-        </LogoImg>
+
+        <ApplicationTitle>동네북</ApplicationTitle>
+
         <Banner />
         <ListTitle>새로 출간된 도서 ✨</ListTitle>
 
@@ -108,6 +114,13 @@ export default function TmpHome() {
     </Safe>
   );
 }
+
+const ApplicationTitle = styled.Text`
+  font-size: 35px;
+  margin-bottom: 5px;
+  text-align: center;
+  font-family: "PyeongChangPeace";
+`;
 
 const Safe = styled.SafeAreaView`
   background-color: #fff;
