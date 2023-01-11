@@ -1,14 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Text,
-  ActivityIndicator,
-} from "react-native";
-import styled, { css } from "@emotion/native";
+import { StyleSheet, View, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+import styled, { css } from '@emotion/native';
 // import styled from "@emotion/native";
 
 export default function CategoryList({ books }) {
@@ -16,11 +10,13 @@ export default function CategoryList({ books }) {
   const { navigate } = useNavigation();
   const HandleMoveToDetail = () => {
     navigate('Detail', {
-      bookId: books.itemId },
-    );
+      params: { bookId: books.itemId },
+    });
   };
   return (
-    <BookBoxTouchableOpacity onPress={HandleMoveToDetail} key={books.id}>
+    <BookBoxTouchableOpacity
+      onPress={HandleMoveToDetail}
+      key={books.id}>
       {/* 책 이미지 */}
       <BookBoxImage>
         <BookBoxNotImageText>이미지가 없습니다.</BookBoxNotImageText>
@@ -31,20 +27,26 @@ export default function CategoryList({ books }) {
         />
       </BookBoxImage>
       {/* 책 제목 */}
-      <BookBoxTitleText numberOfLines={1} ellipsizeMode="tail">
+      <BookBoxTitleText
+        numberOfLines={1}
+        ellipsizeMode='tail'>
         {books.title}
       </BookBoxTitleText>
       {/* 책 출판 */}
       <BookBoxTextView>
         <BookBoxNameText>출판</BookBoxNameText>
-        <BookBoxText numberOfLines={1} ellipsizeMode="tail">
+        <BookBoxText
+          numberOfLines={1}
+          ellipsizeMode='tail'>
           {books.publisher}
         </BookBoxText>
       </BookBoxTextView>
       {/* 책 저자 */}
       <BookBoxTextView>
         <BookBoxNameText>저자</BookBoxNameText>
-        <BookBoxText numberOfLines={1} ellipsizeMode="tail">
+        <BookBoxText
+          numberOfLines={1}
+          ellipsizeMode='tail'>
           {books.author}
         </BookBoxText>
       </BookBoxTextView>
