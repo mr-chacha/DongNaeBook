@@ -109,16 +109,16 @@ const MyPageReadTitleText = styled.Text`
   font-size: 16px;
   line-height: 40px;
   text-align: center;
+  font-weight: 600;
 `;
 const MyPageReadContentsView = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
-  justify-content: space-between;
-  width: 90%;
+  max-width: 100%;
   margin: 0 auto;
 `;
 const MyPageReadContentsBookView = styled.View`
-  margin-bottom: 20px;
+  margin: 0 7px 20px 13px;
 `;

@@ -292,6 +292,7 @@ const MyPageWantReviewText = styled.Text`
   font-size: 16px;
   line-height: 40px;
   text-align: center;
+  font-weight: 600;
 `;
 const MyPageWantReviewContentsView = styled.View`
   display: flex;
