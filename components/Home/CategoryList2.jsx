@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import CategoryList from "./CategoryList";
 import uuid from "react-native-uuid";
 import styled, { css } from "@emotion/native";
 import { SCREEN_HEIGHT } from "../../util/test";
+
 const categoryName = [
   "전체보기",
   "인문 / 사회",
@@ -14,10 +15,9 @@ const categoryName = [
   "역사 / 문화",
 ];
 const categoryId = ["전체보기", "119", "101", "117", "118", "123", "105"];
+
 export default function CategoryList2() {
   const [catBooks, setCatBooks] = useState([]);
-  // 로딩 state
-
   // 도서 request url
   const BASE_URL = "http://book.interpark.com/api/bestSeller.api";
   // api key
@@ -42,67 +42,61 @@ export default function CategoryList2() {
     const findIndex = categoryName.indexOf(category); // 1
     setCurrentCategory(categoryId[findIndex]); // 110
   };
+  // Filter를 걸어놓은 카테고리변수선언
+  const Filter = catBooks.filter((data) => data.categoryId === currentCategory);
 
   return (
     <View>
-      <MiddleContainer
+      <FlatList
         horizontal
-        indicatorStyle={"white"}
         showsHorizontalScrollIndicator={false}
-      >
-        <HomePageBestSellerBtnBox>
-          {categoryName.map((category) => (
-            <MiddleButtonAll
-              onPress={() => getCategoryKey(category)}
-              key={uuid.v4()}
-            >
-              <MiddleButtonText key={category}>{category}</MiddleButtonText>
-            </MiddleButtonAll>
-          ))}
-        </HomePageBestSellerBtnBox>
-      </MiddleContainer>
+        contentContainerStyle={{}}
+        data={categoryName}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <MiddleButtonAll onPress={() => getCategoryKey(item)}>
+            <MiddleButtonText key={item}>{item}</MiddleButtonText>
+          </MiddleButtonAll>
+        )}
+        ItemSeparatorComponent={<View style={{}} />}
+      />
 
-      <HomePageBestSellerScrollBox horizontal>
-        <HomePageCategoryBox>
-          {currentCategory === "전체보기"
-            ? catBooks.map((data) => (
-                <CategoryList books={data} key={uuid.v4()} />
-              ))
-            : catBooks
-                .filter((data) => data.categoryId === currentCategory)
-                .map((data) => <CategoryList books={data} key={uuid.v4()} />)}
-        </HomePageCategoryBox>
-      </HomePageBestSellerScrollBox>
+      {currentCategory === "전체보기" ? (
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingVertical: 15,
+            paddingHorizontal: 20,
+            height: 250,
+          }}
+          data={catBooks}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <CategoryList books={item} key={uuid.v4()} />
+          )}
+          ItemSeparatorComponent={<View style={{ width: 20 }} />}
+        />
+      ) : (
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingVertical: 15,
+            paddingHorizontal: 20,
+            height: 250,
+          }}
+          data={Filter}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <CategoryList books={item} key={uuid.v4()} />
+          )}
+          ItemSeparatorComponent={<View style={{ width: 20 }} />}
+        />
+      )}
     </View>
   );
 }
-
-const HomePageCategoryBox = styled.View`
-  width: 100%;
-  height: ${SCREEN_HEIGHT / 3 + "px"};
-  margin-top: -30px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-`;
-
-const HomePageBestSellerScrollBox = styled.ScrollView`
-  width: 100%;
-`;
-
-const HomePageBestSellerBtnBox = styled.View`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin-top: 30px;
-`;
-
-const MiddleContainer = styled.ScrollView`
-  width: 100%;
-`;
 
 const MiddleButtonAll = styled.TouchableOpacity`
   width: 93px;

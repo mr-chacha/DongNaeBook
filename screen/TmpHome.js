@@ -20,11 +20,11 @@ export default function TmpHome() {
           <Image source={logo} style={styles.logo} />
         </LogoImg>
         <Banner />
-        <ListTitle>새로 출간된 도서 ✨</ListTitle>
-
+        {/* 신간 */}
         <MonthBook />
-        <ListTitle>NOW 베스트 셀러 🏝️</ListTitle>
+        {/* 베스트셀러 */}
         <BestSeller />
+        {/* 카테고리 */}
         <CategoryList2 />
       </Container>
     </Safe>
@@ -41,14 +41,6 @@ const LogoImg = styled.View`
   width: 100%;
   justify-content: center;
   align-items: center;
-`;
-
-const ListTitle = styled.Text`
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: 20px;
-  font-size: 20px;
-  font-weight: 500;
 `;
 
 const Container = styled.ScrollView`

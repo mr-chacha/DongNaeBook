@@ -1,6 +1,6 @@
 import styled from "@emotion/native";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, ScrollView } from "react-native";
+import { ActivityIndicator, FlatList, ScrollView, View } from "react-native";
 
 import BookBox from "./BookBox";
 
@@ -34,19 +34,22 @@ export default function BestSeller() {
   }
 
   return (
-    <BestSellerView>
-      <ScrollView
+    <BestSellerBookView>
+      <ListTitle>NOW 베스트 셀러 🏝️</ListTitle>
+      <FlatList
+        horizontal
         showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        contentContainerStyle={{ paddingVertical: 20 }}
-      >
-        {bestSeller.map((book) => (
-          <BestSellerBookView key={book.itemId}>
-            <BookBox book={book} />
-          </BestSellerBookView>
-        ))}
-      </ScrollView>
-    </BestSellerView>
+        contentContainerStyle={{
+          paddingVertical: 15,
+          paddingHorizontal: 20,
+          height: 250,
+        }}
+        data={bestSeller}
+        renderItem={({ item }) => <BookBox book={item} />}
+        keyExtractor={(item) => item.id}
+        ItemSeparatorComponent={<View style={{ width: 20 }} />}
+      />
+    </BestSellerBookView>
   );
 }
 
@@ -56,8 +59,11 @@ const Loader = styled.View`
   align-items: center;
 `;
 
-const BestSellerView = styled.View``;
-const BestSellerBookView = styled.View`
-  margin-left: 10px;
-  margin-right: 10px;
+const BestSellerBookView = styled.View``;
+const ListTitle = styled.Text`
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 20px;
+  font-size: 20px;
+  font-weight: 500;
 `;

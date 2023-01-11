@@ -58,8 +58,6 @@ const BookBoxTouchableOpacity = styled.TouchableOpacity`
   height: 215px;
   border-radius: 7px;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.25);
-  margin-left: 10px;
-  margin-right: 10px;
 `;
 const BookBoxImage = styled.ImageBackground`
   margin: 10px auto 0 auto;
