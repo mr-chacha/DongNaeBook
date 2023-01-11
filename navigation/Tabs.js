@@ -7,9 +7,6 @@ import { useNavigation } from '@react-navigation/native';
 import TmpSearch from '../screen/TmpSearch';
 import TmpHome from '../screen/TmpHome';
 import TmpMyPage from '../screen/TmpMyPage';
-import SignUp from '../screen/SignUp';
-import Login from '../screen/Login';
-import SignOut from '../screen/SignOut';
 import { getAuth } from 'firebase/auth';
 
 const Tab = createBottomTabNavigator();
@@ -55,7 +52,6 @@ export default function Tabs() {
         component={TmpSearch}
       />
       <Tab.Screen
-        screenOptions={{ headerShown: false }}
         options={{
           headerShown: false,
           headerTitleAlign: 'center',
