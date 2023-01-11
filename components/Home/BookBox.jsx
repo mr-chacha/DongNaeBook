@@ -1,12 +1,12 @@
-import React from 'react';
-import styled from '@emotion/native';
-import { useNavigation } from '@react-navigation/native';
+import React from "react";
+import styled from "@emotion/native";
+import { useNavigation } from "@react-navigation/native";
 
 export default function BookBox({ book }) {
   // detail로 이동하는 함수 추가
   const navigation = useNavigation();
   const HandleMoveToDetail = () => {
-    navigation.navigate('Detail', {
+    navigation.navigate("Detail", {
       params: { bookId: book.itemId },
     });
   };
@@ -24,20 +24,20 @@ export default function BookBox({ book }) {
         />
       </BookBoxImage>
       {/* 책 제목 */}
-      <BookBoxTitleText numberOfLines={1} ellipsizeMode='tail'>
+      <BookBoxTitleText numberOfLines={1} ellipsizeMode="tail">
         {book.title}
       </BookBoxTitleText>
       {/* 책 출판 */}
       <BookBoxTextView>
         <BookBoxNameText>출판</BookBoxNameText>
-        <BookBoxText numberOfLines={1} ellipsizeMode='tail'>
+        <BookBoxText numberOfLines={1} ellipsizeMode="tail">
           {book.publisher}
         </BookBoxText>
       </BookBoxTextView>
       {/* 책 저자 */}
       <BookBoxTextView>
         <BookBoxNameText>저자</BookBoxNameText>
-        <BookBoxText numberOfLines={1} ellipsizeMode='tail'>
+        <BookBoxText numberOfLines={1} ellipsizeMode="tail">
           {book.author}
         </BookBoxText>
       </BookBoxTextView>

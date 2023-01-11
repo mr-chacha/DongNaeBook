@@ -1,22 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
-import { StyleSheet, View, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
-import styled, { css } from '@emotion/native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  ActivityIndicator,
+} from "react-native";
+import styled, { css } from "@emotion/native";
 // import styled from "@emotion/native";
 
 export default function CategoryList({ books }) {
   // detail로 이동하는 함수 추가
   const { navigate } = useNavigation();
   const HandleMoveToDetail = () => {
-    navigate('Detail', {
+    navigate("Detail", {
       params: { bookId: books.itemId },
     });
   };
   return (
-    <BookBoxTouchableOpacity
-      onPress={HandleMoveToDetail}
-      key={books.id}>
+    <BookBoxTouchableOpacity onPress={HandleMoveToDetail} key={books.id}>
       {/* 책 이미지 */}
       <BookBoxImage>
         <BookBoxNotImageText>이미지가 없습니다.</BookBoxNotImageText>
@@ -27,26 +31,20 @@ export default function CategoryList({ books }) {
         />
       </BookBoxImage>
       {/* 책 제목 */}
-      <BookBoxTitleText
-        numberOfLines={1}
-        ellipsizeMode='tail'>
+      <BookBoxTitleText numberOfLines={1} ellipsizeMode="tail">
         {books.title}
       </BookBoxTitleText>
       {/* 책 출판 */}
       <BookBoxTextView>
         <BookBoxNameText>출판</BookBoxNameText>
-        <BookBoxText
-          numberOfLines={1}
-          ellipsizeMode='tail'>
+        <BookBoxText numberOfLines={1} ellipsizeMode="tail">
           {books.publisher}
         </BookBoxText>
       </BookBoxTextView>
       {/* 책 저자 */}
       <BookBoxTextView>
         <BookBoxNameText>저자</BookBoxNameText>
-        <BookBoxText
-          numberOfLines={1}
-          ellipsizeMode='tail'>
+        <BookBoxText numberOfLines={1} ellipsizeMode="tail">
           {books.author}
         </BookBoxText>
       </BookBoxTextView>
@@ -60,8 +58,6 @@ const BookBoxTouchableOpacity = styled.TouchableOpacity`
   height: 215px;
   border-radius: 7px;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.25);
-  margin-left: 10px;
-  margin-right: 10px;
 `;
 const BookBoxImage = styled.ImageBackground`
   margin: 10px auto 0 auto;
