@@ -1,17 +1,20 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { authService } from '../firebase';
-import styled from '@emotion/native';
-
-import { TouchableOpacity, Text, TextInput, Button, Alert } from 'react-native';
-import { useFonts } from 'expo-font';
+import { Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { AuthInput } from '../components/Auth/AuthInput.js';
+
+import { useFonts } from 'expo-font';
+import styled from '@emotion/native';
+import { v4 as uuidv4 } from 'uuid';
+
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { authService, db } from '../firebase';
+import { collection, setDoc, doc } from 'firebase/firestore';
 
 export default function SignUp({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [nickName, setNickName] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [disabled, setDisabled] = useState('');
@@ -28,17 +31,27 @@ export default function SignUp({ navigation }) {
 
   // 회원가입 또는 로그인 버튼
   const handleAuthentication = () => {
+    const generateId = uuidv4();
+    const usersRef = collection(db, 'users');
+
     // 회원가입 요청
     createUserWithEmailAndPassword(authService, email, password)
       .then(() => {
-        console.log('성공!');
+        alert('동네북 회원이 되신걸 환영합니다!');
+        setDoc(doc(usersRef, generateId), {
+          nickName: nickName,
+          id: generateId,
+          uid: authService.currentUser.uid,
+          email: email,
+        });
+        navigation.navigate('Home');
       })
       .catch((err) => {
         console.log(err.message);
-        alert(err.message);
+        alert('이미 존재하는 계정 입니다.');
       });
   };
-  // console.log(authService);
+
   const handleEmailChange = (email) => {
     const changedEmail = removeWhitespace(email);
     setEmail(changedEmail);
@@ -48,22 +61,15 @@ export default function SignUp({ navigation }) {
   const handlePasswordChange = (password) => {
     setPassword(removeWhitespace(password));
   };
-  // <UserInfoInput
-  //   placeholder='비밀번호 확인'
-  //   placeholderTextColor='#d4d4d4'
-  //   autoCapitalize='none'
-  //   autoCorrect={false}
-  //   secureTextEntry={true}
-  //   textContentType='password'
-  //   value={confirmPassword}
-  //   onChange={(text) => setConfirmPassword(text)}
-  // />;
+
   return (
     <SafeAreaView>
       <AuthenticationContainer>
         <ApplicationTitle>동네북</ApplicationTitle>
+        <UserInfoInput placeholder='닉네임' placeholderTextColor='#d4d4d4' autoCapitalize='none' value={nickName} onChangeText={setNickName} />
         <UserInfoInput placeholder='donnaebook@gmail.com' placeholderTextColor='#d4d4d4' autoCapitalize='none' value={email} onChangeText={setEmail} />
-        <UserInfoInput placeholder='비밀번호 입력' placeholderTextColor='#d4d4d4' value={password} onChangeText={setPassword} />
+        <UserInfoInput placeholder='비밀번호 입력' autoCapitalize='none' placeholderTextColor='#d4d4d4' value={password} onChangeText={setPassword} secureTextEntry={true} />
+        <UserInfoInput placeholder='비밀번호 확인' autoCapitalize='none' placeholderTextColor='#d4d4d4' value={confirmPassword} onChangeText={setConfirmPassword} secureTextEntry={true} />
         <AuthenticationFormSubmitButton onPress={handleAuthentication}>
           <Text>회원가입</Text>
         </AuthenticationFormSubmitButton>
