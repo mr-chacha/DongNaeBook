@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text, View, Image, ScrollView, TouchableOpacity, StyleSheet, Modal } from 'react-native';
-import styled, { css } from '@emotion/native';
-import { SimpleLineIcons } from '@expo/vector-icons';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AntDesign } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { authService } from '../firebase';
+import React, { useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  Text,
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+  Modal,
+} from "react-native";
+import styled, { css } from "@emotion/native";
+import { SimpleLineIcons } from "@expo/vector-icons";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { authService } from "../firebase";
+import MyPageContents from "../components/MyPage/MyPageContents";
+
 // import { Blurhash } from "react-native-blurhash";
 //<npm i react-native-blurhash> or <npm i react-native-blurhash --force>
 
@@ -32,7 +42,7 @@ export default function TmpMyPage() {
     authService
       .signOut()
       .then(() => {
-        navigation.navigate('Home');
+        navigation.navigate("Home");
       })
       .catch((error) => alert(error.message));
   };
@@ -44,13 +54,16 @@ export default function TmpMyPage() {
             {/* <ProfileEditModal /> */}
             <SimpleLineIcons
               onPress={handleModalOpen}
-              name='options-vertical'
+              name="options-vertical"
               size={20}
-              color='black'
-              style={{ flexDirection: 'row', marginLeft: 'auto' }}
+              color="black"
+              style={{ flexDirection: "row", marginLeft: "auto" }}
               // onPress={}
             />
-            <Image style={{ width: 170, height: 170, borderRadius: 85 }} source={require('../screen/image/BasicProfile.jpeg')} />
+            <Image
+              style={{ width: 170, height: 170, borderRadius: 85 }}
+              source={require("../screen/image/BasicProfile.jpeg")}
+            />
             <Nickname>집요정</Nickname>
             <MyEmail> dongnaebook@gmail.com</MyEmail>
 
@@ -58,7 +71,7 @@ export default function TmpMyPage() {
             <Modal
               visible={modalVisible}
               // transparent={true}
-              animationType='fade'
+              animationType="fade"
             >
               {/* <Blurhash
                 blurhash="LGFFaXYk^6#M@-5c,1J5@[or[Q6."
@@ -77,7 +90,10 @@ export default function TmpMyPage() {
                 </TouchableOpacity> */}
                 <ModalProfileView>
                   <TouchableOpacity>
-                    <ProfileImageInput style={{ width: 158, height: 158, borderRadius: 79 }} source={require('../screen/image/BasicProfile.jpeg')} />
+                    <ProfileImageInput
+                      style={{ width: 158, height: 158, borderRadius: 79 }}
+                      source={require("../screen/image/BasicProfile.jpeg")}
+                    />
                   </TouchableOpacity>
                   <NicknameInput>집요정</NicknameInput>
                   <EditButton onPress={handleModalClose}>
@@ -90,6 +106,9 @@ export default function TmpMyPage() {
           <TouchableOpacity onPress={handleSignOut}>
             <Text>로그아웃</Text>
           </TouchableOpacity>
+
+          {/* 마이페이지컨텐츠 */}
+          <MyPageContents />
         </ScrollView>
       </SafeAreaView>
     </View>
