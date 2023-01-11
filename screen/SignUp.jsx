@@ -12,38 +12,24 @@ import { authService, db } from '../firebase';
 import { collection, setDoc, doc } from 'firebase/firestore';
 
 export default function SignUp({ navigation }) {
-  // 폰트
-  const [isFontLoaded] = useFonts({
-    PyeongChangPeace: require('../assets/fonts/PyeongChangPeace-Bold.otf'),
-  });
-  if (!isFontLoaded) {
-    return null;
-  }
-
-  // 초기값 세팅
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nickName, setNickName] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
-  // 오류메세지 상태 저장
-  const [nickNameMessage, setNickNameMessage] = useState('');
-  const [emailMessage, setEmailMessage] = useState('');
-  const [passwordMessage, setPasswordMessage] = useState('');
-  const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
-
-  // 유효성 검사
-  const [isNickName, setIsNickName] = useState(false);
-  const [isEmail, setIsEmail] = React.useState(false);
-  const [isPassword, setIsPassword] = useState(false);
-  const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
-
-  // 버튼 활성화
-  const [disabled, setDisabled] = useState(true);
+  const [disabled, setDisabled] = useState('');
   const { goBack, setOptions } = useNavigation();
 
-  // 회원가입 버튼
+  // 폰트
+  const [isFontLoaded] = useFonts({
+    PyeongChangPeace: require('../assets/fonts/PyeongChangPeace-Bold.otf'),
+  });
+
+  if (!isFontLoaded) {
+    return null;
+  }
+
+  // 회원가입 또는 로그인 버튼
   const handleAuthentication = () => {
     const generateId = uuidv4();
     const usersRef = collection(db, 'users');
@@ -65,15 +51,6 @@ export default function SignUp({ navigation }) {
         alert('이미 존재하는 계정 입니다.');
       });
   };
-
-  //* 회원가입 버튼 활성화
-  useEffect(() => {
-    if (isNickName && isEmail && isPassword && isPasswordConfirm) {
-      setDisabled(false);
-      return;
-    }
-    setDisabled(true);
-  }, [isNickName, isEmail, isPassword, isPasswordConfirm]);
 
   const handleEmailChange = (email) => {
     const changedEmail = removeWhitespace(email);
