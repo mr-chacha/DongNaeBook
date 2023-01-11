@@ -1,283 +1,43 @@
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { useState, useEffect } from "react";
 import styled, { css } from "@emotion/native";
-import { useState } from "react";
+import { onSnapshot, query, collection } from "firebase/firestore";
+import { db } from "../../firebase";
+import { getAuth } from "firebase/auth/react-native";
+import MyPageReviewComponent from "./MyPageReviewComponent";
 
 export default function MyPageReview() {
-  const [reviewMoreButton, setReviewMoreButton] = useState(false);
-  // id를 비교해서 맞으면 열리게
-  // 수정 댓글처럼
+  //리뷰 가져오기
+  const [review, setReview] = useState([]);
+  //아이디 정보 가져오기
+  const currentUser = getAuth().currentUser;
+
+  useEffect(() => {
+    //리뷰 가져오기
+    const r = query(collection(db, "reviews"));
+    onSnapshot(r, (snapshot) => {
+      const newReviews = snapshot.docs.map((doc) => {
+        const newReview = {
+          id: doc.id,
+          ...doc.data(),
+        };
+        return newReview;
+      });
+      setReview(newReviews);
+    });
+  }, []);
+  //리뷰 아이디와 필터
+  const reviews = review.filter((i) => i.creatorId === currentUser.uid);
+
   return (
     <>
       <MyPageWantReviewView>
         <MyPageWantReviewText>내가 쓴 리뷰</MyPageWantReviewText>
       </MyPageWantReviewView>
 
-      {/*나중에 렌더링 할 것을 props로 보내줘야함 */}
-      <MyPageWantReviewContentsView id={1}>
-        <MyPageWantReviewContentsImage source={require("../image/book.jpg")} />
-
-        <MyPageWantReviewContentsTextView>
-          <MyPageWantReviewContentsTitleFlexView>
-            <MyPageWantReviewContentsTitleText>
-              불편한 편의점
-            </MyPageWantReviewContentsTitleText>
-
-            <MyPageWantReviewContentsDateText>
-              23.01.06
-            </MyPageWantReviewContentsDateText>
-          </MyPageWantReviewContentsTitleFlexView>
-
-          <MyPageWantReviewContentsStarText>
-            ⭐️⭐️⭐️⭐️⭐️
-          </MyPageWantReviewContentsStarText>
-
-          <MyPageWantReviewContentsReviewText
-          // numberOfLines={reviewMoreButton ? 0 : 3}
-          // ellipsizeMode="tail"
-          >
-            안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요
-            안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세요
-            안녕하세요 안녕하세요 안녕하세요 안녕하세요 안녕하세
-          </MyPageWantReviewContentsReviewText>
-          <MyPageWantReviewContentsReviewTouchableOpacity
-            onPress={() => {
-              setReviewMoreButton((t) => !t);
-            }}
-          >
-            {/* <MyPageWantReviewContentsReviewMoreText>
-              {reviewMoreButton ? "접기" : `더보기`}
-            </MyPageWantReviewContentsReviewMoreText> */}
-          </MyPageWantReviewContentsReviewTouchableOpacity>
-        </MyPageWantReviewContentsTextView>
-      </MyPageWantReviewContentsView>
-      {/* 여기까지 감싸고 */}
-
-      {/* 더미데이터 */}
-      <MyPageWantReviewContentsView>
-        <MyPageWantReviewContentsImage source={require("../image/book.jpg")} />
-
-        <MyPageWantReviewContentsTextView>
-          <MyPageWantReviewContentsTitleFlexView>
-            <MyPageWantReviewContentsTitleText>
-              불편한 편의점
-            </MyPageWantReviewContentsTitleText>
-
-            <MyPageWantReviewContentsDateText>
-              23.01.06
-            </MyPageWantReviewContentsDateText>
-          </MyPageWantReviewContentsTitleFlexView>
-
-          <MyPageWantReviewContentsStarText>
-            ⭐️⭐️⭐️⭐️⭐️
-          </MyPageWantReviewContentsStarText>
-
-          <MyPageWantReviewContentsReviewText
-            numberOfLines={reviewMoreButton ? 0 : 3}
-            ellipsizeMode="tail"
-          >
-            오랜 기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 오랜
-            기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트
-            셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트 셀러여서
-            읽어보고 싶었는데 너무 재밌었습니다. 기간
-          </MyPageWantReviewContentsReviewText>
-          <MyPageWantReviewContentsReviewTouchableOpacity
-            onPress={() => {
-              setReviewMoreButton((t) => !t);
-            }}
-          >
-            <MyPageWantReviewContentsReviewMoreText>
-              {reviewMoreButton ? "접기" : `더보기`}
-            </MyPageWantReviewContentsReviewMoreText>
-          </MyPageWantReviewContentsReviewTouchableOpacity>
-        </MyPageWantReviewContentsTextView>
-      </MyPageWantReviewContentsView>
-
-      <MyPageWantReviewContentsView>
-        <MyPageWantReviewContentsImage source={require("../image/book.jpg")} />
-
-        <MyPageWantReviewContentsTextView>
-          <MyPageWantReviewContentsTitleFlexView>
-            <MyPageWantReviewContentsTitleText>
-              불편한 편의점
-            </MyPageWantReviewContentsTitleText>
-
-            <MyPageWantReviewContentsDateText>
-              23.01.06
-            </MyPageWantReviewContentsDateText>
-          </MyPageWantReviewContentsTitleFlexView>
-
-          <MyPageWantReviewContentsStarText>
-            ⭐️⭐️⭐️⭐️⭐️
-          </MyPageWantReviewContentsStarText>
-
-          <MyPageWantReviewContentsReviewText
-            numberOfLines={reviewMoreButton ? 0 : 3}
-            ellipsizeMode="tail"
-          >
-            오랜 기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 오랜
-            기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트
-            셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트 셀러여서
-            읽어보고 싶었는데 너무 재밌었습니다. 기간
-          </MyPageWantReviewContentsReviewText>
-          <MyPageWantReviewContentsReviewTouchableOpacity
-            onPress={() => {
-              setReviewMoreButton((t) => !t);
-            }}
-          >
-            <MyPageWantReviewContentsReviewMoreText>
-              {reviewMoreButton ? "접기" : `더보기`}
-            </MyPageWantReviewContentsReviewMoreText>
-          </MyPageWantReviewContentsReviewTouchableOpacity>
-        </MyPageWantReviewContentsTextView>
-      </MyPageWantReviewContentsView>
-
-      <MyPageWantReviewContentsView>
-        <MyPageWantReviewContentsImage source={require("../image/book.jpg")} />
-
-        <MyPageWantReviewContentsTextView>
-          <MyPageWantReviewContentsTitleFlexView>
-            <MyPageWantReviewContentsTitleText>
-              불편한 편의점
-            </MyPageWantReviewContentsTitleText>
-
-            <MyPageWantReviewContentsDateText>
-              23.01.06
-            </MyPageWantReviewContentsDateText>
-          </MyPageWantReviewContentsTitleFlexView>
-
-          <MyPageWantReviewContentsStarText>
-            ⭐️⭐️⭐️⭐️⭐️
-          </MyPageWantReviewContentsStarText>
-
-          <MyPageWantReviewContentsReviewText
-            numberOfLines={reviewMoreButton ? 0 : 3}
-            ellipsizeMode="tail"
-          >
-            오랜 기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 오랜
-            기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트
-            셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트 셀러여서
-            읽어보고 싶었는데 너무 재밌었습니다. 기간
-          </MyPageWantReviewContentsReviewText>
-          <MyPageWantReviewContentsReviewTouchableOpacity
-            onPress={() => {
-              setReviewMoreButton((t) => !t);
-            }}
-          >
-            <MyPageWantReviewContentsReviewMoreText>
-              {reviewMoreButton ? "접기" : `더보기`}
-            </MyPageWantReviewContentsReviewMoreText>
-          </MyPageWantReviewContentsReviewTouchableOpacity>
-        </MyPageWantReviewContentsTextView>
-      </MyPageWantReviewContentsView>
-
-      <MyPageWantReviewContentsView>
-        <MyPageWantReviewContentsImage source={require("../image/book.jpg")} />
-
-        <MyPageWantReviewContentsTextView>
-          <MyPageWantReviewContentsTitleFlexView>
-            <MyPageWantReviewContentsTitleText>
-              불편한 편의점
-            </MyPageWantReviewContentsTitleText>
-
-            <MyPageWantReviewContentsDateText>
-              23.01.06
-            </MyPageWantReviewContentsDateText>
-          </MyPageWantReviewContentsTitleFlexView>
-
-          <MyPageWantReviewContentsStarText>
-            ⭐️⭐️⭐️⭐️⭐️
-          </MyPageWantReviewContentsStarText>
-
-          <MyPageWantReviewContentsReviewText
-            numberOfLines={reviewMoreButton ? 0 : 3}
-            ellipsizeMode="tail"
-          >
-            오랜 기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 오랜
-            기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트
-            셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트 셀러여서
-            읽어보고 싶었는데 너무 재밌었습니다. 기간
-          </MyPageWantReviewContentsReviewText>
-          <MyPageWantReviewContentsReviewTouchableOpacity
-            onPress={() => {
-              setReviewMoreButton((t) => !t);
-            }}
-          >
-            <MyPageWantReviewContentsReviewMoreText>
-              {reviewMoreButton ? "접기" : `더보기`}
-            </MyPageWantReviewContentsReviewMoreText>
-          </MyPageWantReviewContentsReviewTouchableOpacity>
-        </MyPageWantReviewContentsTextView>
-      </MyPageWantReviewContentsView>
-
-      <MyPageWantReviewContentsView>
-        <MyPageWantReviewContentsImage source={require("../image/book.jpg")} />
-
-        <MyPageWantReviewContentsTextView>
-          <MyPageWantReviewContentsTitleFlexView>
-            <MyPageWantReviewContentsTitleText>
-              불편한 편의점
-            </MyPageWantReviewContentsTitleText>
-
-            <MyPageWantReviewContentsDateText>
-              23.01.06
-            </MyPageWantReviewContentsDateText>
-          </MyPageWantReviewContentsTitleFlexView>
-
-          <MyPageWantReviewContentsStarText>
-            ⭐️⭐️⭐️⭐️⭐️
-          </MyPageWantReviewContentsStarText>
-
-          <MyPageWantReviewContentsReviewText
-            numberOfLines={reviewMoreButton ? 0 : 3}
-            ellipsizeMode="tail"
-          >
-            오랜 기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 오랜
-            기간 베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 기간
-            베스트 셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트
-            셀러여서 읽어보고 싶었는데 너무 재밌었습니다. 기간 베스트 셀러여서
-            읽어보고 싶었는데 너무 재밌었습니다. 기간
-          </MyPageWantReviewContentsReviewText>
-          <MyPageWantReviewContentsReviewTouchableOpacity
-            onPress={() => {
-              setReviewMoreButton((t) => !t);
-            }}
-          >
-            <MyPageWantReviewContentsReviewMoreText>
-              {reviewMoreButton ? "접기" : `더보기`}
-            </MyPageWantReviewContentsReviewMoreText>
-          </MyPageWantReviewContentsReviewTouchableOpacity>
-        </MyPageWantReviewContentsTextView>
-      </MyPageWantReviewContentsView>
+      {reviews.map((review) => {
+        return <MyPageReviewComponent review={review} />;
+      })}
     </>
   );
 }
@@ -293,59 +53,4 @@ const MyPageWantReviewText = styled.Text`
   line-height: 40px;
   text-align: center;
   font-weight: 600;
-`;
-const MyPageWantReviewContentsView = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  /* justify-content: space-between; */
-  width: 90%;
-  min-height: 150px;
-  background-color: #ededed;
-  margin: 0 auto 20px auto;
-  border-radius: 7px;
-`;
-const MyPageWantReviewContentsTextView = styled.View`
-  width: 100%;
-  padding: 15px;
-`;
-const MyPageWantReviewContentsImage = styled.Image`
-  width: 90px;
-  height: 130px;
-  margin-left: 10px;
-`;
-const MyPageWantReviewContentsTitleFlexView = styled.View`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  width: 70%;
-`;
-const MyPageWantReviewContentsTitleText = styled.Text`
-  font-size: 18px;
-  font-weight: 500;
-  letter-spacing: -1px;
-`;
-const MyPageWantReviewContentsDateText = styled.Text`
-  margin-left: auto;
-  font-size: 12px;
-  color: #727272;
-`;
-const MyPageWantReviewContentsStarText = styled.Text`
-  font-size: 12px;
-  margin: 10px 0;
-`;
-const MyPageWantReviewContentsReviewText = styled.Text`
-  letter-spacing: -1px;
-  font-size: 13px;
-  width: 70%;
-`;
-const MyPageWantReviewContentsReviewTouchableOpacity = styled.TouchableOpacity`
-  width: 40px;
-  margin-top: 5px;
-`;
-const MyPageWantReviewContentsReviewMoreText = styled.Text`
-  color: #0055ff;
-  font-size: 12px;
-  font-weight: 700;
 `;

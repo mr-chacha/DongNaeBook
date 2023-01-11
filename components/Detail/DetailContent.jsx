@@ -205,6 +205,9 @@ export default function DetailContent({ book }) {
     .map((i) => i);
   const [bookMarkTrueButton] = bookMarkFilter;
   // console.log(bookMarkTrueButton);
+  const howMany = bookMarkButton
+    .filter((i) => i.bookId === book.itemId)
+    .map((i) => i);
 
   const newReadBook = {
     userId: currentUser.uid,
@@ -229,7 +232,7 @@ export default function DetailContent({ book }) {
       <DetailContentTitleView>
         {/* 카운터 firebase연결 필요*/}
         <DetailContentCountText>
-          👀300명이 이 책을 봤어요!
+          👀 {howMany.length} 명이 이 책을 읽었어요!
         </DetailContentCountText>
         {/* 찜 */}
         {/* 유저 아이디,책 아이디 , response 를 넣어서 파이어베이스로 */}
@@ -345,7 +348,7 @@ export default function DetailContent({ book }) {
 const DetailContentImg = styled.Image`
   width: 160px;
   height: 250px;
-  margin: 30px auto 0 auto;
+  margin: 100px auto 0 auto;
 `;
 const DetailContentTitleView = styled.View`
   margin: 20px auto 0 auto;
