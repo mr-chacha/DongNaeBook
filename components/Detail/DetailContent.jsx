@@ -35,12 +35,15 @@ import { LogBox } from "react-native";
 import { getAuth } from "firebase/auth/react-native";
 import { authService } from "../../firebase";
 import { Alert } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 export default function DetailContent({ book }) {
   //async경고 무시
   LogBox.ignoreLogs([
     "Warning: AsyncStorage has been extracted from react-native core",
   ]);
+  //네비게이션
+  const navigation = useNavigation();
 
   //더보기 버튼
   const [readBook, setReadbook] = useState([]);
