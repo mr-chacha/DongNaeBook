@@ -15,6 +15,10 @@ export default function BookBox({ book }) {
     });
   };
   // console.log('bookId', );dddd
+  // console.log('bookId', );dddd
+  // console.log('bookId', );dddd
+  // console.log('bookId', );dddd
+  // console.log('bookId', );dddd
   return (
     // 배경
     <BookBoxTouchableOpacity
