@@ -13,6 +13,8 @@ import { View, ActivityIndicator } from 'react-native';
 import { onAuthStateChanged } from 'firebase/auth';
 import { authService } from '../firebase';
 import Stacks from './Stacks';
+import Detail from '../screen/Detail';
+
 const queryClient = new QueryClient();
 
 const Stack = createNativeStackNavigator();
@@ -21,13 +23,16 @@ export default function Root() {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerShown: false,
+        headerTitle: '',
+        headerTransparent: true,
+        // headerShown: false,
       }}
+      name='registerScreen'
     >
       <Stack.Screen name='Tabs' component={Tabs} />
-      <Stack.Screen name='Stacks' component={Stacks} />
       <Stack.Screen name='Login' component={Login} />
       <Stack.Screen name='SignUp' component={SignUp} />
+      <Stack.Screen name='Detail' component={Detail} />
     </Stack.Navigator>
   );
 }

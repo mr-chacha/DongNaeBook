@@ -14,7 +14,7 @@ export default function SignOut() {
       .signOut()
       .then(() => {
         alsert('로그아웃 되었습니다.');
-        navigation.navigate('Home');
+        // navigation.navigate('Home');
       })
       .catch((error) => alert(error.message));
   };

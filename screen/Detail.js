@@ -7,17 +7,34 @@ import Review from '../components/Review/Review';
 // 최종적인 것 이전 단도 log 찍어보기
 export default function Detail({
   navigation: { navigate },
+  // route,
   route: {
-    params: { bookId },
+    // params: { bookId },
+    params,
   },
 }) {
+  console.log('params', params);
+  // console.log('bookId', bookId);
+
+  // const [tip, setTip] = useState();
+  // useEffect(() => {
+  //   console.log(route);
+  //   console.log(route.params);
+  // }, []);
+  // const bookId = 123;
+  // console.log('bookId', bookId);
   const [isLoading, setIsLoading] = useState(true);
 
   // 신간도서 state
   const [recentBooks, setRecentBooks] = useState([]);
 
+  // console.log('paramsBook', params.params.bookId);
+  // console.log(
+  //   'recentBooks',
+  //   recentBooks.itemId);
   //베스트셀러 state
   const [bestSeller, setBestSeller] = useState([]);
+  // console.log('bestSeller', bestSeller);
 
   // 로딩 state
   // const [isLoading, setIsLoading] = useState(true);
@@ -35,20 +52,18 @@ export default function Detail({
 
   //신간도서 api 가져오기
   const getApiRecentBooks = async () => {
-    const { item } = await fetch(`${BASE_URL}?key=${API_KEY}&categoryId=100&output=json`).then(
-      (res) => res.json()
-    );
+    const { item } = await fetch(`${BASE_URL}?key=${API_KEY}&categoryId=100&output=json`).then((res) => res.json());
     setRecentBooks(item);
+    // console.log('getApiRecentBooks', item);
     // setIsLoading(false);
   };
 
   //best seller API 가져오는 함수
   const getBestSeller = async () => {
-    const { item } = await fetch(
-      `${BEST_BASE_URL}/bestSeller.api?key=${API_KEY}&categoryId=100&output=json`
-    ).then((res) => res.json());
+    const { item } = await fetch(`${BEST_BASE_URL}/bestSeller.api?key=${API_KEY}&categoryId=100&output=json`).then((res) => res.json());
     setBestSeller(item);
     setIsLoading(false);
+    // console.log('getBestSeller', item);
   };
 
   useEffect(() => {
@@ -64,28 +79,18 @@ export default function Detail({
     <ScrollView>
       {/* 상세페이지 설명 */}
       {recentBooks
-        .filter((i) => i.itemId == bookId)
+        .filter((i) => i.itemId == params.params.bookId)
         .map((book) => {
-          return (
-            <DetailContent
-              key={book.itemId}
-              book={book}
-            />
-          );
+          return <DetailContent key={book.itemId} book={book} />;
         })}
       {bestSeller
-        .filter((i) => i.itemId == bookId)
+        .filter((i) => i.itemId == params.params.bookId)
         .map((book) => {
-          return (
-            <DetailContent
-              key={book.itemId}
-              book={book}
-            />
-          );
+          return <DetailContent key={book.itemId} book={book} />;
         })}
 
       {/* 별점 및 리뷰 */}
-      <Review bookId={bookId} />
+      <Review bookId={params.params.bookId} />
     </ScrollView>
   );
 }
