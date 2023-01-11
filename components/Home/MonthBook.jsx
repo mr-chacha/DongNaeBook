@@ -1,15 +1,9 @@
 import React from "react";
-import {
-  ActivityIndicator,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import styled, { css } from "@emotion/native";
 import BookBox from "./BookBox";
 import { useEffect, useState } from "react";
-
+import { FlatList } from "react-native";
 export default function MonthBook() {
   // 신간도서 state
   const [recentBooks, setRecentBooks] = useState([]);
@@ -42,36 +36,36 @@ export default function MonthBook() {
   }
   return (
     <MonthBookView>
-      {/* title */}
-      {/* contents */}
-      <ScrollView
+      <ListTitle>새로 출간된 도서 ✨</ListTitle>
+      <FlatList
         horizontal
-        contentContainerStyle={{ paddingVertical: 20 }}
         showsHorizontalScrollIndicator={false}
-      >
-        {recentBooks.map((book) => (
-          <MonthBookBoxView key={book.itemId}>
-            {/* card */}
-            <BookBox book={book} />
-          </MonthBookBoxView>
-        ))}
-      </ScrollView>
+        contentContainerStyle={{
+          paddingVertical: 15,
+          paddingHorizontal: 20,
+          height: 250,
+        }}
+        data={recentBooks}
+        renderItem={({ item }) => <BookBox book={item} />}
+        keyExtractor={(item) => item.id}
+        ItemSeparatorComponent={<View style={{ width: 20 }} />}
+      />
     </MonthBookView>
   );
 }
 
 const MonthBookView = styled.View``;
-// const MonthBookTitleText = styled.Text`
-//   margin-left: 20px;
-//   font-size: 20px;
-//   font-weight: 700;
-// `;
+
 const MonthBookLoader = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
 `;
-const MonthBookBoxView = styled.View`
-  margin-left: 10px;
-  margin-right: 10px;
+
+const ListTitle = styled.Text`
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 20px;
+  font-size: 20px;
+  font-weight: 500;
 `;

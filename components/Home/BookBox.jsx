@@ -7,13 +7,23 @@ export default function BookBox({ book }) {
   const navigation = useNavigation();
   const HandleMoveToDetail = () => {
     navigation.navigate('Detail', {
-      params: { bookId: book.itemId },
+      params: {
+        bookId: book.itemId,
+        bookTitle: book.title,
+        bookImage: book.coverSmallUrl,
+      },
     });
   };
-  // console.log('bookId', );
+  // console.log('bookId', );dddd
+  // console.log('bookId', );dddd
+  // console.log('bookId', );dddd
+  // console.log('bookId', );dddd
+  // console.log('bookId', );dddd
   return (
     // 배경
-    <BookBoxTouchableOpacity onPress={HandleMoveToDetail} key={book.itemId}>
+    <BookBoxTouchableOpacity
+      onPress={HandleMoveToDetail}
+      key={book.itemId}>
       {/* 책 이미지 */}
       <BookBoxImage>
         <BookBoxNotImageText>이미지가 없습니다.</BookBoxNotImageText>
@@ -24,20 +34,26 @@ export default function BookBox({ book }) {
         />
       </BookBoxImage>
       {/* 책 제목 */}
-      <BookBoxTitleText numberOfLines={1} ellipsizeMode='tail'>
+      <BookBoxTitleText
+        numberOfLines={1}
+        ellipsizeMode='tail'>
         {book.title}
       </BookBoxTitleText>
       {/* 책 출판 */}
       <BookBoxTextView>
         <BookBoxNameText>출판</BookBoxNameText>
-        <BookBoxText numberOfLines={1} ellipsizeMode='tail'>
+        <BookBoxText
+          numberOfLines={1}
+          ellipsizeMode='tail'>
           {book.publisher}
         </BookBoxText>
       </BookBoxTextView>
       {/* 책 저자 */}
       <BookBoxTextView>
         <BookBoxNameText>저자</BookBoxNameText>
-        <BookBoxText numberOfLines={1} ellipsizeMode='tail'>
+        <BookBoxText
+          numberOfLines={1}
+          ellipsizeMode='tail'>
           {book.author}
         </BookBoxText>
       </BookBoxTextView>
