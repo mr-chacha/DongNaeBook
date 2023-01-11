@@ -1,6 +1,5 @@
 import React from "react";
 import { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Text,
   View,
@@ -11,9 +10,6 @@ import {
   Modal,
 } from "react-native";
 import styled, { css } from "@emotion/native";
-import { SimpleLineIcons } from "@expo/vector-icons";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "@expo/vector-icons";
 import { useEffect } from "react";
 import {
@@ -35,7 +31,9 @@ import { getAuth } from "firebase/auth/react-native";
 import MyPageReview from "./MyPageReview";
 import MyPageWant from "./MyPageWant";
 import MyPageRead from "./MyPageRead";
+import { Ionicons } from "@expo/vector-icons";
 import { LogBox } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function MyPageContents() {
   //컨텐츠 아이콘
@@ -101,51 +99,62 @@ export default function MyPageContents() {
     <>
       <MyPageContentsView>
         <MyPageContentsIcon
+          style={
+            contentsIcon === "내가읽은책"
+              ? { backgroundColor: "#000" }
+              : { backgroundColor: "#ccc" }
+          }
           onPress={() => {
             setContentsIcon("내가읽은책");
           }}
         >
-          <Text
-            style={
-              contentsIcon === "내가읽은책"
-                ? { color: "blue" }
-                : { color: "#000" }
-            }
-          >
-            내가 읽은 책
-          </Text>
+          {contentsIcon === "내가읽은책" ? (
+            <Ionicons name="bookmark-outline" size={24} color="#fff" />
+          ) : (
+            <Ionicons name="bookmark-outline" size={24} color="black" />
+          )}
         </MyPageContentsIcon>
 
         <MyPageContentsIcon
+          style={
+            contentsIcon === "읽고싶은책"
+              ? { backgroundColor: "#000" }
+              : { backgroundColor: "#ccc" }
+          }
           onPress={() => {
             setContentsIcon("읽고싶은책");
           }}
         >
-          <Text
-            style={
-              contentsIcon === "읽고싶은책"
-                ? { color: "blue" }
-                : { color: "#000" }
-            }
-          >
-            읽고 싶은 책
-          </Text>
+          {contentsIcon === "읽고싶은책" ? (
+            <AntDesign name="hearto" size={24} color="#fff" />
+          ) : (
+            <AntDesign name="hearto" size={24} color="black" />
+          )}
         </MyPageContentsIcon>
 
         <MyPageContentsIcon
+          style={
+            contentsIcon === "내가쓴리뷰"
+              ? { backgroundColor: "#000" }
+              : { backgroundColor: "#ccc" }
+          }
           onPress={() => {
             setContentsIcon("내가쓴리뷰");
           }}
         >
-          <Text
-            style={
-              contentsIcon === "내가쓴리뷰"
-                ? { color: "blue" }
-                : { color: "#000" }
-            }
-          >
-            내가 쓴 리뷰
-          </Text>
+          {contentsIcon === "내가쓴리뷰" ? (
+            <MaterialCommunityIcons
+              name="pencil-outline"
+              size={24}
+              color="#fff"
+            />
+          ) : (
+            <MaterialCommunityIcons
+              name="pencil-outline"
+              size={24}
+              color="black"
+            />
+          )}
         </MyPageContentsIcon>
       </MyPageContentsView>
       {/* 마이페이지 컨텐츠 내용 */}
@@ -173,10 +182,19 @@ export default function MyPageContents() {
 /***************/
 //마이페이지 컨텐츠
 const MyPageContentsView = styled.View`
+  width: 50%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
-  margin-bottom: 20px;
+  justify-content: space-between;
+  margin: 20px auto 20px auto;
 `;
-const MyPageContentsIcon = styled.TouchableOpacity``;
+const MyPageContentsIcon = styled.TouchableOpacity`
+  background-color: #ccc;
+  width: 45px;
+  height: 45px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
