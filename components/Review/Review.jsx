@@ -40,6 +40,8 @@ export default function Review({ bookId }) {
     });
   };
 
+  // 로그인 예외처리하기
+
   // 모달 오픈 함수
   const handleModalOpen = () => {
     setIsModify(true);
@@ -199,8 +201,7 @@ export default function Review({ bookId }) {
         backgroundColor='#21d210'
         opacity={1}
         position={0}
-        visible={isToastOpen}
-        >
+        visible={isToastOpen}>
         <ToastView>
           <ToastText>💌 리뷰가 등록됐어요 !</ToastText>
         </ToastView>
@@ -219,8 +220,7 @@ export default function Review({ bookId }) {
         opacity={1}
         position={0}
         visible={isRated}
-        delay={3}
-        >
+        delay={3}>
         <ToastView>
           <ToastText2>😅 별점을 입력하지 않았어요</ToastText2>
         </ToastView>

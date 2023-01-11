@@ -14,9 +14,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { authService } from './firebase';
 import { RootSiblingParent } from 'react-native-root-siblings';
 
-
 //
-
 
 const queryClient = new QueryClient();
 
