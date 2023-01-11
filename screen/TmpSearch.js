@@ -11,6 +11,8 @@ import styled, { css } from "@emotion/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import BookBox from "../components/Home/BookBox";
 
+//확인쳌
+
 export default function TmpSearch() {
   // 검색 state
   const [searchBooks, setSearchBooks] = useState([]);
