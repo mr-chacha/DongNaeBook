@@ -8,10 +8,13 @@ const queryClient = new QueryClient();
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <NavigationContainer>
-        <Root />
-      </NavigationContainer>
-    </QueryClientProvider>
+    <RootSiblingParent>
+      <StatusBar style='dark' />
+      <QueryClientProvider client={queryClient}>
+        <NavigationContainer>
+          <Root />
+        </NavigationContainer>
+      </QueryClientProvider>
+    </RootSiblingParent>
   );
 }
