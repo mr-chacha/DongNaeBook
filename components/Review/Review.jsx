@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { useState } from 'react';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../util/Dimension';
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import { addDoc, collection, getDocs, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { getAuth } from 'firebase/auth';
 import { uuidv4 } from '@firebase/util';
@@ -23,11 +23,33 @@ export default function Review({ bookId }) {
   const [ratings, setRatings] = useState(0);
   const [newComment, setNewComment] = useState('');
   const [nickName, setNickName] = useState('');
+  const [reviewList, setReviewList] = useState([]);
 
   useEffect(() => {
     if (!currentUser) return;
     getUserInfo();
   }, [currentUser]);
+
+  // 파이어베이스에서 댓글 불러오기
+  // bookId === bookId 만족하는 것들만 가져와라
+  useEffect(() => {
+    const q = query(
+      collection(db, 'reviews'),
+      where('bookId', '==', bookId),
+      orderBy('createdDate', 'desc')
+    );
+
+    onSnapshot(q, (snapshot) => {
+      const reviews = snapshot.docs.map((doc) => {
+        const review = {
+          id: doc.id,
+          ...doc.data(),
+        };
+        return review;
+      });
+      setReviewList(reviews);
+    });
+  }, []);
 
   const getUserInfo = async () => {
     const q = await query(collection(db, 'users'), where('uid', '==', currentUser.uid));
@@ -40,7 +62,7 @@ export default function Review({ bookId }) {
     });
   };
 
-  // 로그인 예외처리하기
+  //! 로그인 예외처리하기, 댓글 순서 수정하기
 
   // 모달 오픈 함수
   const handleModalOpen = () => {
@@ -131,34 +153,33 @@ export default function Review({ bookId }) {
       </ReviewInputBox>
 
       <ComnnetContainner>
-        <CommentBox>
-          <ProfileImgBox>
-            <ProfileImg
-              source={{
-                uri: 'https://img.extmovie.com/files/attach/images/135/286/386/076/02197f8e7c1fe5257dd98ecf223475e6.jpg',
-              }}
-            />
-          </ProfileImgBox>
-          <Commentbody>
-            <Rate>⭐️⭐️⭐️⭐️</Rate>
-            <InfoBox>
-              <UserName>닉네임</UserName>
-              <Seperator>|</Seperator>
-              <CreatedDate>22.01.06</CreatedDate>
-            </InfoBox>
-            <Desc>
-              오늘도 내일도 모레도 오늘도 내일 모레도 오늘도 내일도 모레도 오늘도 내일도 모레도 오늘
-              내일도 모래반지빵야 내일도 빵야 아냐
-            </Desc>
-          </Commentbody>
-          <IconBox onPress={handleModalOpen}>
-            <MaterialCommunityIcons
-              name='dots-vertical'
-              size={24}
-              color='black'
-            />
-          </IconBox>
-        </CommentBox>
+        {reviewList.map((review) => (
+          <CommentBox key={review.commentId}>
+            <ProfileImgBox>
+              <ProfileImg
+                source={{
+                  uri: 'https://img.extmovie.com/files/attach/images/135/286/386/076/02197f8e7c1fe5257dd98ecf223475e6.jpg',
+                }}
+              />
+            </ProfileImgBox>
+            <Commentbody>
+              <Rate>⭐️ {review.rating}</Rate>
+              <InfoBox>
+                <UserName>{review.nickName}</UserName>
+                <Seperator>|</Seperator>
+                <CreatedDate>{review.createdDate}</CreatedDate>
+              </InfoBox>
+              <Desc>{review.comment}</Desc>
+            </Commentbody>
+            <IconBox onPress={handleModalOpen}>
+              <MaterialCommunityIcons
+                name='dots-vertical'
+                size={24}
+                color='black'
+              />
+            </IconBox>
+          </CommentBox>
+        ))}
       </ComnnetContainner>
 
       <ModifyModal
