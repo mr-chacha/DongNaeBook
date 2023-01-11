@@ -10,7 +10,9 @@ import { useState, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { AuthInput } from '../components/Auth/AuthInput.js';
 
-export default function Login({ navigation }) {
+export default function Login() {
+  const navigation = useNavigation();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
