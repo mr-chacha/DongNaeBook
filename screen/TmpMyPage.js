@@ -14,6 +14,8 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { authService } from "../firebase";
 // import { Blurhash } from "react-native-blurhash";
 //<npm i react-native-blurhash> or <npm i react-native-blurhash --force>
 
@@ -32,6 +34,16 @@ export default function TmpMyPage() {
 
   //모달 오픈되면 배경 블러
 
+  const navigation = useNavigation();
+  //로그아웃
+  const handleSignOut = () => {
+    authService
+      .signOut()
+      .then(() => {
+        navigation.navigate("Home");
+      })
+      .catch((error) => alert(error.message));
+  };
   return (
     <View>
       <SafeAreaView>
@@ -89,6 +101,9 @@ export default function TmpMyPage() {
               </ModalBox>
             </Modal>
           </MypageContainer>
+          <TouchableOpacity onPress={handleSignOut}>
+            <Text>로그아웃</Text>
+          </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
     </View>
