@@ -65,9 +65,7 @@ export default function CategoryList2() {
           }}
           data={catBooks?.item}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <CategoryList books={item} key={uuid.v4()} />
-          )}
+          renderItem={({ item }) => <CategoryList books={item} />}
           ItemSeparatorComponent={<View style={{ width: 20 }} />}
         />
       ) : (
@@ -81,9 +79,7 @@ export default function CategoryList2() {
           }}
           data={Filter}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <CategoryList books={item} key={uuid.v4()} />
-          )}
+          renderItem={({ item }) => <CategoryList books={item} />}
           ItemSeparatorComponent={<View style={{ width: 20 }} />}
         />
       )}

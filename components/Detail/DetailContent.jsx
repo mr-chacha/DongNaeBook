@@ -36,6 +36,7 @@ import { getAuth } from "firebase/auth/react-native";
 import { authService } from "../../firebase";
 import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import useColorScheme from "react-native/Libraries/Utilities/useColorScheme";
 
 export default function DetailContent({ book }) {
   //async경고 무시
@@ -193,7 +194,7 @@ export default function DetailContent({ book }) {
     readBook: true,
     bookUUID: bookUUID,
   };
-
+  const isDark = useColorScheme() === "dark";
   //
   return (
     <>
@@ -221,7 +222,11 @@ export default function DetailContent({ book }) {
           </DetailContentIconTouchableOpacity>
         ) : (
           <DetailContentIconTouchableOpacity onPress={setRead}>
-            <AntDesign name="hearto" size={16} color="black" />
+            <AntDesign
+              name="hearto"
+              size={16}
+              color={isDark === false ? "black" : "white"}
+            />
           </DetailContentIconTouchableOpacity>
         )}
 
@@ -237,7 +242,11 @@ export default function DetailContent({ book }) {
             </DetailContentIconTouchableOpacity>
           ) : (
             <DetailContentIconTouchableOpacity onPress={setBookMark}>
-              <Ionicons name="bookmark-outline" size={18} color="black" />
+              <Ionicons
+                name="bookmark-outline"
+                size={18}
+                color={isDark === false ? "black" : "white"}
+              />
             </DetailContentIconTouchableOpacity>
           )}
         </DetailContentIconTouchableOpacity>
