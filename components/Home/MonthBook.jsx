@@ -5,6 +5,7 @@ import BookBox from "./BookBox";
 import { useQuery } from "react-query";
 import { getApiRecentBooks, getBestSeller } from "../../util/api";
 import { FlatList } from "react-native";
+
 export default function MonthBook() {
   // 신간도서
   const { data: recentBooks, isLoading: isLoadingRB } = useQuery(
@@ -28,7 +29,7 @@ export default function MonthBook() {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
           paddingVertical: 15,
-          paddingHorizontal: 20,
+          paddingHorizontal: 15,
           height: 250,
         }}
         data={recentBooks?.item}
@@ -54,4 +55,5 @@ const ListTitle = styled.Text`
   margin-left: 20px;
   font-size: 20px;
   font-weight: 500;
+  color: ${(props) => props.theme.text};
 `;

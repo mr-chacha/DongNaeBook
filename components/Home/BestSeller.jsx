@@ -28,7 +28,7 @@ export default function BestSeller() {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
           paddingVertical: 15,
-          paddingHorizontal: 20,
+          paddingHorizontal: 15,
           height: 250,
         }}
         data={bestSeller?.item}
@@ -53,4 +53,5 @@ const ListTitle = styled.Text`
   margin-left: 20px;
   font-size: 20px;
   font-weight: 500;
+  color: ${(props) => props.theme.text};
 `;
