@@ -4,17 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { useState } from 'react';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../util/Dimension';
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-} from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { getAuth } from 'firebase/auth';
 import { uuidv4 } from '@firebase/util';
@@ -45,11 +35,7 @@ export default function Review({ bookId, bookTitle, bookImage }) {
   // 파이어베이스에서 댓글 불러오기
   // bookId === bookId 만족하는 것들만 가져와라
   useEffect(() => {
-    const q = query(
-      collection(db, 'reviews'),
-      where('bookId', '==', bookId),
-      orderBy('createdDate', 'desc')
-    );
+    const q = query(collection(db, 'reviews'), where('bookId', '==', bookId), orderBy('createdDate', 'desc'));
 
     onSnapshot(q, (snapshot) => {
       const reviews = snapshot.docs.map((doc) => {
@@ -158,26 +144,9 @@ export default function Review({ bookId, bookTitle, bookImage }) {
       <ReviewInputBox>
         <ReviewTitleRateBox>
           <ReviewTitle>책 리뷰</ReviewTitle>
-          <Rating
-            startingValue={0}
-            ratingCount={5}
-            imageSize={18}
-            type='custom'
-            ratingBackgroundColor='#d6d5d2'
-            jumpValue={0.5}
-            fractions={1}
-            tintColor='#F2F2F2'
-            onFinishRating={handleRatings}
-          />
+          <Rating startingValue={0} ratingCount={5} imageSize={18} type='custom' ratingBackgroundColor='#d6d5d2' jumpValue={0.5} fractions={1} tintColor='#F2F2F2' onFinishRating={handleRatings} />
         </ReviewTitleRateBox>
-        <ReviewTextInput
-          maxLength={100}
-          multiline={true}
-          placeholder='100자 이내로 코멘트를 남겨주세요'
-          scrollEnabled={false}
-          value={newComment}
-          onChangeText={handleNewComment}
-        />
+        <ReviewTextInput maxLength={100} multiline={true} placeholder='100자 이내로 코멘트를 남겨주세요' scrollEnabled={false} value={newComment} onChangeText={handleNewComment} />
         <ReviewSubmitBtn onPress={addReview}>
           <SubmitText>등록하기</SubmitText>
         </ReviewSubmitBtn>
@@ -206,90 +175,56 @@ export default function Review({ bookId, bookTitle, bookImage }) {
               onPress={() => {
                 handleModalOpen();
                 setReviewId(review.id);
-              }}>
-              <MaterialCommunityIcons
-                name='dots-vertical'
-                size={24}
-                color='black'
-              />
+              }}
+            >
+              <MaterialCommunityIcons name='dots-vertical' size={24} color='black' />
             </IconBox>
           </CommentBox>
         ))}
       </ComnnetContainner>
 
-      <ModifyModal
-        visible={isModify}
-        transparent
-        animationType='slide'>
+      <ModifyModal visible={isModify} transparent animationType='slide'>
         <FakeView></FakeView>
         <ModifyBox>
           <MenuBox>
             <MenuWrapper>
               <RewriteMenu>
-                <AntDesign
-                  name='edit'
-                  size={24}
-                  color='black'
-                />
+                <AntDesign name='edit' size={24} color='black' />
                 <MenuName>수정하기</MenuName>
               </RewriteMenu>
               <DeleteMenu
                 onPress={() => {
                   deleteReview(reviewId);
-                }}>
-                <AntDesign
-                  name='delete'
-                  size={24}
-                  color='black'
-                />
+                }}
+              >
+                <AntDesign name='delete' size={24} color='black' />
                 <MenuName>삭제하기</MenuName>
               </DeleteMenu>
             </MenuWrapper>
 
             <CloseBox onPress={handleModalClose}>
-              <AntDesign
-                name='close'
-                size={24}
-                color='black'
-              />
+              <AntDesign name='close' size={24} color='black' />
             </CloseBox>
           </MenuBox>
         </ModifyBox>
       </ModifyModal>
 
-      <Toast
-        backgroundColor='#21d210'
-        opacity={1}
-        position={0}
-        visible={isToastOpen}>
+      <Toast backgroundColor='#21d210' opacity={1} position={0} visible={isToastOpen}>
         <ToastView>
           <ToastText>💌 리뷰가 등록됐어요 !</ToastText>
         </ToastView>
       </Toast>
-      <Toast
-        backgroundColor='#ffe600'
-        opacity={1}
-        position={0}
-        visible={isValid}>
+      <Toast backgroundColor='#ffe600' opacity={1} position={0} visible={isValid}>
         <ToastView>
           <ToastText1>😅 리뷰를 작성하지 않았어요</ToastText1>
         </ToastView>
       </Toast>
-      <Toast
-        backgroundColor='#ff0400'
-        opacity={1}
-        position={0}
-        visible={isRated}
-        delay={3}>
+      <Toast backgroundColor='#ff0400' opacity={1} position={0} visible={isRated} delay={3}>
         <ToastView>
           <ToastText2>😅 별점을 입력하지 않았어요</ToastText2>
         </ToastView>
       </Toast>
-      <Toast
-        backgroundColor='#ff0400'
-        opacity={1}
-        position={0}
-        visible={isCommented}>
+      <Toast backgroundColor='#ff0400' opacity={1} position={0} visible={isCommented}>
         <ToastView>
           <ToastText3>😅 코멘트를 입력하지 않았어요</ToastText3>
         </ToastView>

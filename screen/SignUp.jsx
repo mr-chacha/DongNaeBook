@@ -64,6 +64,7 @@ export default function SignUp({ navigation }) {
           id: generateId,
           uid: authService.currentUser.uid,
           email: email,
+          profileImg: 'https://firebasestorage.googleapis.com/v0/b/dongnaebook-2dd14.appspot.com/o/BasicProfile.jpeg?alt=media&token=4196a2a2-dffc-4dbe-90b7-45bdefe20c2b',
         });
         navigation.navigate('Home');
       })
