@@ -48,7 +48,7 @@ export default function CategoryList2() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <MiddleButtonAll onPress={() => getCategoryKey(item)}>
-            <MiddleButtonText key={item}>{item}</MiddleButtonText>
+            <MiddleButtonText>{item}</MiddleButtonText>
           </MiddleButtonAll>
         )}
         ItemSeparatorComponent={<View style={{}} />}
