@@ -34,6 +34,8 @@ export default function TmpHome() {
   );
 }
 
+///////이런젠장
+
 // const Safe = styled.SafeAreaView``;
 const ApplicationTitle = styled.Text`
   font-size: 35px;
