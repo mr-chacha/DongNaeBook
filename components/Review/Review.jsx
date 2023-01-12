@@ -210,6 +210,7 @@ export default function Review({ bookId, bookTitle, bookImage }) {
       comment: editedComment,
       isEdit: false,
     });
+    setEditedComment('')
     setIsEditToast(true);
     setTimeout(() => {
       setIsEditToast(false);
