@@ -204,33 +204,37 @@ export default function Review({ bookId, bookTitle, bookImage }) {
 
   return (
     <Reviewcontainner>
-      <ReviewInputBox>
-        <ReviewTitleRateBox>
-          <ReviewTitle>책 리뷰</ReviewTitle>
-          <Rating
-            startingValue={0}
-            ratingCount={5}
-            imageSize={18}
-            type='custom'
-            ratingBackgroundColor='#d6d5d2'
-            jumpValue={0.5}
-            fractions={1}
-            tintColor='#F2F2F2'
-            onFinishRating={handleRatings}
+      {!currentUser ? (
+        <></>
+      ) : (
+        <ReviewInputBox>
+          <ReviewTitleRateBox>
+            <ReviewTitle>책 리뷰</ReviewTitle>
+            <Rating
+              startingValue={0}
+              ratingCount={5}
+              imageSize={18}
+              type='custom'
+              ratingBackgroundColor='#d6d5d2'
+              jumpValue={0.5}
+              fractions={1}
+              tintColor='#F2F2F2'
+              onFinishRating={handleRatings}
+            />
+          </ReviewTitleRateBox>
+          <ReviewTextInput
+            maxLength={100}
+            multiline={true}
+            placeholder='100자 이내로 코멘트를 남겨주세요'
+            scrollEnabled={false}
+            value={newComment}
+            onChangeText={handleNewComment}
           />
-        </ReviewTitleRateBox>
-        <ReviewTextInput
-          maxLength={100}
-          multiline={true}
-          placeholder='100자 이내로 코멘트를 남겨주세요'
-          scrollEnabled={false}
-          value={newComment}
-          onChangeText={handleNewComment}
-        />
-        <ReviewSubmitBtn onPress={addReview}>
-          <SubmitText>등록하기</SubmitText>
-        </ReviewSubmitBtn>
-      </ReviewInputBox>
+          <ReviewSubmitBtn onPress={addReview}>
+            <SubmitText>등록하기</SubmitText>
+          </ReviewSubmitBtn>
+        </ReviewInputBox>
+      )}
 
       <ComnnetContainner>
         {reviewList.map((review) => (
