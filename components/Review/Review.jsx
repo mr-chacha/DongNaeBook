@@ -39,6 +39,16 @@ export default function Review({ bookId, bookTitle, bookImage }) {
   const [reviewId, setReviewId] = useState('');
   const [editModalOpen, setEditModalOpen] = useState(false);
 
+  // 리뷰 수정 스테이트
+  const [reviewRating, setReviewRating] = useState(0);
+  const [reviewComment, setReviewComment] = useState('');
+
+  const [editRatings, setEditRatings] = useState(0);
+  const [editedComment, setEditedComment] = useState('');
+
+  console.log('editRatings', editRatings);
+  console.log('editedComment', editedComment);
+
   useEffect(() => {
     if (!currentUser) return;
     getUserInfo();
@@ -89,6 +99,16 @@ export default function Review({ bookId, bookTitle, bookImage }) {
   // 수정 에디터 모달 닫기 함수
   const handleEditModalClose = () => {
     setEditModalOpen(false);
+  };
+
+  // 수정 별점 핸들링 함수
+  const handleEditRatings = (rating) => {
+    setEditRatings(rating);
+  };
+
+  // 수정 코멘트 핸들링 함수
+  const handleEditedComment = (editedcomment) => {
+    setEditedComment(editedcomment);
   };
 
   //별점 핸들링 함수
@@ -172,6 +192,16 @@ export default function Review({ bookId, bookTitle, bookImage }) {
     });
   };
 
+  const editReview = async (reviewId) => {
+    console.log('수정 실행');
+    console.log(reviewId);
+    await updateDoc(doc(db, 'reviews', reviewId), {
+      rating: editRatings,
+      comment: editedComment,
+      isEdit: false,
+    });
+  };
+
   return (
     <Reviewcontainner>
       <ReviewInputBox>
@@ -225,6 +255,9 @@ export default function Review({ bookId, bookTitle, bookImage }) {
               onPress={() => {
                 handleModalOpen();
                 setReviewId(review.id);
+                //
+                setReviewRating(review.rating);
+                setReviewComment(review.comment);
               }}>
               <MaterialCommunityIcons
                 name='dots-vertical'
@@ -291,7 +324,7 @@ export default function Review({ bookId, bookTitle, bookImage }) {
             <EditInputBox>
               <EditTitleRateBox>
                 <Rating
-                  startingValue={0}
+                  startingValue={reviewRating}
                   ratingCount={5}
                   imageSize={18}
                   type='custom'
@@ -299,15 +332,21 @@ export default function Review({ bookId, bookTitle, bookImage }) {
                   jumpValue={0.5}
                   fractions={1}
                   tintColor='#F2F2F2'
-                  onFinishRating={handleRatings}
+                  onFinishRating={handleEditRatings}
                 />
               </EditTitleRateBox>
               <EditTextInput
                 maxLength={100}
                 multiline={true}
                 scrollEnabled={false}
+                placeholder={reviewComment}
+                value={editedComment}
+                onChangeText={handleEditedComment}
               />
-              <EditSubmitBtn>
+              <EditSubmitBtn
+                onPress={() => {
+                  editReview(reviewId);
+                }}>
                 <EditSubmitText>수정하기</EditSubmitText>
               </EditSubmitBtn>
             </EditInputBox>
