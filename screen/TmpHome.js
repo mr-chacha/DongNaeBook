@@ -4,7 +4,6 @@ import BestSeller from "../components/Home/BestSeller";
 import MonthBook from "../components/Home/MonthBook";
 import Banner from "../components/Home/Banner";
 import styled from "@emotion/native";
-import { StatusBar } from "expo-status-bar";
 import logo from "../assets/logo.png";
 import CategoryList2 from "../components/Home/CategoryList2";
 import Switch from "expo-dark-mode-switch";
