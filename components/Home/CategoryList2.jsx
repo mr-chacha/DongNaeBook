@@ -1,32 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
-import CategoryList from "./CategoryList";
-import uuid from "react-native-uuid";
-import styled, { css } from "@emotion/native";
-import { SCREEN_HEIGHT } from "../../util/test";
-import { useQuery } from "react-query";
-import { getApiRecentBooks, getBestSeller } from "../../util/api";
+import React, { useState, useEffect } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
+import CategoryList from './CategoryList';
+import uuid from 'react-native-uuid';
+import styled, { css } from '@emotion/native';
+import { SCREEN_HEIGHT } from '../../util/test';
+import { useQuery } from 'react-query';
+import { getApiRecentBooks, getBestSeller } from '../../util/api';
 
 const categoryName = [
-  "전체보기",
-  "인문 / 사회",
-  "소설 / 에세이",
-  "경영 / 경제",
-  "자기계발",
-  "수험서",
-  "역사 / 문화",
+  '전체보기',
+  '인문 / 사회',
+  '소설 / 에세이',
+  '경영 / 경제',
+  '자기계발',
+  '수험서',
+  '역사 / 문화',
 ];
-const categoryId = ["전체보기", "119", "101", "117", "118", "123", "105"];
+const categoryId = ['전체보기', '119', '101', '117', '118', '123', '105'];
 
 export default function CategoryList2() {
   // 베스트셀러
-  const { data: catBooks, isLoading: isLoadingSD } = useQuery(
-    "catBooks",
-    getBestSeller
-  );
+  const { data: catBooks, isLoading: isLoadingSD } = useQuery('catBooks', getBestSeller);
 
   // state
-  const [currentCategory, setCurrentCategory] = useState("전체보기");
+  const [currentCategory, setCurrentCategory] = useState('전체보기');
 
   const getCategoryKey = (category) => {
     // 인문/사회
@@ -34,9 +31,7 @@ export default function CategoryList2() {
     setCurrentCategory(categoryId[findIndex]); // 110
   };
   // Filter를 걸어놓은 카테고리변수선언
-  const Filter = catBooks?.item.filter(
-    (data) => data.categoryId === currentCategory
-  );
+  const Filter = catBooks?.item.filter((data) => data.categoryId === currentCategory);
 
   return (
     <View>
@@ -48,13 +43,13 @@ export default function CategoryList2() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <MiddleButtonAll onPress={() => getCategoryKey(item)}>
-            <MiddleButtonText key={item}>{item}</MiddleButtonText>
+            <MiddleButtonText>{item}</MiddleButtonText>
           </MiddleButtonAll>
         )}
         ItemSeparatorComponent={<View style={{}} />}
       />
 
-      {currentCategory === "전체보기" ? (
+      {currentCategory === '전체보기' ? (
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -66,7 +61,10 @@ export default function CategoryList2() {
           data={catBooks?.item}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <CategoryList books={item} key={uuid.v4()} />
+            <CategoryList
+              books={item}
+              key={uuid.v4()}
+            />
           )}
           ItemSeparatorComponent={<View style={{ width: 20 }} />}
         />
@@ -82,7 +80,10 @@ export default function CategoryList2() {
           data={Filter}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <CategoryList books={item} key={uuid.v4()} />
+            <CategoryList
+              books={item}
+              key={uuid.v4()}
+            />
           )}
           ItemSeparatorComponent={<View style={{ width: 20 }} />}
         />

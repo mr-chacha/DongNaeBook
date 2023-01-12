@@ -1,9 +1,9 @@
-import styled from '@emotion/native';
-import { Rating } from 'react-native-ratings';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { useState } from 'react';
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../util/Dimension';
+import styled from "@emotion/native";
+import { Rating } from "react-native-ratings";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+import { useState } from "react";
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../../util/Dimension";
 import {
   addDoc,
   collection,
@@ -15,15 +15,16 @@ import {
   query,
   updateDoc,
   where,
-} from 'firebase/firestore';
-import { db } from '../../firebase';
-import { getAuth } from 'firebase/auth';
-import { uuidv4 } from '@firebase/util';
-import { now } from '../../util/date';
-import { useEffect } from 'react';
-import Toast from 'react-native-root-toast';
-import { Alert, View } from 'react-native';
-
+} from "firebase/firestore";
+import { db } from "../../firebase";
+import { getAuth } from "firebase/auth";
+import { uuidv4 } from "@firebase/util";
+import { now } from "../../util/date";
+import { useEffect } from "react";
+import Toast from "react-native-root-toast";
+import { Alert, useColorScheme, View } from "react-native";
+import Switch from "expo-dark-mode-switch";
+import React from "react";
 export default function Review({ bookId, bookTitle, bookImage }) {
   const currentUser = getAuth().currentUser;
 
@@ -32,22 +33,22 @@ export default function Review({ bookId, bookTitle, bookImage }) {
   const [isValid, setIsValid] = useState(false);
   const [isRated, setIsRated] = useState(false);
   const [isCommented, setIsCommented] = useState(false);
+  const [isDeleteToast, setIsDeleteToast] = useState(false);
+  const [isEditToast, setIsEditToast] = useState(false);
+
   const [ratings, setRatings] = useState(0);
-  const [newComment, setNewComment] = useState('');
-  const [nickName, setNickName] = useState('');
+  const [newComment, setNewComment] = useState("");
+  const [nickName, setNickName] = useState("");
   const [reviewList, setReviewList] = useState([]);
-  const [reviewId, setReviewId] = useState('');
+  const [reviewId, setReviewId] = useState("");
   const [editModalOpen, setEditModalOpen] = useState(false);
 
   // 리뷰 수정 스테이트
   const [reviewRating, setReviewRating] = useState(0);
-  const [reviewComment, setReviewComment] = useState('');
+  const [reviewComment, setReviewComment] = useState("");
 
   const [editRatings, setEditRatings] = useState(0);
-  const [editedComment, setEditedComment] = useState('');
-
-  console.log('editRatings', editRatings);
-  console.log('editedComment', editedComment);
+  const [editedComment, setEditedComment] = useState("");
 
   useEffect(() => {
     if (!currentUser) return;
@@ -58,9 +59,9 @@ export default function Review({ bookId, bookTitle, bookImage }) {
   // bookId === bookId 만족하는 것들만 가져와라
   useEffect(() => {
     const q = query(
-      collection(db, 'reviews'),
-      where('bookId', '==', bookId),
-      orderBy('createdDate', 'desc')
+      collection(db, "reviews"),
+      where("bookId", "==", bookId),
+      orderBy("createdDate", "desc")
     );
 
     onSnapshot(q, (snapshot) => {
@@ -76,7 +77,10 @@ export default function Review({ bookId, bookTitle, bookImage }) {
   }, []);
 
   const getUserInfo = async () => {
-    const q = await query(collection(db, 'users'), where('uid', '==', currentUser.uid));
+    const q = await query(
+      collection(db, "users"),
+      where("uid", "==", currentUser.uid)
+    );
     getDocs(q).then((querySnapshot) => {
       const user = [];
       querySnapshot.forEach((doc) => {
@@ -85,8 +89,6 @@ export default function Review({ bookId, bookTitle, bookImage }) {
       setNickName(user[0].nickName);
     });
   };
-
-  //! 로그인 예외처리하기, 댓글 순서 수정하기
 
   // 수정 / 삭제 모달 오픈 함수
   const handleModalOpen = () => {
@@ -141,7 +143,7 @@ export default function Review({ bookId, bookTitle, bookImage }) {
         setIsCommented(false);
       }, 2000);
     } else {
-      await addDoc(collection(db, 'reviews'), {
+      await addDoc(collection(db, "reviews"), {
         comment: newComment,
         rating: ratings,
         commentId: uuidv4(),
@@ -156,7 +158,7 @@ export default function Review({ bookId, bookTitle, bookImage }) {
       });
       // 등록 시 별점은 어떻게 초기화시키지? (Rating 컴포넌트만 리렌더링 해줘야 하나?)
       setRatings(0);
-      setNewComment('');
+      setNewComment("");
       setIsToastOpen(true);
       setTimeout(() => {
         setIsToastOpen(false);
@@ -167,15 +169,19 @@ export default function Review({ bookId, bookTitle, bookImage }) {
   // 코멘트 삭제 함수
   // 이걸 적은 사람만 삭제할 수 있어야 함
   const deleteReview = (reviewId) => {
-    Alert.alert('리뷰를 삭제합니다', '정말 삭제하시겠어요?', [
+    Alert.alert("리뷰를 삭제합니다", "정말 삭제하시겠어요?", [
       {
-        text: '아니요',
+        text: "아니요",
       },
       {
-        text: '삭제',
+        text: "삭제",
         onPress: async () => {
           await deleteDoc(doc(db, 'reviews', reviewId));
           console.log('id', reviewId);
+          setIsDeleteToast(true);
+          setTimeout(() => {
+            setIsDeleteToast(false);
+          }, 2000);
         },
       },
     ]);
@@ -187,50 +193,58 @@ export default function Review({ bookId, bookTitle, bookImage }) {
   // 수정할 수 있도록 해줘야겠다.
   const setEdit = async (reviewId) => {
     const target = reviewList.findIndex((review) => review.id === reviewId);
-    await updateDoc(doc(db, 'reviews', reviewId), {
+    await updateDoc(doc(db, "reviews", reviewId), {
       isEdit: !reviewList[target].isEdit,
     });
   };
 
   const editReview = async (reviewId) => {
-    console.log('수정 실행');
-    console.log(reviewId);
-    await updateDoc(doc(db, 'reviews', reviewId), {
+    await updateDoc(doc(db, "reviews", reviewId), {
       rating: editRatings,
       comment: editedComment,
       isEdit: false,
     });
+    setEditedComment('')
+    setIsEditToast(true);
+    setTimeout(() => {
+      setIsEditToast(false);
+    }, 2000);
   };
+  const isDark = useColorScheme() === "dark";
 
   return (
     <Reviewcontainner>
-      <ReviewInputBox>
-        <ReviewTitleRateBox>
-          <ReviewTitle>책 리뷰</ReviewTitle>
-          <Rating
-            startingValue={0}
-            ratingCount={5}
-            imageSize={18}
-            type='custom'
-            ratingBackgroundColor='#d6d5d2'
-            jumpValue={0.5}
-            fractions={1}
-            tintColor='#F2F2F2'
-            onFinishRating={handleRatings}
+      {!currentUser ? (
+        <></>
+      ) : (
+        <ReviewInputBox>
+          <ReviewTitleRateBox>
+            <ReviewTitle>책 리뷰</ReviewTitle>
+            <Rating
+              startingValue={0}
+              ratingCount={5}
+              imageSize={18}
+              type='custom'
+              ratingBackgroundColor='#d6d5d2'
+              jumpValue={0.5}
+              fractions={1}
+              tintColor={isDark === false ? "#f3f3f3" : "black"}
+              onFinishRating={handleRatings}
+            />
+          </ReviewTitleRateBox>
+          <ReviewTextInput
+            maxLength={100}
+            multiline={true}
+            placeholder='100자 이내로 코멘트를 남겨주세요'
+            scrollEnabled={false}
+            value={newComment}
+            onChangeText={handleNewComment}
           />
-        </ReviewTitleRateBox>
-        <ReviewTextInput
-          maxLength={100}
-          multiline={true}
-          placeholder='100자 이내로 코멘트를 남겨주세요'
-          scrollEnabled={false}
-          value={newComment}
-          onChangeText={handleNewComment}
-        />
-        <ReviewSubmitBtn onPress={addReview}>
-          <SubmitText>등록하기</SubmitText>
-        </ReviewSubmitBtn>
-      </ReviewInputBox>
+          <ReviewSubmitBtn onPress={addReview}>
+            <SubmitText>등록하기</SubmitText>
+          </ReviewSubmitBtn>
+        </ReviewInputBox>
+      )}
 
       <ComnnetContainner>
         {reviewList.map((review) => (
@@ -238,7 +252,7 @@ export default function Review({ bookId, bookTitle, bookImage }) {
             <ProfileImgBox>
               <ProfileImg
                 source={{
-                  uri: 'https://img.extmovie.com/files/attach/images/135/286/386/076/02197f8e7c1fe5257dd98ecf223475e6.jpg',
+                  uri: "https://img.extmovie.com/files/attach/images/135/286/386/076/02197f8e7c1fe5257dd98ecf223475e6.jpg",
                 }}
               />
             </ProfileImgBox>
@@ -252,27 +266,26 @@ export default function Review({ bookId, bookTitle, bookImage }) {
               <Desc>{review.comment}</Desc>
             </Commentbody>
             <IconBox
+              disabled={currentUser?.uid !== review.creatorId}
               onPress={() => {
                 handleModalOpen();
                 setReviewId(review.id);
                 //
                 setReviewRating(review.rating);
                 setReviewComment(review.comment);
-              }}>
+              }}
+            >
               <MaterialCommunityIcons
-                name='dots-vertical'
+                name="dots-vertical"
                 size={24}
-                color='black'
+                color="black"
               />
             </IconBox>
           </CommentBox>
         ))}
       </ComnnetContainner>
 
-      <ModifyModal
-        visible={isModify}
-        transparent
-        animationType='slide'>
+      <ModifyModal visible={isModify} transparent animationType="slide">
         <FakeView></FakeView>
         <ModifyBox>
           <MenuBox>
@@ -282,43 +295,30 @@ export default function Review({ bookId, bookTitle, bookImage }) {
                   setIsModify(false);
                   setEditModalOpen(true);
                   setEdit(reviewId);
-                }}>
-                <AntDesign
-                  name='edit'
-                  size={24}
-                  color='black'
-                />
+                }}
+              >
+                <AntDesign name="edit" size={24} color="black" />
                 <MenuName>수정하기</MenuName>
               </RewriteMenu>
               <DeleteMenu
                 onPress={() => {
                   deleteReview(reviewId);
                   setIsModify(false);
-                }}>
-                <AntDesign
-                  name='delete'
-                  size={24}
-                  color='black'
-                />
+                }}
+              >
+                <AntDesign name="delete" size={24} color="black" />
                 <MenuName>삭제하기</MenuName>
               </DeleteMenu>
             </MenuWrapper>
 
             <CloseBox onPress={handleModalClose}>
-              <AntDesign
-                name='close'
-                size={24}
-                color='black'
-              />
+              <AntDesign name="close" size={24} color="black" />
             </CloseBox>
           </MenuBox>
         </ModifyBox>
       </ModifyModal>
 
-      <EditModal
-        visible={editModalOpen}
-        animationType='slide'
-        transparent>
+      <EditModal visible={editModalOpen} animationType="slide" transparent>
         <EditModalBackdrop>
           <EditModalView>
             <EditInputBox>
@@ -327,11 +327,11 @@ export default function Review({ bookId, bookTitle, bookImage }) {
                   startingValue={reviewRating}
                   ratingCount={5}
                   imageSize={18}
-                  type='custom'
-                  ratingBackgroundColor='#d6d5d2'
+                  type="custom"
+                  ratingBackgroundColor="#d6d5d2"
                   jumpValue={0.5}
                   fractions={1}
-                  tintColor='#F2F2F2'
+                  tintColor="#F2F2F2"
                   onFinishRating={handleEditRatings}
                 />
               </EditTitleRateBox>
@@ -346,54 +346,76 @@ export default function Review({ bookId, bookTitle, bookImage }) {
               <EditSubmitBtn
                 onPress={() => {
                   editReview(reviewId);
+                  handleEditModalClose();
                 }}>
                 <EditSubmitText>수정하기</EditSubmitText>
               </EditSubmitBtn>
             </EditInputBox>
             <EditClose onPress={handleEditModalClose}>
-              <AntDesign
-                name='close'
-                size={24}
-                color='black'
-              />
+              <AntDesign name="close" size={24} color="black" />
             </EditClose>
           </EditModalView>
         </EditModalBackdrop>
       </EditModal>
 
       <Toast
-        backgroundColor='#21d210'
+        backgroundColor="#21d210"
         opacity={1}
         position={0}
-        visible={isToastOpen}>
+        visible={isToastOpen}
+      >
         <ToastView>
           <ToastText>💌 리뷰가 등록됐어요 !</ToastText>
         </ToastView>
       </Toast>
+
       <Toast
-        backgroundColor='#ffe600'
+        backgroundColor='#21d210'
         opacity={1}
         position={0}
-        visible={isValid}>
+        visible={isDeleteToast}>
+        <ToastView>
+          <DeleteToastText>🗑️ 삭제 완료</DeleteToastText>
+        </ToastView>
+      </Toast>
+
+      <Toast
+        backgroundColor='#21d210'
+        opacity={1}
+        position={0}
+        visible={isEditToast}>
+        <ToastView>
+          <EditToastText>✍️ 수정 완료</EditToastText>
+        </ToastView>
+      </Toast>
+
+      <Toast
+        backgroundColor="#ffe600"
+        opacity={1}
+        position={0}
+        visible={isValid}
+      >
         <ToastView>
           <ToastText1>😅 리뷰를 작성하지 않았어요</ToastText1>
         </ToastView>
       </Toast>
       <Toast
-        backgroundColor='#ff0400'
+        backgroundColor="#ff0400"
         opacity={1}
         position={0}
         visible={isRated}
-        delay={3}>
+        delay={3}
+      >
         <ToastView>
           <ToastText2>😅 별점을 입력하지 않았어요</ToastText2>
         </ToastView>
       </Toast>
       <Toast
-        backgroundColor='#ff0400'
+        backgroundColor="#ff0400"
         opacity={1}
         position={0}
-        visible={isCommented}>
+        visible={isCommented}
+      >
         <ToastView>
           <ToastText3>😅 코멘트를 입력하지 않았어요</ToastText3>
         </ToastView>
@@ -412,7 +434,7 @@ const EditModalBackdrop = styled.View`
 const EditModalView = styled.View`
   padding: 20px;
   width: ${SCREEN_WIDTH};
-  margin-top: ${SCREEN_HEIGHT / 3 + 'px'};
+  margin-top: ${SCREEN_HEIGHT / 3 + "px"};
 `;
 
 const EditInputBox = styled.View``;
@@ -425,7 +447,7 @@ const EditTitleRateBox = styled.View`
 const EditTextInput = styled.TextInput`
   background-color: white;
   border-radius: 10px;
-  height: ${SCREEN_HEIGHT / 9 + 'px'};
+  height: ${SCREEN_HEIGHT / 9 + "px"};
   font-size: 15px;
   padding: 10px;
 `;
@@ -443,7 +465,7 @@ const EditClose = styled.TouchableOpacity`
 
 //
 const ToastView = styled.View`
-  width: ${SCREEN_WIDTH / 1.4 + 'px'};
+  width: ${SCREEN_WIDTH / 1.4 + "px"};
   height: 30px;
   padding-top: 7px;
   justify-content: center;
@@ -452,6 +474,18 @@ const ToastView = styled.View`
 `;
 
 const ToastText = styled.Text`
+  color: #000000;
+  font-size: 18px;
+  font-weight: 700;
+`;
+
+const DeleteToastText = styled.Text`
+  color: #000000;
+  font-size: 18px;
+  font-weight: 700;
+`;
+
+const EditToastText = styled.Text`
   color: #000000;
   font-size: 18px;
   font-weight: 700;
@@ -530,12 +564,13 @@ const ReviewTitle = styled.Text`
   font-size: 20px;
   font-weight: 700;
   margin-right: 10px;
+  color: ${(props) => props.theme.text};
 `;
 
 const ReviewTextInput = styled.TextInput`
   background-color: white;
   border-radius: 10px;
-  height: ${SCREEN_HEIGHT / 9 + 'px'};
+  height: ${SCREEN_HEIGHT / 9 + "px"};
   font-size: 15px;
   padding: 10px;
 `;
@@ -545,6 +580,7 @@ const ReviewSubmitBtn = styled.TouchableOpacity``;
 const SubmitText = styled.Text`
   align-self: flex-end;
   padding: 10px;
+  color: ${(props) => props.theme.text};
 `;
 
 // 댓글 관련
@@ -555,7 +591,7 @@ const ComnnetContainner = styled.ScrollView`
 `;
 
 const CommentBox = styled.View`
-  height: ${SCREEN_HEIGHT / 6 + 'px'};
+  height: ${SCREEN_HEIGHT / 6 + "px"};
   width: 100%;
   flex-direction: row;
   justify-content: center;
@@ -601,7 +637,7 @@ const CreatedDate = styled.Text`
 `;
 
 const Desc = styled.Text`
-  width: ${SCREEN_WIDTH / 1.5 + 'px'};
+  width: ${SCREEN_WIDTH / 1.5 + "px"};
 `;
 
 const IconBox = styled.TouchableOpacity``;
