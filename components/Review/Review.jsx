@@ -13,6 +13,7 @@ import {
   onSnapshot,
   orderBy,
   query,
+  updateDoc,
   where,
 } from 'firebase/firestore';
 import { db } from '../../firebase';
@@ -21,7 +22,7 @@ import { uuidv4 } from '@firebase/util';
 import { now } from '../../util/date';
 import { useEffect } from 'react';
 import Toast from 'react-native-root-toast';
-import { Alert } from 'react-native';
+import { Alert, View } from 'react-native';
 
 export default function Review({ bookId, bookTitle, bookImage }) {
   const currentUser = getAuth().currentUser;
@@ -36,6 +37,7 @@ export default function Review({ bookId, bookTitle, bookImage }) {
   const [nickName, setNickName] = useState('');
   const [reviewList, setReviewList] = useState([]);
   const [reviewId, setReviewId] = useState('');
+  const [editModalOpen, setEditModalOpen] = useState(false);
 
   useEffect(() => {
     if (!currentUser) return;
@@ -76,7 +78,7 @@ export default function Review({ bookId, bookTitle, bookImage }) {
 
   //! 로그인 예외처리하기, 댓글 순서 수정하기
 
-  // 모달 오픈 함수
+  // 수정 / 삭제 모달 오픈 함수
   const handleModalOpen = () => {
     setIsModify(true);
   };
@@ -84,12 +86,17 @@ export default function Review({ bookId, bookTitle, bookImage }) {
     setIsModify(false);
   };
 
-  //별점 등록 함수
+  // 수정 에디터 모달 닫기 함수
+  const handleEditModalClose = () => {
+    setEditModalOpen(false);
+  };
+
+  //별점 핸들링 함수
   const handleRatings = (rating) => {
     setRatings(rating);
   };
 
-  // 코멘트 등록 함수
+  // 코멘트 핸들링 함수
   const handleNewComment = (comment) => {
     setNewComment(comment);
   };
@@ -125,6 +132,7 @@ export default function Review({ bookId, bookTitle, bookImage }) {
         bookId: bookId,
         bookTitle: bookTitle,
         bookImage: bookImage,
+        isEdit: false,
       });
       // 등록 시 별점은 어떻게 초기화시키지? (Rating 컴포넌트만 리렌더링 해줘야 하나?)
       setRatings(0);
@@ -151,6 +159,17 @@ export default function Review({ bookId, bookTitle, bookImage }) {
         },
       },
     ]);
+  };
+
+  // 코멘트 수정 함수
+  // 수정 모달을 하나 만들고
+  // 거기에 기존값들은 전달해준 다음
+  // 수정할 수 있도록 해줘야겠다.
+  const setEdit = async (reviewId) => {
+    const target = reviewList.findIndex((review) => review.id === reviewId);
+    await updateDoc(doc(db, 'reviews', reviewId), {
+      isEdit: !reviewList[target].isEdit,
+    });
   };
 
   return (
@@ -225,7 +244,12 @@ export default function Review({ bookId, bookTitle, bookImage }) {
         <ModifyBox>
           <MenuBox>
             <MenuWrapper>
-              <RewriteMenu>
+              <RewriteMenu
+                onPress={() => {
+                  setIsModify(false);
+                  setEditModalOpen(true);
+                  setEdit(reviewId);
+                }}>
                 <AntDesign
                   name='edit'
                   size={24}
@@ -236,6 +260,7 @@ export default function Review({ bookId, bookTitle, bookImage }) {
               <DeleteMenu
                 onPress={() => {
                   deleteReview(reviewId);
+                  setIsModify(false);
                 }}>
                 <AntDesign
                   name='delete'
@@ -256,6 +281,46 @@ export default function Review({ bookId, bookTitle, bookImage }) {
           </MenuBox>
         </ModifyBox>
       </ModifyModal>
+
+      <EditModal
+        visible={editModalOpen}
+        animationType='slide'
+        transparent>
+        <EditModalBackdrop>
+          <EditModalView>
+            <EditInputBox>
+              <EditTitleRateBox>
+                <Rating
+                  startingValue={0}
+                  ratingCount={5}
+                  imageSize={18}
+                  type='custom'
+                  ratingBackgroundColor='#d6d5d2'
+                  jumpValue={0.5}
+                  fractions={1}
+                  tintColor='#F2F2F2'
+                  onFinishRating={handleRatings}
+                />
+              </EditTitleRateBox>
+              <EditTextInput
+                maxLength={100}
+                multiline={true}
+                scrollEnabled={false}
+              />
+              <EditSubmitBtn>
+                <EditSubmitText>수정하기</EditSubmitText>
+              </EditSubmitBtn>
+            </EditInputBox>
+            <EditClose onPress={handleEditModalClose}>
+              <AntDesign
+                name='close'
+                size={24}
+                color='black'
+              />
+            </EditClose>
+          </EditModalView>
+        </EditModalBackdrop>
+      </EditModal>
 
       <Toast
         backgroundColor='#21d210'
@@ -298,6 +363,45 @@ export default function Review({ bookId, bookTitle, bookImage }) {
   );
 }
 
+// 수정 모달
+const EditModal = styled.Modal``;
+const EditModalBackdrop = styled.View`
+  flex: 1;
+  background-color: #f2f2f2;
+`;
+
+const EditModalView = styled.View`
+  padding: 20px;
+  width: ${SCREEN_WIDTH};
+  margin-top: ${SCREEN_HEIGHT / 3 + 'px'};
+`;
+
+const EditInputBox = styled.View``;
+const EditTitleRateBox = styled.View`
+  margin-bottom: 20px;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const EditTextInput = styled.TextInput`
+  background-color: white;
+  border-radius: 10px;
+  height: ${SCREEN_HEIGHT / 9 + 'px'};
+  font-size: 15px;
+  padding: 10px;
+`;
+
+const EditSubmitBtn = styled.TouchableOpacity``;
+
+const EditSubmitText = styled.Text`
+  align-self: flex-end;
+  padding: 10px;
+`;
+
+const EditClose = styled.TouchableOpacity`
+  align-items: flex-start;
+`;
+
 //
 const ToastView = styled.View`
   width: ${SCREEN_WIDTH / 1.4 + 'px'};
@@ -332,7 +436,7 @@ const ToastText3 = styled.Text`
   font-weight: 700;
 `;
 
-//
+// 수정 / 삭제 모달
 const FakeView = styled.View`
   flex-direction: column-reverse;
   flex: 0.88;
