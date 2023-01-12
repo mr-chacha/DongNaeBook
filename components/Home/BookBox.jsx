@@ -45,7 +45,7 @@ export default function BookBox({ book }) {
   );
 }
 const BookBoxTouchableOpacity = styled.TouchableOpacity`
-  background: #fff;
+  background-color: ${(props) => props.theme.boxback};
   width: 120px;
   height: 215px;
   border-radius: 7px;
@@ -61,6 +61,7 @@ const BookBoxTitleText = styled.Text`
   font-size: 14px;
   margin: 10px 0 5px 10px;
   width: 90px;
+  color: ${(props) => props.theme.text};
 `;
 const BookBoxTextView = styled.View`
   display: flex;
@@ -72,10 +73,12 @@ const BookBoxNameText = styled.Text`
   margin-right: 5px;
   font-size: 10px;
   font-weight: 700;
+  color: ${(props) => props.theme.text};
 `;
 const BookBoxText = styled.Text`
   font-size: 10px;
   width: 70px;
+  color: ${(props) => props.theme.text};
 `;
 const BookImage = styled.Image`
   width: 100px;

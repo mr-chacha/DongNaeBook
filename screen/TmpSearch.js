@@ -38,7 +38,7 @@ export default function TmpSearch() {
   }, []);
 
   return (
-    <View style={{ backgroundColor: "white" }}>
+    <SearchBackGround>
       <SafeAreaView
         style={{
           height: "100%",
@@ -53,19 +53,17 @@ export default function TmpSearch() {
             color="black"
             style={{ marginRight: 8 }}
           />
-          <TextInput
-            style={{ width: 200 }}
+          <SearchInput
+            placeholderTextColor="#000"
             placeholder="검색어를 입력하세요"
-          ></TextInput>
+          ></SearchInput>
         </SearchBox>
 
         {/* 검색결과 */}
-        <Text style={{ marginTop: 20, marginBottom: 10 }}>
-          {}n건의 검색 결과를 찾았어요
-        </Text>
+        <SearchText>{}n건의 검색 결과를 찾았어요</SearchText>
 
         {/* 검색도서내역 */}
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <SearchBookBoxView
             contentContainerStyle={{ paddingVertical: 20 }}
             style={{ marginBottom: 70 }}
@@ -78,7 +76,7 @@ export default function TmpSearch() {
           </SearchBookBoxView>
         </ScrollView>
       </SafeAreaView>
-    </View>
+    </SearchBackGround>
   );
 }
 
@@ -106,4 +104,17 @@ const SearchBookView = styled.View`
 
   /* margin-left: 10px; */
   /* margin-right: 10px; */
+`;
+
+const SearchText = styled.Text`
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: ${(props) => props.theme.text};
+`;
+const SearchBackGround = styled.View`
+  background-color: ${(props) => props.theme.back};
+`;
+
+const SearchInput = styled.TextInput`
+  width: 200px;
 `;

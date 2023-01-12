@@ -49,16 +49,26 @@ export default function TmpMyPage() {
   return (
     <View>
       <SafeAreaView>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <MypageContainer>
             {/* <ProfileEditModal /> */}
             <SimpleLineIcons
               onPress={handleModalOpen}
               name="options-vertical"
               size={20}
-              color="black"
-              style={{ flexDirection: "row", marginLeft: "auto" }}
+              color="gray"
+              style={{ marginLeft: "auto" }}
               // onPress={}
+            />
+            <SimpleLineIcons
+              name="logout"
+              size={20}
+              color="gray"
+              style={{
+                marginTop: 10,
+                marginLeft: "auto",
+              }}
+              onPress={handleSignOut}
             />
             <Image
               style={{ width: 170, height: 170, borderRadius: 85 }}
@@ -68,11 +78,7 @@ export default function TmpMyPage() {
             <MyEmail> dongnaebook@gmail.com</MyEmail>
 
             {/* 모달 */}
-            <Modal
-              visible={modalVisible}
-              // transparent={true}
-              animationType="fade"
-            >
+            <MyPageModal visible={modalVisible} animationType="fade">
               {/* <Blurhash
                 blurhash="LGFFaXYk^6#M@-5c,1J5@[or[Q6."
                 style={{ flex: 1 }}
@@ -101,12 +107,8 @@ export default function TmpMyPage() {
                   </EditButton>
                 </ModalProfileView>
               </ModalBox>
-            </Modal>
+            </MyPageModal>
           </MypageContainer>
-          <TouchableOpacity onPress={handleSignOut}>
-            <Text>로그아웃</Text>
-          </TouchableOpacity>
-
           {/* 마이페이지컨텐츠 */}
           <MyPageContents />
         </ScrollView>
@@ -114,11 +116,11 @@ export default function TmpMyPage() {
     </View>
   );
 }
-
+const MyPageModal = styled.Modal``;
 // 모달
 const ModalBox = styled.View`
   margin: auto;
-  width: 300;
+  width: 300px;
   height: 350px;
   border-radius: 15px;
   background-color: white;
@@ -183,4 +185,5 @@ const MyEmail = styled.Text`
   align-items: center;
   margin-top: 10px;
   opacity: 0.4;
+  color: ${(props) => props.theme.text};
 `;

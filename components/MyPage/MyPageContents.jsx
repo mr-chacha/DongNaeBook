@@ -101,7 +101,7 @@ export default function MyPageContents() {
         <MyPageContentsIcon
           style={
             contentsIcon === "내가읽은책"
-              ? { backgroundColor: "#000" }
+              ? { backgroundColor: "#cdff40" }
               : { backgroundColor: "#ccc" }
           }
           onPress={() => {
@@ -109,7 +109,7 @@ export default function MyPageContents() {
           }}
         >
           {contentsIcon === "내가읽은책" ? (
-            <Ionicons name="bookmark-outline" size={24} color="#fff" />
+            <Ionicons name="bookmark-outline" size={24} color="black" />
           ) : (
             <Ionicons name="bookmark-outline" size={24} color="black" />
           )}
@@ -118,7 +118,7 @@ export default function MyPageContents() {
         <MyPageContentsIcon
           style={
             contentsIcon === "읽고싶은책"
-              ? { backgroundColor: "#000" }
+              ? { backgroundColor: "#cdff40" }
               : { backgroundColor: "#ccc" }
           }
           onPress={() => {
@@ -126,7 +126,7 @@ export default function MyPageContents() {
           }}
         >
           {contentsIcon === "읽고싶은책" ? (
-            <AntDesign name="hearto" size={24} color="#fff" />
+            <AntDesign name="hearto" size={24} color="black" />
           ) : (
             <AntDesign name="hearto" size={24} color="black" />
           )}
@@ -135,7 +135,7 @@ export default function MyPageContents() {
         <MyPageContentsIcon
           style={
             contentsIcon === "내가쓴리뷰"
-              ? { backgroundColor: "#000" }
+              ? { backgroundColor: "#cdff40" }
               : { backgroundColor: "#ccc" }
           }
           onPress={() => {
@@ -146,7 +146,7 @@ export default function MyPageContents() {
             <MaterialCommunityIcons
               name="pencil-outline"
               size={24}
-              color="#fff"
+              color="black"
             />
           ) : (
             <MaterialCommunityIcons
