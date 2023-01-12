@@ -1,28 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { Text, Pressable, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useState, useEffect } from "react";
+import { Text, Pressable, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { useFonts } from 'expo-font';
-import styled from '@emotion/native';
-import { v4 as uuidv4 } from 'uuid';
+import { useFonts } from "expo-font";
+import styled from "@emotion/native";
+import { v4 as uuidv4 } from "uuid";
 
-import { authService, db } from '../firebase';
-import { collection, setDoc, doc } from 'firebase/firestore';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { removeWhitespace } from '../util/Validation';
+import { authService, db } from "../firebase";
+import { collection, setDoc, doc } from "firebase/firestore";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { removeWhitespace } from "../util/Validation";
 
 export default function SignUp({ navigation }) {
   // 초기값
-  const [nickName, setNickName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [nickName, setNickName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
 
   // 오류메세지 상태
-  const [nickNameErrorMessage, setNickNameErrorMessage] = React.useState('');
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
-  const [passwordConfirmErrorMessage, setPasswordConfirmErrorMessage] = React.useState('');
+  const [nickNameErrorMessage, setNickNameErrorMessage] = React.useState("");
+  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
+  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
+  const [passwordConfirmErrorMessage, setPasswordConfirmErrorMessage] =
+    React.useState("");
 
   // 유효성 검사
   const [isNickName, setIsNickName] = React.useState(false);
@@ -44,7 +45,7 @@ export default function SignUp({ navigation }) {
 
   // 폰트
   const [isFontLoaded] = useFonts({
-    PyeongChangPeace: require('../assets/fonts/PyeongChangPeace-Bold.otf'),
+    PyeongChangPeace: require("../assets/fonts/PyeongChangPeace-Bold.otf"),
   });
   if (!isFontLoaded) {
     return null;
@@ -53,24 +54,25 @@ export default function SignUp({ navigation }) {
   // 회원가입 또는 로그인 버튼
   const handleAuthentication = () => {
     const generateId = uuidv4();
-    const usersRef = collection(db, 'users');
+    const usersRef = collection(db, "users");
 
     // 회원가입 요청
     createUserWithEmailAndPassword(authService, email, password)
       .then(() => {
-        alert('동네북 회원이 되신걸 환영합니다!');
+        alert("동네북 회원이 되신걸 환영합니다!");
         setDoc(doc(usersRef, generateId), {
           nickName: nickName,
           id: generateId,
           uid: authService.currentUser.uid,
           email: email,
-          profileImg: 'https://firebasestorage.googleapis.com/v0/b/dongnaebook-2dd14.appspot.com/o/BasicProfile.jpeg?alt=media&token=4196a2a2-dffc-4dbe-90b7-45bdefe20c2b',
+          profileImg:
+            "https://firebasestorage.googleapis.com/v0/b/dongnaebook-2dd14.appspot.com/o/BasicProfile.jpeg?alt=media&token=4196a2a2-dffc-4dbe-90b7-45bdefe20c2b",
         });
-        navigation.navigate('Home');
+        navigation.navigate("Home");
       })
       .catch((err) => {
         console.log(err.message);
-        alert('이미 존재하는 계정 입니다.');
+        alert("이미 존재하는 계정 입니다.");
       });
   };
 
@@ -79,10 +81,12 @@ export default function SignUp({ navigation }) {
     const currentNickName = removeWhitespace(nickname);
     setNickName(currentNickName);
     if (currentNickName.length < 2 || currentNickName.length > 10) {
-      setNickNameErrorMessage('2글자 이상, 10글자 미만으로만 사용할 수 있습니다.');
+      setNickNameErrorMessage(
+        "2글자 이상, 10글자 미만으로만 사용할 수 있습니다."
+      );
       setIsNickName(false);
     } else {
-      setNickNameErrorMessage('');
+      setNickNameErrorMessage("");
       setIsNickName(true);
     }
   };
@@ -91,12 +95,13 @@ export default function SignUp({ navigation }) {
   const handleEmailChange = (email) => {
     const currentEmail = removeWhitespace(email);
     setEmail(currentEmail);
-    const emailRegex = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+    const emailRegex =
+      /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
     if (!emailRegex.test(currentEmail)) {
-      setEmailErrorMessage('잘못된 이메일 주소입니다.');
+      setEmailErrorMessage("잘못된 이메일 주소입니다.");
       setIsEmail(false);
     } else {
-      setEmailErrorMessage('');
+      setEmailErrorMessage("");
       setIsEmail(true);
     }
   };
@@ -105,12 +110,15 @@ export default function SignUp({ navigation }) {
   const handlePasswordChange = (password) => {
     const currentPassword = removeWhitespace(password);
     setPassword(currentPassword);
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+    const passwordRegex =
+      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
     if (!passwordRegex.test(currentPassword)) {
-      setPasswordErrorMessage('숫자, 영문자, 특수문자 조합으로 8자리 이상 입력해주세요!');
+      setPasswordErrorMessage(
+        "숫자, 영문자, 특수문자 조합으로 8자리 이상 입력해주세요!"
+      );
       setIsPassword(false);
     } else {
-      setPasswordErrorMessage('');
+      setPasswordErrorMessage("");
       setIsPassword(true);
     }
   };
@@ -120,10 +128,12 @@ export default function SignUp({ navigation }) {
     const currentPasswordConfirm = removeWhitespace(passwordConfirm);
     setPasswordConfirm(currentPasswordConfirm);
     if (currentPasswordConfirm === password) {
-      setPasswordConfirmErrorMessage('');
+      setPasswordConfirmErrorMessage("");
       setIsPasswordConfirm(true);
     } else {
-      setPasswordConfirmErrorMessage('비밀번호가 일치하지 않아요. 다시 입력해주세요.');
+      setPasswordConfirmErrorMessage(
+        "비밀번호가 일치하지 않아요. 다시 입력해주세요."
+      );
       setIsPasswordConfirm(false);
     }
   };
@@ -132,29 +142,66 @@ export default function SignUp({ navigation }) {
     <SafeAreaView>
       <AuthenticationContainer>
         <ApplicationTitle>동네북</ApplicationTitle>
-        <UserInfoInput placeholder='닉네임' placeholderTextColor='#d4d4d4' autoCapitalize='none' value={nickName} onChangeText={handleNickNameChange} />
+        <UserInfoInput
+          placeholder="닉네임"
+          placeholderTextColor="#d4d4d4"
+          autoCapitalize="none"
+          value={nickName}
+          onChangeText={handleNickNameChange}
+        />
         <ErrorMessgeWrap>
           <ErrorMessge>{nickNameErrorMessage}</ErrorMessge>
         </ErrorMessgeWrap>
-        <UserInfoInput placeholder='donnaebook@gmail.com' placeholderTextColor='#d4d4d4' autoCapitalize='none' value={email} onChangeText={handleEmailChange} />
+        <UserInfoInput
+          placeholder="donnaebook@gmail.com"
+          placeholderTextColor="#d4d4d4"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={handleEmailChange}
+        />
         <ErrorMessgeWrap>
           <ErrorMessge>{emailErrorMessage}</ErrorMessge>
         </ErrorMessgeWrap>
-        <UserInfoInput placeholder='비밀번호 입력' autoCapitalize='none' placeholderTextColor='#d4d4d4' value={password} onChangeText={handlePasswordChange} secureTextEntry={true} />
+        <UserInfoInput
+          placeholder="비밀번호 입력"
+          autoCapitalize="none"
+          placeholderTextColor="#d4d4d4"
+          value={password}
+          onChangeText={handlePasswordChange}
+          secureTextEntry={true}
+        />
         <ErrorMessgeWrap>
           <ErrorMessge>{passwordErrorMessage}</ErrorMessge>
         </ErrorMessgeWrap>
-        <UserInfoInput placeholder='비밀번호 확인' autoCapitalize='none' placeholderTextColor='#d4d4d4' value={passwordConfirm} onChangeText={handlePasswordConfirmChange} secureTextEntry={true} />
+        <UserInfoInput
+          placeholder="비밀번호 확인"
+          autoCapitalize="none"
+          placeholderTextColor="#d4d4d4"
+          value={passwordConfirm}
+          onChangeText={handlePasswordConfirmChange}
+          secureTextEntry={true}
+        />
         <ErrorMessgeWrap>
           <ErrorMessge>{passwordConfirmErrorMessage}</ErrorMessge>
         </ErrorMessgeWrap>
 
-        <AuthenticationFormSubmitButton onPress={handleAuthentication} disabled={btnDisabled} style={[StyleSheet.button, { backgroundColor: btnDisabled ? '#dadada' : '#bdff00' }]}>
+        <AuthenticationFormSubmitButton
+          onPress={handleAuthentication}
+          disabled={btnDisabled}
+          style={[
+            StyleSheet.button,
+            { backgroundColor: btnDisabled ? "#dadada" : "#bdff00" },
+          ]}
+        >
           <BtnText>회원가입</BtnText>
         </AuthenticationFormSubmitButton>
         <AskingContainer>
           <AskingText>이미 가입하셨나요?</AskingText>
-          <AuthenticationScreenChangeButton onPress={() => navigation.navigate('Login')}>로그인</AuthenticationScreenChangeButton>
+          <AuthenticationScreenChangeButton
+            onPress={() => navigation.navigate("Login")}
+          >
+            로그인
+          </AuthenticationScreenChangeButton>
         </AskingContainer>
       </AuthenticationContainer>
     </SafeAreaView>
@@ -182,7 +229,8 @@ const AuthenticationContainer = styled.View`
 const ApplicationTitle = styled.Text`
   font-size: 50px;
   margin-bottom: 60px;
-  font-family: 'PyeongChangPeace';
+  font-family: "PyeongChangPeace";
+  color: ${(props) => props.theme.text};
 `;
 
 const UserInfoInput = styled.TextInput`
@@ -193,7 +241,7 @@ const UserInfoInput = styled.TextInput`
   padding: 10px;
   border: 1px solid #b5b5b5;
   border-radius: 7px;
-  color: #000;
+  color: ${(props) => props.theme.text};
 `;
 
 const AuthenticationFormSubmitButton = styled.Pressable`
@@ -226,6 +274,7 @@ const AskingText = styled.Text`
 
 const AuthenticationScreenChangeButton = styled.Text`
   font-weight: 700;
+  color: ${(props) => props.theme.text};
 `;
 
 const ErrorMessgeWrap = styled.View`

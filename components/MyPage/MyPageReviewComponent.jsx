@@ -57,7 +57,7 @@ const MyPageWantReviewContentsView = styled.TouchableOpacity`
   /* justify-content: space-between; */
   width: 90%;
   min-height: 150px;
-  background-color: #ededed;
+  background-color: ${(props) => props.theme.boxback};
   margin: 0 auto 20px auto;
   border-radius: 7px;
 `;
