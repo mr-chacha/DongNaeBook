@@ -29,10 +29,10 @@ export const getBestSeller = () =>
 //     `${BASE_SEARCH_URL}?key=${API_KEY}&query=${inputText}&sort=salesPoint&start=1&maxResults=20&output=json`
 //   ).then((res) => res.json());
 
-export const getSearchBooks = (params) => {
-  console.log("params:", params);
-  const [inputText, SB] = params.queryKey;
-  return fetch(
-    `${BASE_SEARCH_URL}?key=${API_KEY}&query=${inputText}&sort=salesPoint&start=1&maxResults=20&output=json`
-  ).then((res) => res.json());
-};
+// export const getSearchBooks = (params) => {
+//   console.log("params:", params);
+//   const [inputText, SB] = params.queryKey;
+//   return fetch(
+//     `${BASE_SEARCH_URL}?key=${API_KEY}&query=${inputText}&sort=salesPoint&start=1&maxResults=20&output=json`
+//   ).then((res) => res.json());
+// };

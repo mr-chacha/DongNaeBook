@@ -27,11 +27,11 @@ export default function Detail({
   //   getSearchBooks
   // );
 
-  // ${inputText}
-  const { data: searchBooks, isLoading: isLoadingSB } = useQuery(
-    ["SearchBooks", inputText],
-    getSearchBooks
-  );
+  // // ${inputText}
+  // const { data: searchBooks, isLoading: isLoadingSB } = useQuery(
+  //   ["searchBooks", inputText],
+  //   getSearchBooks
+  // );
 
   return (
     <ScrollView>
@@ -46,11 +46,11 @@ export default function Detail({
         .map((book) => {
           return <DetailContent key={book.itemId} book={book} />;
         })}
-      {searchBooks?.item
+      {/* {searchBooks?.item
         .filter((i) => i.itemId == params.params.bookId)
         .map((book) => {
           return <DetailContent key={book.itemId} book={book} />;
-        })}
+        })} */}
 
       {/* 별점 및 리뷰 */}
       <Review
