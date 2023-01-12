@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { TouchableOpacity, Text, TextInput, Button, Alert } from 'react-native';
+import { TouchableOpacity, Text, TextInput, Alert, Pressable, StyleSheet, BackHandler } from 'react-native';
 import styled from '@emotion/native';
 // import * as Font from 'expo-font';
 import { useFonts } from 'expo-font';
@@ -8,7 +8,6 @@ import { authService } from '../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useState, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { AuthInput } from '../components/Auth/AuthInput.js';
 
 export default function Login() {
   const navigation = useNavigation();
@@ -16,7 +15,18 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [disabled, setDisabled] = useState('');
+
+  // 버튼 활성화
+  const [btnDisabled, setBtnDisabled] = useState(true);
+
+  // 회원가입 버튼 활성화 확인
+  useEffect(() => {
+    if (email.length > 0 && password.length > 0) {
+      setBtnDisabled(false);
+      return;
+    }
+    setBtnDisabled(true);
+  }, [email, password]);
 
   const handleEmailChange = (email) => {
     const changedEmail = removeWhitespace(email);
@@ -70,7 +80,9 @@ export default function Login() {
           value={password}
           onChangeText={(text) => setPassword(text)}
         />
-        <AuthenticationFormSubmitButton onPress={handleAuthentication}>로그인</AuthenticationFormSubmitButton>
+        <AuthenticationFormSubmitButton onPress={handleAuthentication} disabled={btnDisabled} style={[StyleSheet.button, { backgroundColor: btnDisabled ? '#dadada' : '#bdff00' }]}>
+          <BtnText>로그인</BtnText>
+        </AuthenticationFormSubmitButton>
         <AskingContainer>
           <AskingText>이미 가입하셨나요?</AskingText>
           <AuthenticationScreenChangeButton onPress={() => navigation.navigate('SignUp')}>회원가입</AuthenticationScreenChangeButton>
@@ -115,17 +127,21 @@ const UserInfoInput = styled.TextInput`
   color: #000;
 `;
 
-const AuthenticationFormSubmitButton = styled.Text`
+const AuthenticationFormSubmitButton = styled.Pressable`
   height: 50px;
   width: 90%;
   background: #bdff00;
   border: none;
   border-radius: 7px;
-  font-size: 18px;
   padding-top: 16px;
-  text-align: center;
   margin-bottom: 10px;
   margin-top: 30px;
+  align-items: center;
+`;
+
+const BtnText = styled.Text`
+  font-size: 19px;
+  font-weight: 600;
 `;
 
 const AskingContainer = styled.TouchableOpacity`
