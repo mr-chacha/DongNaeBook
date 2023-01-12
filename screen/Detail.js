@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { ScrollView, ActivityIndicator } from 'react-native';
-import DetailContent from '../components/Detail/DetailContent';
-import Review from '../components/Review/Review';
+import { useState, useEffect } from "react";
+import { ScrollView, ActivityIndicator } from "react-native";
+import DetailContent from "../components/Detail/DetailContent";
+import Review from "../components/Review/Review";
 
 // params 찍어보기 비교하기
 // 최종적인 것 이전 단도 log 찍어보기
@@ -13,7 +13,7 @@ export default function Detail({
     params,
   },
 }) {
-  console.log('params', params);
+  console.log("params", params);
   // console.log('bookId', bookId);
 
   // const [tip, setTip] = useState();
@@ -39,20 +39,23 @@ export default function Detail({
   // 로딩 state
   // const [isLoading, setIsLoading] = useState(true);
   // 신간도서 request url
-  const BASE_URL = 'http://book.interpark.com/api/newBook.api';
+  const BASE_URL = "http://book.interpark.com/api/newBook.api";
 
   //  베스트 셀러 url
 
-  const BEST_BASE_URL = 'https://book.interpark.com/api';
+  const BEST_BASE_URL = "https://book.interpark.com/api";
 
   // console.log('bookId', bookId);
 
   // api key
-  const API_KEY = 'CAD800FCCF43A0A4B5BAD86C45EFCBC99D6140870C5C960566AE4D254543570F';
+  const API_KEY =
+    "CAD800FCCF43A0A4B5BAD86C45EFCBC99D6140870C5C960566AE4D254543570F";
 
   //신간도서 api 가져오기
   const getApiRecentBooks = async () => {
-    const { item } = await fetch(`${BASE_URL}?key=${API_KEY}&categoryId=100&output=json`).then((res) => res.json());
+    const { item } = await fetch(
+      `${BASE_URL}?key=${API_KEY}&categoryId=100&output=json`
+    ).then((res) => res.json());
     setRecentBooks(item);
     // console.log('getApiRecentBooks', item);
     // setIsLoading(false);
@@ -60,7 +63,9 @@ export default function Detail({
 
   //best seller API 가져오는 함수
   const getBestSeller = async () => {
-    const { item } = await fetch(`${BEST_BASE_URL}/bestSeller.api?key=${API_KEY}&categoryId=100&output=json`).then((res) => res.json());
+    const { item } = await fetch(
+      `${BEST_BASE_URL}/bestSeller.api?key=${API_KEY}&categoryId=100&output=json`
+    ).then((res) => res.json());
     setBestSeller(item);
     setIsLoading(false);
     // console.log('getBestSeller', item);

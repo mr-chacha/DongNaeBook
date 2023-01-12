@@ -10,7 +10,7 @@ export default function BookBox({ book }) {
       params: { bookId: book.itemId },
     });
   };
-  // console.log('bookId', );
+  // console.log("bookId", itemId);
   return (
     // 배경
     <BookBoxTouchableOpacity onPress={HandleMoveToDetail} key={book.itemId}>

@@ -49,9 +49,10 @@ export default function TmpSearch() {
 
   const [inputText, setInputText] = useState("");
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // 로딩
+
   const getData = async () => {
-    if (!loading) {
+    if (searchBooks.length > 20) {
       setLoading(true);
       await DataFetch();
       setLoading(false);
@@ -89,18 +90,6 @@ export default function TmpSearch() {
         {/* View태그 안에 TextInput이 있으면 안먹히나요?????? 어제는 계속 됐는데 왜 안되는거지ㅠㅠ */}
         {/* 머때문인지 모르겠는데 TextInput이 터치를 인식하는게 너무 느려요.. */}
 
-        {/* <TouchableOpacity
-          style={{
-            backgroundColor: "grey",
-            width: 50,
-            height: 20,
-            alignItems: "center",
-          }}
-          onPress={() => getSearchBooks()}
-        >
-          <Text>확인</Text>
-        </TouchableOpacity> */}
-
         {/* 검색결과 */}
         <Text style={{ marginTop: 20, marginBottom: 10 }}>
           {searchBooks.length}건의 검색 결과를 찾았어요
@@ -109,27 +98,30 @@ export default function TmpSearch() {
         {/* 검색도서내역 */}
         {/* <SearchBookBoxView> */}
         <FlatList
-          // horizontal
           // showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
             width: "100%",
             height: "100%",
-            // paddingVertical: 15,
-            // paddingHorizontal: 20,
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            flex: 1,
+            paddingVertical: 15,
+            paddingHorizontal: 20,
+            // flexDirection: "row",
+            // justifyContent: "flex-start",
             backgoundColor: "green",
 
             // width: "90%",
           }}
+          numColumns={3}
           data={searchBooks}
-          renderItem={({ item }) => <BookBox book={item} />}
-          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <BookBox onPress={HandleMoveToDetail} book={item} />
+          )}
+          keyExtractor={(item) => item.itemId}
           ItemSeparatorComponent={<View style={{ width: 20 }} />}
-          onEndReached={onEndReached}
-          onEndReachedThreshold={0.6}
+          onEndReached={onEndReached} // 화면 맨 아래가 나오면 실행
+          onEndReachedThreshold={0.6} //함수가 호출할 시점 (0~1)
           ListFooterComponent={loading && <ActivityIndicator />}
+          // 무한 스크롤이 되려면 화면이 아래에 닿아야 하고 데이터를 받아오는 동안 로딩창ㄱㄱ
+          // 이 props을 이용해서 로딩 컴포넌트 넣음
         />
         {/* </SearchBookBoxView> */}
         {/* <ScrollView>
