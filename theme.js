@@ -2,7 +2,7 @@ import { BLACK, BLACK2, RED, WHITE, WHITE2 } from "./colors";
 
 export const LTheme = {
   text: BLACK,
-  back: WHITE,
+  back: WHITE2,
   boxback: WHITE2,
   red: RED,
 };
