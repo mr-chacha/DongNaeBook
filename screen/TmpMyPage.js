@@ -248,6 +248,7 @@ const MyEmail = styled.Text`
   align-items: center;
   margin-top: 10px;
   opacity: 0.4;
+  color: ${(props) => props.theme.text};
 `;
 
 const LogoutBtn = styled.TouchableOpacity`
