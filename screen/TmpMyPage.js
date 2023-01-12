@@ -17,7 +17,6 @@ import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { authService } from "../firebase";
 import MyPageContents from "../components/MyPage/MyPageContents";
-
 // import { Blurhash } from "react-native-blurhash";
 //<npm i react-native-blurhash> or <npm i react-native-blurhash --force>
 
@@ -109,7 +108,11 @@ export default function TmpMyPage() {
               </ModalBox>
             </MyPageModal>
           </MypageContainer>
-          {/* 마이페이지컨텐츠 */}
+
+          <TouchableOpacity onPress={handleSignOut}>
+            <Text>로그아웃</Text>
+          </TouchableOpacity>
+
           <MyPageContents />
         </ScrollView>
       </SafeAreaView>

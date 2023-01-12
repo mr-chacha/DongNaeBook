@@ -7,10 +7,18 @@ export default function BookBox({ book }) {
   const navigation = useNavigation();
   const HandleMoveToDetail = () => {
     navigation.navigate("Detail", {
-      params: { bookId: book.itemId },
+      params: {
+        bookId: book.itemId,
+        bookTitle: book.title,
+        bookImage: book.coverSmallUrl,
+      },
     });
   };
-  // console.log('bookId', );
+  // console.log('bookId', );dddd
+  // console.log('bookId', );dddd
+  // console.log('bookId', );dddd
+  // console.log('bookId', );dddd
+  // console.log('bookId', );dddd
   return (
     // 배경
     <BookBoxTouchableOpacity onPress={HandleMoveToDetail} key={book.itemId}>
