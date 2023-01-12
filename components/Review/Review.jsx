@@ -33,6 +33,9 @@ export default function Review({ bookId, bookTitle, bookImage }) {
   const [isValid, setIsValid] = useState(false);
   const [isRated, setIsRated] = useState(false);
   const [isCommented, setIsCommented] = useState(false);
+  const [isDeleteToast, setIsDeleteToast] = useState(false);
+  const [isEditToast, setIsEditToast] = useState(false);
+
   const [ratings, setRatings] = useState(0);
   const [newComment, setNewComment] = useState("");
   const [nickName, setNickName] = useState("");
@@ -86,8 +89,6 @@ export default function Review({ bookId, bookTitle, bookImage }) {
       setNickName(user[0].nickName);
     });
   };
-
-  //! 로그인 예외처리하기, 댓글 순서 수정하기
 
   // 수정 / 삭제 모달 오픈 함수
   const handleModalOpen = () => {
@@ -175,7 +176,12 @@ export default function Review({ bookId, bookTitle, bookImage }) {
       {
         text: "삭제",
         onPress: async () => {
-          await deleteDoc(doc(db, "reviews", reviewId));
+          await deleteDoc(doc(db, 'reviews', reviewId));
+          console.log('id', reviewId);
+          setIsDeleteToast(true);
+          setTimeout(() => {
+            setIsDeleteToast(false);
+          }, 2000);
         },
       },
     ]);
@@ -198,38 +204,47 @@ export default function Review({ bookId, bookTitle, bookImage }) {
       comment: editedComment,
       isEdit: false,
     });
+    setEditedComment('')
+    setIsEditToast(true);
+    setTimeout(() => {
+      setIsEditToast(false);
+    }, 2000);
   };
   const isDark = useColorScheme() === "dark";
 
   return (
     <Reviewcontainner>
-      <ReviewInputBox>
-        <ReviewTitleRateBox>
-          <ReviewTitle>책 리뷰</ReviewTitle>
-          <Rating
-            startingValue={0}
-            ratingCount={5}
-            imageSize={18}
-            type="custom"
-            ratingBackgroundColor="#d6d5d2"
-            jumpValue={0.5}
-            fractions={1}
-            tintColor={isDark === false ? "#f3f3f3" : "black"}
-            onFinishRating={handleRatings}
+      {!currentUser ? (
+        <></>
+      ) : (
+        <ReviewInputBox>
+          <ReviewTitleRateBox>
+            <ReviewTitle>책 리뷰</ReviewTitle>
+            <Rating
+              startingValue={0}
+              ratingCount={5}
+              imageSize={18}
+              type='custom'
+              ratingBackgroundColor='#d6d5d2'
+              jumpValue={0.5}
+              fractions={1}
+              tintColor={isDark === false ? "#f3f3f3" : "black"}
+              onFinishRating={handleRatings}
+            />
+          </ReviewTitleRateBox>
+          <ReviewTextInput
+            maxLength={100}
+            multiline={true}
+            placeholder='100자 이내로 코멘트를 남겨주세요'
+            scrollEnabled={false}
+            value={newComment}
+            onChangeText={handleNewComment}
           />
-        </ReviewTitleRateBox>
-        <ReviewTextInput
-          maxLength={100}
-          multiline={true}
-          placeholder="100자 이내로 코멘트를 남겨주세요"
-          scrollEnabled={false}
-          value={newComment}
-          onChangeText={handleNewComment}
-        />
-        <ReviewSubmitBtn onPress={addReview}>
-          <SubmitText>등록하기</SubmitText>
-        </ReviewSubmitBtn>
-      </ReviewInputBox>
+          <ReviewSubmitBtn onPress={addReview}>
+            <SubmitText>등록하기</SubmitText>
+          </ReviewSubmitBtn>
+        </ReviewInputBox>
+      )}
 
       <ComnnetContainner>
         {reviewList.map((review) => (
@@ -251,6 +266,7 @@ export default function Review({ bookId, bookTitle, bookImage }) {
               <Desc>{review.comment}</Desc>
             </Commentbody>
             <IconBox
+              disabled={currentUser?.uid !== review.creatorId}
               onPress={() => {
                 handleModalOpen();
                 setReviewId(review.id);
@@ -330,8 +346,8 @@ export default function Review({ bookId, bookTitle, bookImage }) {
               <EditSubmitBtn
                 onPress={() => {
                   editReview(reviewId);
-                }}
-              >
+                  handleEditModalClose();
+                }}>
                 <EditSubmitText>수정하기</EditSubmitText>
               </EditSubmitBtn>
             </EditInputBox>
@@ -352,6 +368,27 @@ export default function Review({ bookId, bookTitle, bookImage }) {
           <ToastText>💌 리뷰가 등록됐어요 !</ToastText>
         </ToastView>
       </Toast>
+
+      <Toast
+        backgroundColor='#21d210'
+        opacity={1}
+        position={0}
+        visible={isDeleteToast}>
+        <ToastView>
+          <DeleteToastText>🗑️ 삭제 완료</DeleteToastText>
+        </ToastView>
+      </Toast>
+
+      <Toast
+        backgroundColor='#21d210'
+        opacity={1}
+        position={0}
+        visible={isEditToast}>
+        <ToastView>
+          <EditToastText>✍️ 수정 완료</EditToastText>
+        </ToastView>
+      </Toast>
+
       <Toast
         backgroundColor="#ffe600"
         opacity={1}
@@ -437,6 +474,18 @@ const ToastView = styled.View`
 `;
 
 const ToastText = styled.Text`
+  color: #000000;
+  font-size: 18px;
+  font-weight: 700;
+`;
+
+const DeleteToastText = styled.Text`
+  color: #000000;
+  font-size: 18px;
+  font-weight: 700;
+`;
+
+const EditToastText = styled.Text`
   color: #000000;
   font-size: 18px;
   font-weight: 700;
