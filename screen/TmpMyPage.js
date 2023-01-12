@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Alert } from "react-native";
+import { Alert, useColorScheme } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -149,7 +149,7 @@ export default function TmpMyPage() {
   useEffect(() => {
     getUserInfo();
   }, []);
-
+  const isDark = useColorScheme() === "dark";
   return (
     <SafeAreaView>
       <ScrollView>
@@ -158,7 +158,7 @@ export default function TmpMyPage() {
             onPress={handleModalOpen}
             name="options-vertical"
             size={20}
-            color="black"
+            color={isDark === false ? "black" : "white"}
             style={{ flexDirection: "row", marginLeft: "auto" }}
           />
           <Image
@@ -169,11 +169,11 @@ export default function TmpMyPage() {
             onChangePhoto={setProfileImg}
           />
           <Nickname>
-            <Text>{updateNickName}</Text>
+            <NickNameText>{updateNickName}</NickNameText>
           </Nickname>
           <MyEmail> dongnaebook@gmail.com</MyEmail>
           <LogoutBtn onPress={handleSignOut}>
-            <Text>로그아웃</Text>
+            <LogText>로그아웃</LogText>
           </LogoutBtn>
           {/* 모달 */}
           <Modal visible={modalVisible} animationType="fade">
@@ -213,7 +213,12 @@ const MyPageModal = styled.Modal``;
 const ModalBox = styled.View`
   margin-top: 30%;
 `;
-
+const LogText = styled.Text`
+  color: ${(props) => props.theme.text};
+`;
+const NickNameText = styled.Text`
+  color: ${(props) => props.theme.text};
+`;
 // 프로필(프사+닉네임) in 모달
 const ModalProfileView = styled.View`
   margin: auto;

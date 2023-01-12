@@ -27,7 +27,6 @@ import Switch from 'expo-dark-mode-switch';
 import React from 'react';
 export default function Review({ bookId, bookTitle, bookImage }) {
   const currentUser = getAuth().currentUser;
-
   const [isModify, setIsModify] = useState(false);
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [isValid, setIsValid] = useState(false);
@@ -38,18 +37,18 @@ export default function Review({ bookId, bookTitle, bookImage }) {
   const [getProfileImg, setGetProfileImg] = useState('');
 
   const [ratings, setRatings] = useState(0);
-  const [newComment, setNewComment] = useState('');
-  const [nickName, setNickName] = useState('');
+  const [newComment, setNewComment] = useState("");
+  const [nickName, setNickName] = useState("");
   const [reviewList, setReviewList] = useState([]);
-  const [reviewId, setReviewId] = useState('');
+  const [reviewId, setReviewId] = useState("");
   const [editModalOpen, setEditModalOpen] = useState(false);
 
   // 리뷰 수정 스테이트
   const [reviewRating, setReviewRating] = useState(0);
-  const [reviewComment, setReviewComment] = useState('');
+  const [reviewComment, setReviewComment] = useState("");
 
   const [editRatings, setEditRatings] = useState(0);
-  const [editedComment, setEditedComment] = useState('');
+  const [editedComment, setEditedComment] = useState("");
 
   useEffect(() => {
     if (!currentUser) return;
@@ -78,7 +77,10 @@ export default function Review({ bookId, bookTitle, bookImage }) {
   }, []);
 
   const getUserInfo = async () => {
-    const q = await query(collection(db, 'users'), where('uid', '==', currentUser.uid));
+    const q = await query(
+      collection(db, "users"),
+      where("uid", "==", currentUser.uid)
+    );
     getDocs(q).then((querySnapshot) => {
       const user = [];
       querySnapshot.forEach((doc) => {
@@ -144,7 +146,7 @@ export default function Review({ bookId, bookTitle, bookImage }) {
         setIsCommented(false);
       }, 2000);
     } else {
-      await addDoc(collection(db, 'reviews'), {
+      await addDoc(collection(db, "reviews"), {
         comment: newComment,
         rating: ratings,
         commentId: uuidv4(),
@@ -159,7 +161,7 @@ export default function Review({ bookId, bookTitle, bookImage }) {
       });
       // 등록 시 별점은 어떻게 초기화시키지? (Rating 컴포넌트만 리렌더링 해줘야 하나?)
       setRatings(0);
-      setNewComment('');
+      setNewComment("");
       setIsToastOpen(true);
       setTimeout(() => {
         setIsToastOpen(false);
@@ -170,15 +172,15 @@ export default function Review({ bookId, bookTitle, bookImage }) {
   // 코멘트 삭제 함수
   // 이걸 적은 사람만 삭제할 수 있어야 함
   const deleteReview = (reviewId) => {
-    Alert.alert('리뷰를 삭제합니다', '정말 삭제하시겠어요?', [
+    Alert.alert("리뷰를 삭제합니다", "정말 삭제하시겠어요?", [
       {
-        text: '아니요',
+        text: "아니요",
       },
       {
-        text: '삭제',
+        text: "삭제",
         onPress: async () => {
-          await deleteDoc(doc(db, 'reviews', reviewId));
-          console.log('id', reviewId);
+          await deleteDoc(doc(db, "reviews", reviewId));
+          console.log("id", reviewId);
           setIsDeleteToast(true);
           setTimeout(() => {
             setIsDeleteToast(false);
@@ -194,24 +196,24 @@ export default function Review({ bookId, bookTitle, bookImage }) {
   // 수정할 수 있도록 해줘야겠다.
   const setEdit = async (reviewId) => {
     const target = reviewList.findIndex((review) => review.id === reviewId);
-    await updateDoc(doc(db, 'reviews', reviewId), {
+    await updateDoc(doc(db, "reviews", reviewId), {
       isEdit: !reviewList[target].isEdit,
     });
   };
 
   const editReview = async (reviewId) => {
-    await updateDoc(doc(db, 'reviews', reviewId), {
+    await updateDoc(doc(db, "reviews", reviewId), {
       rating: editRatings,
       comment: editedComment,
       isEdit: false,
     });
-    setEditedComment('');
+    setEditedComment("");
     setIsEditToast(true);
     setTimeout(() => {
       setIsEditToast(false);
     }, 2000);
   };
-  const isDark = useColorScheme() === 'dark';
+  const isDark = useColorScheme() === "dark";
 
   return (
     <Reviewcontainner>
@@ -225,11 +227,11 @@ export default function Review({ bookId, bookTitle, bookImage }) {
               startingValue={0}
               ratingCount={5}
               imageSize={18}
-              type='custom'
-              ratingBackgroundColor='#d6d5d2'
+              type="custom"
+              ratingBackgroundColor="#d6d5d2"
               jumpValue={0.5}
               fractions={1}
-              tintColor={isDark === false ? '#f3f3f3' : 'black'}
+              tintColor={isDark === false ? "#f3f3f3" : "black"}
               onFinishRating={handleRatings}
             />
           </ReviewTitleRateBox>
@@ -344,11 +346,11 @@ export default function Review({ bookId, bookTitle, bookImage }) {
                   startingValue={reviewRating}
                   ratingCount={5}
                   imageSize={18}
-                  type='custom'
-                  ratingBackgroundColor='#d6d5d2'
+                  type="custom"
+                  ratingBackgroundColor="#d6d5d2"
                   jumpValue={0.5}
                   fractions={1}
-                  tintColor='#F2F2F2'
+                  tintColor="#F2F2F2"
                   onFinishRating={handleEditRatings}
                 />
               </EditTitleRateBox>
@@ -451,7 +453,7 @@ const EditModalBackdrop = styled.View`
 const EditModalView = styled.View`
   padding: 20px;
   width: ${SCREEN_WIDTH};
-  margin-top: ${SCREEN_HEIGHT / 3 + 'px'};
+  margin-top: ${SCREEN_HEIGHT / 3 + "px"};
 `;
 
 const EditInputBox = styled.View``;
@@ -464,7 +466,7 @@ const EditTitleRateBox = styled.View`
 const EditTextInput = styled.TextInput`
   background-color: white;
   border-radius: 10px;
-  height: ${SCREEN_HEIGHT / 9 + 'px'};
+  height: ${SCREEN_HEIGHT / 9 + "px"};
   font-size: 15px;
   padding: 10px;
 `;
@@ -482,7 +484,7 @@ const EditClose = styled.TouchableOpacity`
 
 //
 const ToastView = styled.View`
-  width: ${SCREEN_WIDTH / 1.4 + 'px'};
+  width: ${SCREEN_WIDTH / 1.4 + "px"};
   height: 30px;
   padding-top: 7px;
   justify-content: center;
@@ -587,7 +589,7 @@ const ReviewTitle = styled.Text`
 const ReviewTextInput = styled.TextInput`
   background-color: white;
   border-radius: 10px;
-  height: ${SCREEN_HEIGHT / 9 + 'px'};
+  height: ${SCREEN_HEIGHT / 9 + "px"};
   font-size: 15px;
   padding: 10px;
 `;
@@ -608,7 +610,7 @@ const ComnnetContainner = styled.ScrollView`
 `;
 
 const CommentBox = styled.View`
-  height: ${SCREEN_HEIGHT / 6 + 'px'};
+  height: ${SCREEN_HEIGHT / 6 + "px"};
   width: 100%;
   flex-direction: row;
   justify-content: center;
@@ -654,7 +656,7 @@ const CreatedDate = styled.Text`
 `;
 
 const Desc = styled.Text`
-  width: ${SCREEN_WIDTH / 1.5 + 'px'};
+  width: ${SCREEN_WIDTH / 1.5 + "px"};
 `;
 
 const IconBox = styled.TouchableOpacity``;

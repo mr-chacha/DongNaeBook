@@ -54,6 +54,4 @@ export default function Detail({
 
 const Safe = styled.SafeAreaView`
   background-color: ${(props) => props.theme.back};
-  margin: auto;
-  padding-top: 50px;
 `;
