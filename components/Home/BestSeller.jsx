@@ -1,24 +1,13 @@
-import styled from "@emotion/native";
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, ScrollView, View } from "react-native";
-import { useQuery } from "react-query";
-import { getApiRecentBooks, getBestSeller } from "../../util/api";
-import BookBox from "./BookBox";
+import styled from '@emotion/native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, ScrollView, View } from 'react-native';
+import { useQuery } from 'react-query';
+import { getApiRecentBooks, getBestSeller } from '../../util/api';
+import BookBox from './BookBox';
 
 export default function BestSeller() {
   // 베스트셀러
-  const { data: bestSeller, isLoading: isLoadingSD } = useQuery(
-    "bestSeller",
-    getBestSeller
-  );
-
-  // if (isLoading) {
-  //   return (
-  //     <Loader>
-  //       <ActivityIndicator />
-  //     </Loader>
-  //   );
-  // }
+  const { data: bestSeller, isLoading: isLoadingSD } = useQuery('bestSeller', getBestSeller);
 
   return (
     <BestSellerBookView>
