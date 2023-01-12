@@ -11,28 +11,16 @@ import {
 } from "react-native";
 import styled, { css } from "@emotion/native";
 import { MaterialIcons } from "@expo/vector-icons";
-import BookBox from "../components/Home/BookBox";
+import BookBox2 from "../components/Home/BookBox2";
 import { useNavigation } from "@react-navigation/core";
 import { getApiRecentBooks, getBestSeller, getSearchBooks } from "../util/api";
 import { useQuery, useQueryClient } from "react-query";
+import Hyperlink from "react-native-hyperlink";
+import { Linking } from "react-native";
 
 //디테일 페이지로 이동하면 자꾸 리뷰만 떠요ㅠㅠ
 
 export default function TmpSearch() {
-  // const { navigate } = useNavigation();
-  // const HandleMoveToDetail = () => {
-  //   navigate("Detail", {
-  //     params: { bookId: books.itemId },
-  //   });
-  // };
-
-  // const { data: searchBooks, isLoading: isLoadingSB } = useQuery(
-  //   "searchBooks",
-  //   getSearchBooks
-  // );
-  // const [isRefreshing, setIsRefreshing] = useState(false);
-  // const queryClient = useQueryClient();
-
   const [inputText, setInputText] = useState("");
 
   const { data: searchBooks, isLoading: isLoadingSB } = useQuery(
@@ -40,35 +28,10 @@ export default function TmpSearch() {
     getSearchBooks
   );
 
-  console.log("searchBooks:", searchBooks);
-
-  // const [searchBooks, setSearchBooks] = useState([]);
-
-  // search request url
-  // const BASE_SEARCH_URL = "http://book.interpark.com/api/search.api";
-
-  // api key
-  // const API_KEY =
-  //   "87B80D6175094F2DB547B7571483B3A72C2492B12CA1B1754121E5255BECA991";
-
-  //검색 api 가져오기
-  // const getSearchBooks = async () => {
-  //   // console.log("in");
-  //   const { item } = await fetch(
-  //     `${BASE_SEARCH_URL}?key=${API_KEY}&query=${inputText}&sort=salesPoint&start=1&maxResults=20&output=json`
-  //   ).then((res) => res.json());
-  //   setSearchBooks(item);
-  // };
-  //http://book.interpark.com/api/search.api?key=87B80D6175094F2DB547B7571483B3A72C2492B12CA1B1754121E5255BECA991&query=삼국지&sort=salesPoint&start=1&maxResults=20&output=json
-
-  // 다음버튼으로 다음페이지 될때마다 start = n + 1, +1될때마다 새로 호출 - 검색결과가 너무 많으면????
-  // 반복문으로 끝이 나올때까지 계속 호출 / now = page 수???
-
-  const [loading, setLoading] = useState(false); // 로딩
+  const [loading, setLoading] = useState(false);
 
   const getData = async () => {
     if (searchBooks.length > 20) {
-      // 무한스크롤...만들고싶어요.....
       setLoading(true);
       await DataFetch();
       setLoading(false);
@@ -96,8 +59,8 @@ export default function TmpSearch() {
               width: 200,
               height: 50,
               paddingLeft: 10,
-              backgroundColor: "lightgrey",
             }}
+            placeholderTextColor="#727272"
             placeholder="검색어를 입력하세요"
             onChangeText={(newText) => setInputText(newText)}
             onSubmitEditing={getSearchBooks}
@@ -108,54 +71,37 @@ export default function TmpSearch() {
 
         {/* 검색결과 */}
         <Text style={{ marginTop: 20, marginBottom: 10 }}>
-          {searchBooks?.length ?? 0}건의 검색 결과를 찾았어요
+          {searchBooks?.totalResults ?? 0}건의 검색 결과를 찾았어요
         </Text>
 
         {/* 검색도서내역 */}
         {/* <SearchBookBoxView> */}
-        <FlatList
-          // showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            width: "100%",
-            height: "100%",
-            paddingVertical: 15,
-            paddingHorizontal: 20,
-            // flexDirection: "row",
-            // justifyContent: "flex-start",
-            backgoundColor: "green",
+        <FlatScrollView>
+          <FlatList
+            // showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingVertical: 15,
+              paddingHorizontal: 20,
+              // flexDirection: "row",
+              // justifyContent: "flex-start",
+              backgoundColor: "green",
 
-            // width: "90%",
-          }}
-          numColumns={3}
-          data={searchBooks ?? []}
-          renderItem={({ item }) => (
-            <BookBox onPress={HandleMoveToDetail} book={item} />
-          )}
-          keyExtractor={(item) => item.itemId}
-          ItemSeparatorComponent={<View style={{ width: 20 }} />}
-          onEndReached={onEndReached} // 화면 맨 아래가 나오면 실행
-          onEndReachedThreshold={0.6} //함수가 호출할 시점 (0~1)
-          ListFooterComponent={loading && <ActivityIndicator />}
-          // 무한 스크롤이 되려면 화면이 아래에 닿아야 하고 데이터를 받아오는 동안 로딩창ㄱㄱ
-          // 이 props을 이용해서 로딩 컴포넌트 넣음
-        />
-        {/* </SearchBookBoxView> */}
-        {/* <ScrollView>
-        <SearchText>{}n건의 검색 결과를 찾았어요</SearchText>
-
-        {/* 검색도서내역 */}
-        {/* <ScrollView showsVerticalScrollIndicator={false}>
-          <SearchBookBoxView
-            contentContainerStyle={{ paddingVertical: 20 }}
-            style={{ marginBottom: 70 }}
-          >
-            {searchBooks.map((book) => (
-              <SearchBookView key={book.itemId}>
-                <BookBox onPress={HandleMoveToDetail} book={book} />
-              </SearchBookView>
-            ))}
-          </SearchBookBoxView>
-        </ScrollView> */}
+              // width: "90%",
+            }}
+            numColumns={3}
+            data={searchBooks?.item ?? []}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => Linking.openURL(item.link)}>
+                <BookBox2 book={item} />
+              </TouchableOpacity>
+            )}
+            keyExtractor={(item) => item.itemId}
+            ItemSeparatorComponent={<View style={{ width: 0, height: 20 }} />}
+            onEndReached={onEndReached} // 화면 맨 아래가 나오면 실행
+            onEndReachedThreshold={0.6} //함수가 호출할 시점 (0~1)
+            ListFooterComponent={loading && <ActivityIndicator />}
+          />
+        </FlatScrollView>
       </SafeAreaView>
     </SearchBackGround>
   );
@@ -198,4 +144,7 @@ const SearchBackGround = styled.View`
 
 const SearchInput = styled.TextInput`
   width: 200px;
+`;
+const FlatScrollView = styled.ScrollView`
+  width: 100%;
 `;
