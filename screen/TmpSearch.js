@@ -7,6 +7,7 @@ import {
   ScrollView,
   ActivityIndicator,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
 import styled, { css } from "@emotion/native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -48,6 +49,20 @@ export default function TmpSearch() {
 
   const [inputText, setInputText] = useState("");
 
+  const [loading, setLoading] = useState(false);
+  const getData = async () => {
+    if (!loading) {
+      setLoading(true);
+      await DataFetch();
+      setLoading(false);
+    }
+  };
+  const onEndReached = () => {
+    if (!loading) {
+      getData();
+    }
+  };
+
   return (
     <View style={{ backgroundColor: "white" }}>
       <SafeAreaView
@@ -73,26 +88,6 @@ export default function TmpSearch() {
         </SearchBox>
         {/* View태그 안에 TextInput이 있으면 안먹히나요?????? 어제는 계속 됐는데 왜 안되는거지ㅠㅠ */}
         {/* 머때문인지 모르겠는데 TextInput이 터치를 인식하는게 너무 느려요.. */}
-        {/* <TextInput
-          style={{
-            width: 200,
-            height: 40,
-            backgroundColor: "#cdff40",
-            paddingLeft: 10,
-            paddingRight: 10,
-            borderRadius: 20,
-          }}
-          placeholder="검색어를 입력하세요"
-          onChangeText={(newText) => setInputText(newText)}
-          onSubmitEditing={getSearchBooks}
-        ></TextInput>
-        <MaterialIcons
-          name="search"
-          size={24}
-          color="black"
-          style={{ marginRight: 8 }}
-          onPress={() => getSearchBooks()}
-        /> */}
 
         {/* <TouchableOpacity
           style={{
@@ -112,7 +107,32 @@ export default function TmpSearch() {
         </Text>
 
         {/* 검색도서내역 */}
-        <ScrollView>
+        {/* <SearchBookBoxView> */}
+        <FlatList
+          // horizontal
+          // showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            width: "100%",
+            height: "100%",
+            // paddingVertical: 15,
+            // paddingHorizontal: 20,
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            flex: 1,
+            backgoundColor: "green",
+
+            // width: "90%",
+          }}
+          data={searchBooks}
+          renderItem={({ item }) => <BookBox book={item} />}
+          keyExtractor={(item) => item.id}
+          ItemSeparatorComponent={<View style={{ width: 20 }} />}
+          onEndReached={onEndReached}
+          onEndReachedThreshold={0.6}
+          ListFooterComponent={loading && <ActivityIndicator />}
+        />
+        {/* </SearchBookBoxView> */}
+        {/* <ScrollView>
           <SearchBookBoxView
             contentContainerStyle={{ paddingVertical: 20 }}
             style={{ marginBottom: 70 }}
@@ -123,7 +143,7 @@ export default function TmpSearch() {
               </SearchBookView>
             ))}
           </SearchBookBoxView>
-        </ScrollView>
+        </ScrollView> */}
       </SafeAreaView>
     </View>
   );
@@ -141,10 +161,10 @@ const SearchBox = styled.View`
 
 // 검색결과 나오는 책 배열
 const SearchBookBoxView = styled.View`
-  /* background-color: grey; */
+  /* background-color: grey;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: flex-start; */
 `;
 
 // bookbox 하나
