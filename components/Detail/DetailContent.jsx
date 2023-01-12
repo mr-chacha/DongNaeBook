@@ -339,6 +339,7 @@ const DetailContentTitleText = styled.Text`
   max-width: 85%;
   font-size: 20px;
   margin: 20px auto 0 auto;
+  color: ${(props) => props.theme.text};
 `;
 const DetailContentCountText = styled.Text`
   color: #727272;
@@ -366,6 +367,7 @@ const DetailContentInformationBoxView = styled.View`
 `;
 const DetailContentInformationTitleText = styled.Text`
   font-weight: 700;
+  color: ${(props) => props.theme.text};
 `;
 const DetailContentInformationLineView = styled.View`
   background-color: #000;
@@ -373,7 +375,9 @@ const DetailContentInformationLineView = styled.View`
   height: 13px;
   margin: 0 5px;
 `;
-const DetailContentInformationText = styled.Text``;
+const DetailContentInformationText = styled.Text`
+  color: ${(props) => props.theme.text};
+`;
 
 const DetailContentIntroduceView = styled.View`
   width: 85%;
@@ -383,9 +387,12 @@ const DetailContentIntroduceTitleText = styled.Text`
   font-size: 18px;
   font-weight: 700;
   margin: 25px 0 15px 0;
+  color: ${(props) => props.theme.text};
 `;
 const DetailContentIntroduceBoxView = styled.View``;
-const DetailContentIntroduceText = styled.Text``;
+const DetailContentIntroduceText = styled.Text`
+  color: ${(props) => props.theme.text};
+`;
 const DetailContentIntroduceMoreTouchableOpacity = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
