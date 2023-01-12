@@ -21,6 +21,11 @@ export default function Detail({
     getBestSeller
   );
 
+  // const { data: searchBooks, isLoading: isLoadingSB } = useQuery(
+  //   ["SearchBooks"],
+  //   getSearchBooks
+  // );
+
   return (
     <Safe>
       <ScrollView showsVerticalScrollIndicator={false}>

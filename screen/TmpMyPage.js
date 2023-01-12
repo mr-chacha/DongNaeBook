@@ -1,30 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import { Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text, View, Image, ScrollView, TouchableOpacity, Modal } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { Alert } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  Text,
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  Modal,
+} from "react-native";
 
-import { authService, db, storage } from '../firebase';
-import { getAuth } from 'firebase/auth/react-native';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { collection, doc, getDocs, query, where, updateDoc } from 'firebase/firestore';
+import { authService, db, storage } from "../firebase";
+import { getAuth } from "firebase/auth/react-native";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  where,
+  updateDoc,
+} from "firebase/firestore";
 
-import styled from '@emotion/native';
-import * as ImagePicker from 'expo-image-picker';
-import { SimpleLineIcons } from '@expo/vector-icons';
-import MyPageContents from '../components/MyPage/MyPageContents';
+import styled from "@emotion/native";
+import * as ImagePicker from "expo-image-picker";
+import { SimpleLineIcons } from "@expo/vector-icons";
+import MyPageContents from "../components/MyPage/MyPageContents";
 
 export default function TmpMyPage() {
   // 프로필 이미지
   const [profileImg, setProfileImg] = useState(null);
   const [selectedImage, setSelectedImage] = useState(
-    'https://firebasestorage.googleapis.com/v0/b/dongnaebook-2dd14.appspot.com/o/BasicProfile.jpeg?alt=media&token=4196a2a2-dffc-4dbe-90b7-45bdefe20c2b'
+    "https://firebasestorage.googleapis.com/v0/b/dongnaebook-2dd14.appspot.com/o/BasicProfile.jpeg?alt=media&token=4196a2a2-dffc-4dbe-90b7-45bdefe20c2b"
   );
 
   // 닉넥임
-  const [updateNickName, setUpdateNickName] = useState('');
+  const [updateNickName, setUpdateNickName] = useState("");
   // 유저 ID
-  const [id, setId] = useState('');
+  const [id, setId] = useState("");
   // 네비게이션
   const navigation = useNavigation();
   //로그인정보
@@ -42,7 +56,7 @@ export default function TmpMyPage() {
     authService
       .signOut()
       .then(() => {
-        navigation.navigate('Home');
+        navigation.navigate("Home");
       })
       .catch((error) => alert(error.message));
   };
@@ -57,7 +71,7 @@ export default function TmpMyPage() {
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
     } else {
-      alert('이미지를 선택하지 않으셨습니다.');
+      alert("이미지를 선택하지 않으셨습니다.");
       setSelectedImage(profileImg);
     }
 
@@ -67,7 +81,7 @@ export default function TmpMyPage() {
     const snapshot = await uploadBytes(reference, blobFile);
     const downLoadImage = await getDownloadURL(snapshot.ref);
     // 닉네임 DB에 업데이트
-    await updateDoc(doc(db, 'users', id), {
+    await updateDoc(doc(db, "users", id), {
       nickName: updateNickName,
       profileImg: downLoadImage,
     });
@@ -76,16 +90,16 @@ export default function TmpMyPage() {
   // 모달 프로필 수정 취소
   const handleModalClose = async () => {
     Alert.alert(
-      '프로필 수정을 취소 하시겠습니까?',
-      '* 변경사항이 저장 되지 않습니다 *',
+      "프로필 수정을 취소 하시겠습니까?",
+      "* 변경사항이 저장 되지 않습니다 *",
       [
         {
-          text: '아니요',
-          onPress: () => console.log(''),
-          style: 'cancel',
+          text: "아니요",
+          onPress: () => console.log(""),
+          style: "cancel",
         },
         {
-          text: '네',
+          text: "네",
           onPress: () => setModalVisible(false),
         },
       ],
@@ -98,10 +112,10 @@ export default function TmpMyPage() {
 
     // 닉네임 유효성 검사
     if (updateNickName.length < 2 || updateNickName.length > 10) {
-      alert('닉네임 2글자 이상, 10글자 미만으로 적어주세요.');
+      alert("닉네임 2글자 이상, 10글자 미만으로 적어주세요.");
     } else {
       try {
-        await updateDoc(doc(db, 'users', id), {
+        await updateDoc(doc(db, "users", id), {
           nickName: updateNickName,
         });
       } catch (event) {
@@ -113,7 +127,10 @@ export default function TmpMyPage() {
 
   // 디비에 있는 유저 정보 가져오기
   const getUserInfo = async () => {
-    const q = await query(collection(db, 'users'), where('uid', '==', currentUser.uid));
+    const q = await query(
+      collection(db, "users"),
+      where("uid", "==", currentUser.uid)
+    );
     getDocs(q).then((querySnapshot) => {
       const user = [];
       querySnapshot.forEach((doc) => {
@@ -137,7 +154,13 @@ export default function TmpMyPage() {
     <SafeAreaView>
       <ScrollView>
         <MypageContainer>
-          <SimpleLineIcons onPress={handleModalOpen} name='options-vertical' size={20} color='black' style={{ flexDirection: 'row', marginLeft: 'auto' }} />
+          <SimpleLineIcons
+            onPress={handleModalOpen}
+            name="options-vertical"
+            size={20}
+            color="black"
+            style={{ flexDirection: "row", marginLeft: "auto" }}
+          />
           <Image
             style={{ width: 158, height: 158, borderRadius: 79 }}
             source={{
@@ -153,7 +176,7 @@ export default function TmpMyPage() {
             <Text>로그아웃</Text>
           </LogoutBtn>
           {/* 모달 */}
-          <Modal visible={modalVisible} animationType='fade'>
+          <Modal visible={modalVisible} animationType="fade">
             <ModalBox>
               <ModalProfileView>
                 <ProfileImageContainer onPress={handleProfileImgChange}>
@@ -163,7 +186,10 @@ export default function TmpMyPage() {
                     }}
                   />
                 </ProfileImageContainer>
-                <NicknameInput value={updateNickName} onChangeText={setUpdateNickName} />
+                <NicknameInput
+                  value={updateNickName}
+                  onChangeText={setUpdateNickName}
+                />
                 <InputBottomLine />
                 <ModalButtonContainer>
                   <ModalButton onPress={handleModalSubmit}>
