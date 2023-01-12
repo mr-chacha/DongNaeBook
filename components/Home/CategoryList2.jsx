@@ -67,7 +67,7 @@ export default function CategoryList2() {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
             paddingVertical: 15,
-            paddingHorizontal: 20,
+            paddingHorizontal: 15,
             height: 250,
           }}
           data={catBooks}
@@ -83,7 +83,7 @@ export default function CategoryList2() {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
             paddingVertical: 15,
-            paddingHorizontal: 20,
+            paddingHorizontal: 15,
             height: 250,
           }}
           data={Filter}
