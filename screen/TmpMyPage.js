@@ -14,6 +14,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import MyPageContents from '../components/MyPage/MyPageContents';
 
+import useColorScheme from 'react-native/Libraries/Utilities/useColorScheme';
+
 export default function TmpMyPage() {
   // 프로필 이미지
   const [profileImg, setProfileImg] = useState(null);
