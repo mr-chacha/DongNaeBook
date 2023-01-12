@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Tabs from "./Tabs";
@@ -16,14 +15,12 @@ export default function Root({ isDark }) {
         headerTransparent: true,
         // headerShown: false,
       }}
-
       name="registerScreen"
     >
       <Stack.Screen name="Tabs" component={Tabs} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="Detail" component={Detail} />
-
     </Stack.Navigator>
   );
 }
