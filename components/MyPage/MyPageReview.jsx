@@ -36,7 +36,7 @@ export default function MyPageReview() {
       </MyPageWantReviewView>
 
       {reviews.map((review) => {
-        return <MyPageReviewComponent review={review} />;
+        return <MyPageReviewComponent key={review.commentId} review={review} />;
       })}
     </>
   );
