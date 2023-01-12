@@ -1,3 +1,8 @@
+//! 댓글 순서 최신순으로 정렬하기
+//!
+//!
+//!
+
 import styled from '@emotion/native';
 import { Rating } from 'react-native-ratings';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -32,6 +37,9 @@ export default function Review({ bookId, bookTitle, bookImage }) {
   const [isValid, setIsValid] = useState(false);
   const [isRated, setIsRated] = useState(false);
   const [isCommented, setIsCommented] = useState(false);
+  const [isDeleteToast, setIsDeleteToast] = useState(false);
+  const [isEditToast, setIsEditToast] = useState(false);
+
   const [ratings, setRatings] = useState(0);
   const [newComment, setNewComment] = useState('');
   const [nickName, setNickName] = useState('');
@@ -85,8 +93,6 @@ export default function Review({ bookId, bookTitle, bookImage }) {
       setNickName(user[0].nickName);
     });
   };
-
-  //! 로그인 예외처리하기, 댓글 순서 수정하기
 
   // 수정 / 삭제 모달 오픈 함수
   const handleModalOpen = () => {
@@ -176,6 +182,10 @@ export default function Review({ bookId, bookTitle, bookImage }) {
         onPress: async () => {
           await deleteDoc(doc(db, 'reviews', reviewId));
           console.log('id', reviewId);
+          setIsDeleteToast(true);
+          setTimeout(() => {
+            setIsDeleteToast(false);
+          }, 2000);
         },
       },
     ]);
@@ -200,6 +210,10 @@ export default function Review({ bookId, bookTitle, bookImage }) {
       comment: editedComment,
       isEdit: false,
     });
+    setIsEditToast(true);
+    setTimeout(() => {
+      setIsEditToast(false);
+    }, 2000);
   };
 
   return (
@@ -376,6 +390,27 @@ export default function Review({ bookId, bookTitle, bookImage }) {
           <ToastText>💌 리뷰가 등록됐어요 !</ToastText>
         </ToastView>
       </Toast>
+
+      <Toast
+        backgroundColor='#21d210'
+        opacity={1}
+        position={0}
+        visible={isDeleteToast}>
+        <ToastView>
+          <DeleteToastText>🗑️ 삭제 완료</DeleteToastText>
+        </ToastView>
+      </Toast>
+
+      <Toast
+        backgroundColor='#21d210'
+        opacity={1}
+        position={0}
+        visible={isEditToast}>
+        <ToastView>
+          <EditToastText>✍️ 수정 완료</EditToastText>
+        </ToastView>
+      </Toast>
+
       <Toast
         backgroundColor='#ffe600'
         opacity={1}
@@ -458,6 +493,18 @@ const ToastView = styled.View`
 `;
 
 const ToastText = styled.Text`
+  color: #000000;
+  font-size: 18px;
+  font-weight: 700;
+`;
+
+const DeleteToastText = styled.Text`
+  color: #000000;
+  font-size: 18px;
+  font-weight: 700;
+`;
+
+const EditToastText = styled.Text`
   color: #000000;
   font-size: 18px;
   font-weight: 700;
