@@ -256,6 +256,7 @@ export default function Review({ bookId, bookTitle, bookImage }) {
               <Desc>{review.comment}</Desc>
             </Commentbody>
             <IconBox
+              disabled={currentUser?.uid !== review.creatorId}
               onPress={() => {
                 handleModalOpen();
                 setReviewId(review.id);
