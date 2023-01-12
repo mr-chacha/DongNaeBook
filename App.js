@@ -1,20 +1,32 @@
+import React from "react";
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+} from "@react-navigation/native";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { RootSiblingParent } from "react-native-root-siblings";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import Root from "./navigation/Root";
+import { useColorScheme } from "react-native";
+import { DTheme, LTheme } from "./theme";
+import { ThemeProvider } from "@emotion/react";
+
+const queryClient = new QueryClient();
 
 export default function App() {
+  const isDark = useColorScheme() === "dark";
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <RootSiblingParent>
+      <ThemeProvider theme={isDark ? DTheme : LTheme}>
+        <QueryClientProvider client={queryClient}>
+          <NavigationContainer theme={isDark ? DarkTheme : DefaultTheme}>
+            <StatusBar style="auto" />
+            <Root />
+          </NavigationContainer>
+        </QueryClientProvider>
+      </ThemeProvider>
+    </RootSiblingParent>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
