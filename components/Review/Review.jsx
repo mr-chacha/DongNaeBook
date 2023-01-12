@@ -4,15 +4,27 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { useState } from 'react';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../util/Dimension';
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  onSnapshot,
+  orderBy,
+  query,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
 import { db } from '../../firebase';
 import { getAuth } from 'firebase/auth';
 import { uuidv4 } from '@firebase/util';
 import { now } from '../../util/date';
 import { useEffect } from 'react';
 import Toast from 'react-native-root-toast';
+import { Alert, View } from 'react-native';
 
-export default function Review({ bookId }) {
+export default function Review({ bookId, bookTitle, bookImage }) {
   const currentUser = getAuth().currentUser;
 
   const [isModify, setIsModify] = useState(false);
@@ -23,11 +35,45 @@ export default function Review({ bookId }) {
   const [ratings, setRatings] = useState(0);
   const [newComment, setNewComment] = useState('');
   const [nickName, setNickName] = useState('');
+  const [reviewList, setReviewList] = useState([]);
+  const [reviewId, setReviewId] = useState('');
+  const [editModalOpen, setEditModalOpen] = useState(false);
+
+  // 리뷰 수정 스테이트
+  const [reviewRating, setReviewRating] = useState(0);
+  const [reviewComment, setReviewComment] = useState('');
+
+  const [editRatings, setEditRatings] = useState(0);
+  const [editedComment, setEditedComment] = useState('');
+
+  console.log('editRatings', editRatings);
+  console.log('editedComment', editedComment);
 
   useEffect(() => {
     if (!currentUser) return;
     getUserInfo();
   }, [currentUser]);
+
+  // 파이어베이스에서 댓글 불러오기
+  // bookId === bookId 만족하는 것들만 가져와라
+  useEffect(() => {
+    const q = query(
+      collection(db, 'reviews'),
+      where('bookId', '==', bookId),
+      orderBy('createdDate', 'desc')
+    );
+
+    onSnapshot(q, (snapshot) => {
+      const reviews = snapshot.docs.map((doc) => {
+        const review = {
+          id: doc.id,
+          ...doc.data(),
+        };
+        return review;
+      });
+      setReviewList(reviews);
+    });
+  }, []);
 
   const getUserInfo = async () => {
     const q = await query(collection(db, 'users'), where('uid', '==', currentUser.uid));
@@ -40,9 +86,9 @@ export default function Review({ bookId }) {
     });
   };
 
-  // 로그인 예외처리하기
+  //! 로그인 예외처리하기, 댓글 순서 수정하기
 
-  // 모달 오픈 함수
+  // 수정 / 삭제 모달 오픈 함수
   const handleModalOpen = () => {
     setIsModify(true);
   };
@@ -50,18 +96,33 @@ export default function Review({ bookId }) {
     setIsModify(false);
   };
 
-  //별점 등록 함수
+  // 수정 에디터 모달 닫기 함수
+  const handleEditModalClose = () => {
+    setEditModalOpen(false);
+  };
+
+  // 수정 별점 핸들링 함수
+  const handleEditRatings = (rating) => {
+    setEditRatings(rating);
+  };
+
+  // 수정 코멘트 핸들링 함수
+  const handleEditedComment = (editedcomment) => {
+    setEditedComment(editedcomment);
+  };
+
+  //별점 핸들링 함수
   const handleRatings = (rating) => {
     setRatings(rating);
   };
 
-  // 코멘트 등록 함수
+  // 코멘트 핸들링 함수
   const handleNewComment = (comment) => {
     setNewComment(comment);
   };
 
   // 신규 코멘트 등록 함수
-  const addComment = async () => {
+  const addReview = async () => {
     // 유효성 검사
     if (!ratings && !newComment) {
       setIsValid(true);
@@ -89,6 +150,9 @@ export default function Review({ bookId }) {
         profileImage: currentUser.photoURL,
         nickName: nickName,
         bookId: bookId,
+        bookTitle: bookTitle,
+        bookImage: bookImage,
+        isEdit: false,
       });
       // 등록 시 별점은 어떻게 초기화시키지? (Rating 컴포넌트만 리렌더링 해줘야 하나?)
       setRatings(0);
@@ -98,6 +162,44 @@ export default function Review({ bookId }) {
         setIsToastOpen(false);
       }, 2000);
     }
+  };
+
+  // 코멘트 삭제 함수
+  // 이걸 적은 사람만 삭제할 수 있어야 함
+  const deleteReview = (reviewId) => {
+    Alert.alert('리뷰를 삭제합니다', '정말 삭제하시겠어요?', [
+      {
+        text: '아니요',
+      },
+      {
+        text: '삭제',
+        onPress: async () => {
+          await deleteDoc(doc(db, 'reviews', reviewId));
+          console.log('id', reviewId);
+        },
+      },
+    ]);
+  };
+
+  // 코멘트 수정 함수
+  // 수정 모달을 하나 만들고
+  // 거기에 기존값들은 전달해준 다음
+  // 수정할 수 있도록 해줘야겠다.
+  const setEdit = async (reviewId) => {
+    const target = reviewList.findIndex((review) => review.id === reviewId);
+    await updateDoc(doc(db, 'reviews', reviewId), {
+      isEdit: !reviewList[target].isEdit,
+    });
+  };
+
+  const editReview = async (reviewId) => {
+    console.log('수정 실행');
+    console.log(reviewId);
+    await updateDoc(doc(db, 'reviews', reviewId), {
+      rating: editRatings,
+      comment: editedComment,
+      isEdit: false,
+    });
   };
 
   return (
@@ -125,40 +227,46 @@ export default function Review({ bookId }) {
           value={newComment}
           onChangeText={handleNewComment}
         />
-        <ReviewSubmitBtn onPress={addComment}>
+        <ReviewSubmitBtn onPress={addReview}>
           <SubmitText>등록하기</SubmitText>
         </ReviewSubmitBtn>
       </ReviewInputBox>
 
       <ComnnetContainner>
-        <CommentBox>
-          <ProfileImgBox>
-            <ProfileImg
-              source={{
-                uri: 'https://img.extmovie.com/files/attach/images/135/286/386/076/02197f8e7c1fe5257dd98ecf223475e6.jpg',
-              }}
-            />
-          </ProfileImgBox>
-          <Commentbody>
-            <Rate>⭐️⭐️⭐️⭐️</Rate>
-            <InfoBox>
-              <UserName>닉네임</UserName>
-              <Seperator>|</Seperator>
-              <CreatedDate>22.01.06</CreatedDate>
-            </InfoBox>
-            <Desc>
-              오늘도 내일도 모레도 오늘도 내일 모레도 오늘도 내일도 모레도 오늘도 내일도 모레도 오늘
-              내일도 모래반지빵야 내일도 빵야 아냐
-            </Desc>
-          </Commentbody>
-          <IconBox onPress={handleModalOpen}>
-            <MaterialCommunityIcons
-              name='dots-vertical'
-              size={24}
-              color='black'
-            />
-          </IconBox>
-        </CommentBox>
+        {reviewList.map((review) => (
+          <CommentBox key={review.commentId}>
+            <ProfileImgBox>
+              <ProfileImg
+                source={{
+                  uri: 'https://img.extmovie.com/files/attach/images/135/286/386/076/02197f8e7c1fe5257dd98ecf223475e6.jpg',
+                }}
+              />
+            </ProfileImgBox>
+            <Commentbody>
+              <Rate>⭐️ {review.rating}</Rate>
+              <InfoBox>
+                <UserName>{review.nickName}</UserName>
+                <Seperator>|</Seperator>
+                <CreatedDate>{review.createdDate}</CreatedDate>
+              </InfoBox>
+              <Desc>{review.comment}</Desc>
+            </Commentbody>
+            <IconBox
+              onPress={() => {
+                handleModalOpen();
+                setReviewId(review.id);
+                //
+                setReviewRating(review.rating);
+                setReviewComment(review.comment);
+              }}>
+              <MaterialCommunityIcons
+                name='dots-vertical'
+                size={24}
+                color='black'
+              />
+            </IconBox>
+          </CommentBox>
+        ))}
       </ComnnetContainner>
 
       <ModifyModal
@@ -169,7 +277,12 @@ export default function Review({ bookId }) {
         <ModifyBox>
           <MenuBox>
             <MenuWrapper>
-              <RewriteMenu>
+              <RewriteMenu
+                onPress={() => {
+                  setIsModify(false);
+                  setEditModalOpen(true);
+                  setEdit(reviewId);
+                }}>
                 <AntDesign
                   name='edit'
                   size={24}
@@ -177,7 +290,11 @@ export default function Review({ bookId }) {
                 />
                 <MenuName>수정하기</MenuName>
               </RewriteMenu>
-              <DeleteMenu>
+              <DeleteMenu
+                onPress={() => {
+                  deleteReview(reviewId);
+                  setIsModify(false);
+                }}>
                 <AntDesign
                   name='delete'
                   size={24}
@@ -197,6 +314,53 @@ export default function Review({ bookId }) {
           </MenuBox>
         </ModifyBox>
       </ModifyModal>
+
+      <EditModal
+        visible={editModalOpen}
+        animationType='slide'
+        transparent>
+        <EditModalBackdrop>
+          <EditModalView>
+            <EditInputBox>
+              <EditTitleRateBox>
+                <Rating
+                  startingValue={reviewRating}
+                  ratingCount={5}
+                  imageSize={18}
+                  type='custom'
+                  ratingBackgroundColor='#d6d5d2'
+                  jumpValue={0.5}
+                  fractions={1}
+                  tintColor='#F2F2F2'
+                  onFinishRating={handleEditRatings}
+                />
+              </EditTitleRateBox>
+              <EditTextInput
+                maxLength={100}
+                multiline={true}
+                scrollEnabled={false}
+                placeholder={reviewComment}
+                value={editedComment}
+                onChangeText={handleEditedComment}
+              />
+              <EditSubmitBtn
+                onPress={() => {
+                  editReview(reviewId);
+                }}>
+                <EditSubmitText>수정하기</EditSubmitText>
+              </EditSubmitBtn>
+            </EditInputBox>
+            <EditClose onPress={handleEditModalClose}>
+              <AntDesign
+                name='close'
+                size={24}
+                color='black'
+              />
+            </EditClose>
+          </EditModalView>
+        </EditModalBackdrop>
+      </EditModal>
+
       <Toast
         backgroundColor='#21d210'
         opacity={1}
@@ -238,6 +402,45 @@ export default function Review({ bookId }) {
   );
 }
 
+// 수정 모달
+const EditModal = styled.Modal``;
+const EditModalBackdrop = styled.View`
+  flex: 1;
+  background-color: #f2f2f2;
+`;
+
+const EditModalView = styled.View`
+  padding: 20px;
+  width: ${SCREEN_WIDTH};
+  margin-top: ${SCREEN_HEIGHT / 3 + 'px'};
+`;
+
+const EditInputBox = styled.View``;
+const EditTitleRateBox = styled.View`
+  margin-bottom: 20px;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const EditTextInput = styled.TextInput`
+  background-color: white;
+  border-radius: 10px;
+  height: ${SCREEN_HEIGHT / 9 + 'px'};
+  font-size: 15px;
+  padding: 10px;
+`;
+
+const EditSubmitBtn = styled.TouchableOpacity``;
+
+const EditSubmitText = styled.Text`
+  align-self: flex-end;
+  padding: 10px;
+`;
+
+const EditClose = styled.TouchableOpacity`
+  align-items: flex-start;
+`;
+
 //
 const ToastView = styled.View`
   width: ${SCREEN_WIDTH / 1.4 + 'px'};
@@ -272,7 +475,7 @@ const ToastText3 = styled.Text`
   font-weight: 700;
 `;
 
-//
+// 수정 / 삭제 모달
 const FakeView = styled.View`
   flex-direction: column-reverse;
   flex: 0.88;

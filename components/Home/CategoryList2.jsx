@@ -4,6 +4,8 @@ import CategoryList from "./CategoryList";
 import uuid from "react-native-uuid";
 import styled, { css } from "@emotion/native";
 import { SCREEN_HEIGHT } from "../../util/test";
+import { useQuery } from "react-query";
+import { getApiRecentBooks, getBestSeller } from "../../util/api";
 
 const categoryName = [
   "전체보기",
@@ -17,22 +19,11 @@ const categoryName = [
 const categoryId = ["전체보기", "119", "101", "117", "118", "123", "105"];
 
 export default function CategoryList2() {
-  const [catBooks, setCatBooks] = useState([]);
-  // 도서 request url
-  const BASE_URL = "http://book.interpark.com/api/bestSeller.api";
-  // api key
-  const API_KEY =
-    "B23E30B9DF1AAD646A146C3020DC90CE504C270B6A6B8A3B372CF3B02DEE6077";
-  //신간도서 api 가져오기
-  const getApiCatBooks = async () => {
-    const { item } = await fetch(
-      `${BASE_URL}?key=${API_KEY}&categoryId=100&output=json`
-    ).then((res) => res.json());
-    setCatBooks(item);
-  };
-  useEffect(() => {
-    getApiCatBooks();
-  }, []);
+  // 베스트셀러
+  const { data: catBooks, isLoading: isLoadingSD } = useQuery(
+    "catBooks",
+    getBestSeller
+  );
 
   // state
   const [currentCategory, setCurrentCategory] = useState("전체보기");
@@ -43,7 +34,9 @@ export default function CategoryList2() {
     setCurrentCategory(categoryId[findIndex]); // 110
   };
   // Filter를 걸어놓은 카테고리변수선언
-  const Filter = catBooks.filter((data) => data.categoryId === currentCategory);
+  const Filter = catBooks?.item.filter(
+    (data) => data.categoryId === currentCategory
+  );
 
   return (
     <View>
@@ -67,10 +60,10 @@ export default function CategoryList2() {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
             paddingVertical: 15,
-            paddingHorizontal: 20,
+            paddingHorizontal: 15,
             height: 250,
           }}
-          data={catBooks}
+          data={catBooks?.item}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <CategoryList books={item} key={uuid.v4()} />
@@ -83,7 +76,7 @@ export default function CategoryList2() {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
             paddingVertical: 15,
-            paddingHorizontal: 20,
+            paddingHorizontal: 15,
             height: 250,
           }}
           data={Filter}

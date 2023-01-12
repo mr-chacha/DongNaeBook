@@ -13,46 +13,62 @@ import styled, { css } from "@emotion/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import BookBox from "../components/Home/BookBox";
 import { useNavigation } from "@react-navigation/core";
+import { getApiRecentBooks, getBestSeller, getSearchBooks } from "../util/api";
+import { useQuery, useQueryClient } from "react-query";
 
 //디테일 페이지로 이동하면 자꾸 리뷰만 떠요ㅠㅠ
 
 export default function TmpSearch() {
-  const { navigate } = useNavigation();
-  const HandleMoveToDetail = () => {
-    navigate("Detail", {
-      params: { bookId: books.itemId },
-    });
-  };
+  // const { navigate } = useNavigation();
+  // const HandleMoveToDetail = () => {
+  //   navigate("Detail", {
+  //     params: { bookId: books.itemId },
+  //   });
+  // };
 
-  // 검색 state
-  const [searchBooks, setSearchBooks] = useState([]);
+  // const { data: searchBooks, isLoading: isLoadingSB } = useQuery(
+  //   "searchBooks",
+  //   getSearchBooks
+  // );
+  // const [isRefreshing, setIsRefreshing] = useState(false);
+  // const queryClient = useQueryClient();
+
+  const [inputText, setInputText] = useState("");
+
+  const { data: searchBooks, isLoading: isLoadingSB } = useQuery(
+    [inputText, "searchBooks"],
+    getSearchBooks
+  );
+
+  console.log("searchBooks:", searchBooks);
+
+  // const [searchBooks, setSearchBooks] = useState([]);
 
   // search request url
-  const BASE_SEARCH_URL = "http://book.interpark.com/api/search.api";
+  // const BASE_SEARCH_URL = "http://book.interpark.com/api/search.api";
 
   // api key
-  const API_KEY =
-    "87B80D6175094F2DB547B7571483B3A72C2492B12CA1B1754121E5255BECA991";
+  // const API_KEY =
+  //   "87B80D6175094F2DB547B7571483B3A72C2492B12CA1B1754121E5255BECA991";
 
   //검색 api 가져오기
-  const getSearchBooks = async () => {
-    // console.log("in");
-    const { item } = await fetch(
-      `${BASE_SEARCH_URL}?key=${API_KEY}&query=${inputText}&sort=salesPoint&start=1&maxResults=20&output=json`
-    ).then((res) => res.json());
-    setSearchBooks(item);
-  };
+  // const getSearchBooks = async () => {
+  //   // console.log("in");
+  //   const { item } = await fetch(
+  //     `${BASE_SEARCH_URL}?key=${API_KEY}&query=${inputText}&sort=salesPoint&start=1&maxResults=20&output=json`
+  //   ).then((res) => res.json());
+  //   setSearchBooks(item);
+  // };
   //http://book.interpark.com/api/search.api?key=87B80D6175094F2DB547B7571483B3A72C2492B12CA1B1754121E5255BECA991&query=삼국지&sort=salesPoint&start=1&maxResults=20&output=json
 
   // 다음버튼으로 다음페이지 될때마다 start = n + 1, +1될때마다 새로 호출 - 검색결과가 너무 많으면????
   // 반복문으로 끝이 나올때까지 계속 호출 / now = page 수???
 
-  const [inputText, setInputText] = useState("");
-
   const [loading, setLoading] = useState(false); // 로딩
 
   const getData = async () => {
     if (searchBooks.length > 20) {
+      // 무한스크롤...만들고싶어요.....
       setLoading(true);
       await DataFetch();
       setLoading(false);
@@ -65,7 +81,7 @@ export default function TmpSearch() {
   };
 
   return (
-    <View style={{ backgroundColor: "white" }}>
+    <SearchBackGround>
       <SafeAreaView
         style={{
           height: "100%",
@@ -92,7 +108,7 @@ export default function TmpSearch() {
 
         {/* 검색결과 */}
         <Text style={{ marginTop: 20, marginBottom: 10 }}>
-          {searchBooks.length}건의 검색 결과를 찾았어요
+          {searchBooks?.length ?? 0}건의 검색 결과를 찾았어요
         </Text>
 
         {/* 검색도서내역 */}
@@ -111,7 +127,7 @@ export default function TmpSearch() {
             // width: "90%",
           }}
           numColumns={3}
-          data={searchBooks}
+          data={searchBooks ?? []}
           renderItem={({ item }) => (
             <BookBox onPress={HandleMoveToDetail} book={item} />
           )}
@@ -125,6 +141,10 @@ export default function TmpSearch() {
         />
         {/* </SearchBookBoxView> */}
         {/* <ScrollView>
+        <SearchText>{}n건의 검색 결과를 찾았어요</SearchText>
+
+        {/* 검색도서내역 */}
+        {/* <ScrollView showsVerticalScrollIndicator={false}>
           <SearchBookBoxView
             contentContainerStyle={{ paddingVertical: 20 }}
             style={{ marginBottom: 70 }}
@@ -137,7 +157,7 @@ export default function TmpSearch() {
           </SearchBookBoxView>
         </ScrollView> */}
       </SafeAreaView>
-    </View>
+    </SearchBackGround>
   );
 }
 
@@ -165,4 +185,17 @@ const SearchBookView = styled.View`
 
   /* margin-left: 10px; */
   /* margin-right: 10px; */
+`;
+
+const SearchText = styled.Text`
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: ${(props) => props.theme.text};
+`;
+const SearchBackGround = styled.View`
+  background-color: ${(props) => props.theme.back};
+`;
+
+const SearchInput = styled.TextInput`
+  width: 200px;
 `;

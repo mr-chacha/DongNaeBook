@@ -55,22 +55,8 @@ export default function DetailContent({ book }) {
   //로그인정보
   let currentUser = false;
   currentUser = isLoggedIn ? getAuth().currentUser : false;
-  // const currentUser = getAuth().currentUser;
-  // const currentUser = getAuth().currentUser;
-  // () => {
-  //   if (isLoggedIn === true) {
-  //     currentUser = getAuth().currentUser;
-  //   } else {
-  //     return;
-  //   }
-  // };
-  // console.log("currentUser", currentUser);
   const bookUUID = uuidv4();
-  // console.log(bookUUID);
-
   const setRead = async () => {
-    // setReadBookButton((prev) => [...prev, newReadBook]);
-
     //setDoc
     if (isLoggedIn == false) {
       Alert.alert(
@@ -91,11 +77,11 @@ export default function DetailContent({ book }) {
       );
     } else {
       await setDoc(doc(db, "readbook", bookUUID), newReadBook);
+      Alert.alert("동네북", "읽고 싶은 책으로 등록했습니다.");
     }
     // alert("읽고 싶은 책으로 등록했습니다");
   };
   const setBookMark = async () => {
-    // setReadBookButton((prev) => [...prev, newReadBook]);
     //setDoc
     if (isLoggedIn == false) {
       Alert.alert(
@@ -116,6 +102,7 @@ export default function DetailContent({ book }) {
       );
     } else {
       await setDoc(doc(db, "bookmark", bookUUID), newReadBook);
+      Alert.alert("동네북", "읽은 책으로 등록했습니다.");
     }
     // alert("읽고 싶은 책으로 등록했습니다");
   };
@@ -126,15 +113,6 @@ export default function DetailContent({ book }) {
       const docRef = doc(db, "readbook", readBookTrueButton.bookUUID);
       await deleteDoc(docRef);
     }
-    // const q = query(
-    //   collection(db, "readbook"),
-    //   where("userId", "==", 1),
-    //   where("bookId", "==", readBookTrueButton.bookUUID)
-    // );
-
-    // const docRef = doc(q);
-    // // const docRef = doc(db, "readbook", readBookTrueButton.bookUUID);
-    // await deleteDoc(docRef);
   };
 
   //북마크
@@ -205,6 +183,9 @@ export default function DetailContent({ book }) {
     .map((i) => i);
   const [bookMarkTrueButton] = bookMarkFilter;
   // console.log(bookMarkTrueButton);
+  const howMany = bookMarkButton
+    .filter((i) => i.bookId === book.itemId)
+    .map((i) => i);
 
   const newReadBook = {
     userId: currentUser.uid,
@@ -229,7 +210,7 @@ export default function DetailContent({ book }) {
       <DetailContentTitleView>
         {/* 카운터 firebase연결 필요*/}
         <DetailContentCountText>
-          👀300명이 이 책을 봤어요!
+          👀 {howMany.length} 명이 이 책을 읽었어요!
         </DetailContentCountText>
         {/* 찜 */}
         {/* 유저 아이디,책 아이디 , response 를 넣어서 파이어베이스로 */}
@@ -345,7 +326,7 @@ export default function DetailContent({ book }) {
 const DetailContentImg = styled.Image`
   width: 160px;
   height: 250px;
-  margin: 30px auto 0 auto;
+  margin: 100px auto 0 auto;
 `;
 const DetailContentTitleView = styled.View`
   margin: 20px auto 0 auto;
