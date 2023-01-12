@@ -1,26 +1,16 @@
-import React, { useState } from "react";
-import {
-  Text,
-  View,
-  TextInput,
-  SafeAreaView,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
-import styled, { css } from "@emotion/native";
-import { MaterialIcons } from "@expo/vector-icons";
-import BookBox2 from "../components/Home/BookBox2";
-import {} from "@react-navigation/core";
-import { getSearchBooks } from "../util/api";
-import { useQuery } from "react-query";
-import { Linking } from "react-native";
+import React, { useState } from 'react';
+import { Text, View, TextInput, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
+import styled, { css } from '@emotion/native';
+import { MaterialIcons } from '@expo/vector-icons';
+import BookBox2 from '../components/Home/BookBox2';
+import {} from '@react-navigation/core';
+import { getSearchBooks } from '../util/api';
+import { useQuery } from 'react-query';
+import { Linking } from 'react-native';
 
-export default function TmpSearch() {
-  const [inputText, setInputText] = useState("");
-  const { data: searchBooks, isLoading: isLoadingSB } = useQuery(
-    [inputText, "searchBooks"],
-    getSearchBooks
-  );
+export default function Search() {
+  const [inputText, setInputText] = useState('');
+  const { data: searchBooks, isLoading: isLoadingSB } = useQuery([inputText, 'searchBooks'], getSearchBooks);
   const [loading, setLoading] = useState(false);
   const getData = async () => {
     if (searchBooks.length > 20) {
@@ -39,29 +29,27 @@ export default function TmpSearch() {
     <SearchBackGround>
       <SafeAreaView
         style={{
-          height: "100%",
+          height: '100%',
           marginTop: 50,
-          alignItems: "center",
+          alignItems: 'center',
         }}
       >
         <SearchBox>
-          <MaterialIcons name="search" size={24} color="black" />
+          <MaterialIcons name='search' size={24} color='black' />
           <TextInput
             style={{
               width: 200,
               height: 50,
               paddingLeft: 10,
             }}
-            placeholderTextColor="#727272"
-            placeholder="검색어를 입력하세요"
+            placeholderTextColor='#727272'
+            placeholder='검색어를 입력하세요'
             onChangeText={(newText) => setInputText(newText)}
             onSubmitEditing={getSearchBooks}
           />
         </SearchBox>
         {/* 검색결과 */}
-        <SearchText>
-          {searchBooks?.totalResults ?? 0}건의 검색 결과를 찾았어요
-        </SearchText>
+        <SearchText>{searchBooks?.totalResults ?? 0}건의 검색 결과를 찾았어요</SearchText>
         {/* 검색도서내역 */}
         <FlatScrollView showsVerticalScrollIndicator={false}>
           <FlatList

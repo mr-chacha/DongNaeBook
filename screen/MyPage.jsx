@@ -16,7 +16,7 @@ import MyPageContents from '../components/MyPage/MyPageContents';
 
 import useColorScheme from 'react-native/Libraries/Utilities/useColorScheme';
 
-export default function TmpMyPage() {
+export default function MyPage() {
   // 프로필 이미지
   const [profileImg, setProfileImg] = useState(null);
   const [selectedImage, setSelectedImage] = useState(
@@ -46,6 +46,7 @@ export default function TmpMyPage() {
       .signOut()
       .then(() => {
         navigation.navigate('Home');
+        alert('로그아웃 되었습니다.');
       })
       .catch((error) => alert(error.message));
   };
@@ -98,7 +99,6 @@ export default function TmpMyPage() {
   // 모달 프로필 수정 완료
   const handleModalSubmit = async () => {
     // 프로필 이미지 FB에 업데이트
-
     // 닉네임 유효성 검사
     if (updateNickName.length < 2 || updateNickName.length > 10) {
       alert('닉네임 2글자 이상, 10글자 미만으로 적어주세요.');
@@ -137,18 +137,12 @@ export default function TmpMyPage() {
   useEffect(() => {
     getUserInfo();
   }, []);
-  const isDark = useColorScheme() === "dark";
+  const isDark = useColorScheme() === 'dark';
   return (
     <SafeAreaView>
       <ScrollView>
         <MypageContainer>
-          <SimpleLineIcons
-            onPress={handleModalOpen}
-            name="options-vertical"
-            size={20}
-            color={isDark === false ? "black" : "white"}
-            style={{ flexDirection: "row", marginLeft: "auto" }}
-          />
+          <SimpleLineIcons onPress={handleModalOpen} name='options-vertical' size={20} color={isDark === false ? 'black' : 'white'} style={{ flexDirection: 'row', marginLeft: 'auto' }} />
           <Image
             style={{ width: 158, height: 158, borderRadius: 79 }}
             source={{

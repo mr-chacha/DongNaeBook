@@ -1,20 +1,14 @@
-import React from "react";
-import styled, { css } from "@emotion/native";
-import BookBox from "../Home/BookBox";
-import { useQuery } from "react-query";
-import { getApiRecentBooks, getBestSeller } from "../../util/api";
+import React from 'react';
+import styled, { css } from '@emotion/native';
+import BookBox from '../Home/BookBox';
+import { useQuery } from 'react-query';
+import { getApiRecentBooks, getBestSeller } from '../../util/api';
 
 export default function MyPageRead({ readBookFilter }) {
   // 신간도서
-  const { data: recentBooks, isLoading: isLoadingRB } = useQuery(
-    "RecentBooks",
-    getApiRecentBooks
-  );
+  const { data: recentBooks, isLoading: isLoadingRB } = useQuery('RecentBooks', getApiRecentBooks);
   // 베스트셀러
-  const { data: bestSeller, isLoading: isLoadingSD } = useQuery(
-    "bestSeller",
-    getBestSeller
-  );
+  const { data: bestSeller, isLoading: isLoadingSD } = useQuery('bestSeller', getBestSeller);
 
   // 최근 구조
   const recent = recentBooks?.item.filter((item) => {
@@ -25,7 +19,7 @@ export default function MyPageRead({ readBookFilter }) {
       }
     }
   });
-  // console.log(recent);
+
   const best = bestSeller?.item.filter((item) => {
     //item의 id가 bookMarkFilter배열 안에 존재한다면 (if) 리턴해주고 아니면 아무것도 안함
     for (let i = 0; i < readBookFilter.length; i++) {

@@ -1,21 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Text,
-  ActivityIndicator,
-} from "react-native";
-import styled, { css } from "@emotion/native";
-// import styled from "@emotion/native";
+import { View, TouchableOpacity, Text } from 'react-native';
+import styled from '@emotion/native';
 
 export default function CategoryList({ books }) {
   // detail로 이동하는 함수 추가
   const { navigate } = useNavigation();
   const HandleMoveToDetail = () => {
-    navigate("Detail", {
+    navigate('Detail', {
       params: { bookId: books.itemId },
     });
   };
@@ -31,20 +24,20 @@ export default function CategoryList({ books }) {
         />
       </BookBoxImage>
       {/* 책 제목 */}
-      <BookBoxTitleText numberOfLines={1} ellipsizeMode="tail">
+      <BookBoxTitleText numberOfLines={1} ellipsizeMode='tail'>
         {books.title}
       </BookBoxTitleText>
       {/* 책 출판 */}
       <BookBoxTextView>
         <BookBoxNameText>출판</BookBoxNameText>
-        <BookBoxText numberOfLines={1} ellipsizeMode="tail">
+        <BookBoxText numberOfLines={1} ellipsizeMode='tail'>
           {books.publisher}
         </BookBoxText>
       </BookBoxTextView>
       {/* 책 저자 */}
       <BookBoxTextView>
         <BookBoxNameText>저자</BookBoxNameText>
-        <BookBoxText numberOfLines={1} ellipsizeMode="tail">
+        <BookBoxText numberOfLines={1} ellipsizeMode='tail'>
           {books.author}
         </BookBoxText>
       </BookBoxTextView>
@@ -109,23 +102,3 @@ const MonthBookLoader = styled.View`
   justify-content: center;
   align-items: center;
 `;
-
-// const styles = StyleSheet.create({
-//   middleButtonAll: {
-//     width: 100,
-//     height: 50,
-//     padding: 15,
-//     backgroundColor: "#CDFF40",
-//     borderRadius: 15,
-//     display: "flex",
-//     flexDirection: "row",
-//     justifyContent: "center",
-//     alignItems: "center",
-//     margin: 7,
-//   },
-//   middleButtonText: {
-//     color: "black",
-//     fontWeight: "700",
-//     //텍스트의 현재 위치에서의 정렬
-//   },
-// });
