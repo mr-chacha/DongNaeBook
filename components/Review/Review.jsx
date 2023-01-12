@@ -346,6 +346,7 @@ export default function Review({ bookId, bookTitle, bookImage }) {
               <EditSubmitBtn
                 onPress={() => {
                   editReview(reviewId);
+                  handleEditModalClose();
                 }}>
                 <EditSubmitText>수정하기</EditSubmitText>
               </EditSubmitBtn>
